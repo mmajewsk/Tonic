@@ -19,8 +19,9 @@ binary_stream = connection.makefile('rb')
 
 
 with picamera.PiCamera() as camera:
-    camera.resolution = (640, 480)
-    camera.framerate = 30
+    camera.resolution = (320, 240)
+    camera.framerate = 10
+    camera.color_effects = (128,128)
     time.sleep(2)
     start = time.time()
     stream = io.BytesIO()
@@ -29,7 +30,7 @@ with picamera.PiCamera() as camera:
         binary_stream.flush()
         stream.seek(0)
         binary_stream.write(stream.read())
-        if time.time() - start > 30:
+        if time.time() - start > 60:
             break
         stream.seek(0)
         stream.truncate()
