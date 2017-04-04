@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
 import os, sys
-
+import pandas as pd
 import json
 import time, datetime
 
@@ -15,11 +15,19 @@ class MainApp(QWidget):
 		self.dirlist = os.listdir(self.data_path)
 		self.video_size = QSize(320, 240)
 		self.setup_ui()
+		self.painter = QPainter()
 		self._current_dir = os.path.join(self.data_path, '')
 		self.steering_hist = ''
 		self.pic_list = []
 		self.frame_list=[]
 		self.frames = {}
+		self.draw_border = 5
+		self.coord_draw = {
+			'a': (self.draw_border, self.video_size.height()//2),
+			'd': (self.video_size.width()-self.draw_border, self.video_size.height() // 2),
+			'w': (self.video_size.width()//2, self.draw_border),
+			's': (self.video_size.width()//2, self.video_size.height()-self.draw_border),
+		}
 
 	@property
 	def current_dir(self):
@@ -29,25 +37,37 @@ class MainApp(QWidget):
 	def current_dir(self, newdir):
 		self._current_dir = os.path.join(self.data_path, newdir.text())
 
-	def load_frame(self, frame):
-		image = QImage(os.path.join(self.current_dir, self.frames[frame][1]))
+	def draw_signals(self, frame, image):
+		self.painter.begin(image)
+		self.painter.setPen(Qt.red)
+		self.painter.setBrush(QBrush(Qt.red))
+		for	signal in "wsad":
+			if frame[signal]:
+				x,y = self.coord_draw[signal]
+				self.painter.drawEllipse(x,y, 10, 10)
+		self.painter.end()
+		return image
+
+	def load_frame(self, frame_number):
+		frame = self.frames[frame_number]
+		image = QImage(os.path.join(self.current_dir, frame['filenames']))
+		image = self.draw_signals(frame, image)
 		self.image_label.setPixmap(QPixmap.fromImage(image))
 
-	def create_frames(self, pic_list):
-		self.frame_list = map(lambda x: x[5:-4].split('_'), pic_list)
-		self.frame_list = map(lambda z: (int(z[0]), float(z[1])), self.frame_list)
-		self.frames = {}
-		for (number, t), pic in zip(self.frame_list, pic_list):
-			self.frames[number] = (datetime.datetime.fromtimestamp(t), pic )
+	@staticmethod
+	def to_common_datatype(df):
+		frames = {}
+		for i, (index , data) in enumerate(df.to_dict('index').items()):
+			frames[i] = dict(date=datetime.datetime.fromtimestamp(index), **data)
+		return frames
 
-
+	def create_frames(self):
+		self.frames = self.to_common_datatype(self.data)
 
 	def load_new_dir(self):
-		dir_steering_path = os.path.join(self.current_dir,'steering.json')
-		with open(dir_steering_path, 'r') as f:
-			self.steering_hist = json.loads(f.read())
-		self.pic_list = list(filter(lambda x: ".jpg" in x, os.listdir(self.current_dir)))
-		self.create_frames(self.pic_list)
+		dir_steering_path = os.path.join(self.current_dir,'steering_v1.csv')
+		self.data = pd.read_csv(dir_steering_path)
+		self.create_frames()
 		self.slider.setMaximum(max(list(self.frames.keys())))
 		self.load_frame(0)
 
@@ -58,13 +78,14 @@ class MainApp(QWidget):
 	def change_frame(self, frame_number):
 		self.load_frame(frame_number)
 		frame = self.frames[frame_number]
-		t = frame[0]
+		t = frame['date']
 		tim = t.strftime("%H:%M:%S.%f")
-		self.image_data.setText("Number:{} Time:{}".format(frame_number, tim))
+		signal = "".join([k if frame[k]==True else '' for k in "wsad"])
+		self.image_data.setText("Number:{} Time:{} \n Signal:{}".format(frame_number, tim, signal))
 
 	def setup_ui(self):
 		self.image_label = QLabel()
-		#self.image_label.setFixedSize(self.video_size)
+		self.image_label.setFixedSize(self.video_size)
 		self.quit_button = QPushButton("Quit")
 		self.quit_button.clicked.connect(self.close)
 
