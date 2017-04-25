@@ -16,8 +16,8 @@ import socket
 
 
 class SetSteering(QThread):
-	def __init__(self, app, intake_name=None, dump=True, turn_on=True):
-		self.intake_name = intake_name
+	def __init__(self, app, intake_path=None, dump=True, turn_on=True):
+		self.intake_path = intake_path
 		self.dump = dump
 		self.app = app
 		QThread.__init__(self)
@@ -25,8 +25,8 @@ class SetSteering(QThread):
 		self.socket.connect(('192.168.1.212',2203))
 		self.steering_log = []
 		self.to_letters_dict = {87:'w', 83:'s', 68:'d', 65:'a'}
-		if turn_on:
-			self.steering = None#Steering()
+		self.steering = turn_on
+		if self.steering:
 			self.timer2 = QTimer()
 			self.timer2.timeout.connect(self.ask_keys)
 			self.timer2.start(28)
@@ -44,13 +44,13 @@ class SetSteering(QThread):
 	def send(self, keys):
 		signal = self.signal_to_string(keys)
 		self.socket.send(signal.encode())
-		self.steering_log.append((str(keys), time.time()))
+		self.steering_log.append((keys, time.time()))
 
 	def __del__(self):
 		if self.steering is not None:
 			self.socket.close()
 		if self.dump is True:
-			with open('../data_intake/{}/steering.json'.format(self.intake_name), 'w') as f:
+			with open(os.path.join(self.intake_path,'steering.json'), 'w') as f:
 				f.write(json.dumps(self.steering_log))
 
 
@@ -105,16 +105,17 @@ class MainApp(QWidget):
 				dump_steering=None
 				):
 		QWidget.__init__(self)
-		self.intake_name = intake_name
-		if intake_name is not None:
-			self.intake_path = '../data_intake2/{}'.format(intake_name)
+		self.intake_name = intake_name[0]
+		self.main_dump_folder = '../../data_intake2'
+		if self.intake_name:
+			self.intake_path = os.path.join(self.dump_folder, self.intake_name)
 			if not os.path.exists(self.intake_path):
 				os.makedirs(self.intake_path)
 		self.video_size = QSize(320, 240)
 		self.steering = steering
 		self.video = video
 		if self.steering:
-			self.setup_steering(intake_name=self.intake_name, dump=dump_steering, turn_on=self.steering)
+			self.setup_steering(intake_path=self.intake_path, dump=dump_steering, turn_on=self.steering)
 		if self.video:
 			self.setup_camera(dump=dump_video, turn_on=self.video)
 		self.setup_ui()
@@ -160,17 +161,18 @@ class MainApp(QWidget):
 		self.get_camera.start()
 
 	def handle_camera(self):
-		#if self.video:
-		self.display_video_stream()
-		#if self.dump_video:
-		#	self.save_video_stream()
+		if self.video:
+			self.display_video_stream()
+		if self.dump_video:
+			self.save_video_stream()
 
 	def add_image(self, frame):
 		self.frame = frame
 
 	def save_video_stream(self):
-		cv2.imwrite('../data_intake/{}/frame{:>05}_{}.jpg'.format(self.intake_name, self.frame_number, time.time()),
-					self.frame)
+		picname = 'frame{:>05}_{}.jpg'.format(self.frame_number, time.time())
+		picpath = os.path.join(self.dump_folder, self.intake_name, picname)
+		cv2.imwrite(picpath, self.frame)
 		self.frame_number += 1
 
 	def display_video_stream(self):
@@ -194,8 +196,8 @@ if __name__ == "__main__":
 						help='video on')
 	parser.add_argument('-s', dest='steering', action='store_true',
 						help='steering on')
-	parser.add_argument('--dump_video', dest='dump_video', action='store_false', help='if folder is given, dump video')
-	parser.add_argument('--dump_steering', dest='dump_steering', action='store_false',
+	parser.add_argument('--dump_video', dest='dump_video', action='store_true', help='if folder is given, dump video')
+	parser.add_argument('--dump_steering', dest='dump_steering', action='store_true',
 						help='if folder is given, dump video')
 	parser.add_argument('folder', metavar='folder', type=str, nargs=argparse.REMAINDER, default=None,
 						help='where to store data dump')
