@@ -15,6 +15,8 @@ import time
 import socket
 
 
+from dataset_creation import dump_dataframe
+
 class SetSteering(QThread):
 	def __init__(self, app, intake_path=None, dump=True, turn_on=True):
 		self.intake_path = intake_path
@@ -44,14 +46,17 @@ class SetSteering(QThread):
 	def send(self, keys):
 		signal = self.signal_to_string(keys)
 		self.socket.send(signal.encode())
-		self.steering_log.append((keys, time.time()))
+		self.steering_log.append((dict(keys), time.time()))
+
+	def dump_log(self):
+		if self.dump is True:
+			with open(os.path.join(self.intake_path,'steering.json'), 'w') as f:
+				f.write(json.dumps(self.steering_log))
 
 	def __del__(self):
 		if self.steering is not None:
 			self.socket.close()
-		if self.dump is True:
-			with open(os.path.join(self.intake_path,'steering.json'), 'w') as f:
-				f.write(json.dumps(self.steering_log))
+
 
 
 class GetCameraImage(QThread):
@@ -105,10 +110,11 @@ class MainApp(QWidget):
 				dump_steering=None
 				):
 		QWidget.__init__(self)
-		self.intake_name = intake_name[0]
 		self.main_dump_folder = '../../data_intake2'
+		self.intake_name = intake_name[0] if intake_name else None
+		self.intake_path = None
 		if self.intake_name:
-			self.intake_path = os.path.join(self.dump_folder, self.intake_name)
+			self.intake_path = os.path.join(self.main_dump_folder, self.intake_name)
 			if not os.path.exists(self.intake_path):
 				os.makedirs(self.intake_path)
 		self.video_size = QSize(320, 240)
@@ -121,7 +127,10 @@ class MainApp(QWidget):
 		self.setup_ui()
 
 	def close(self):
-		del self.set_steering
+		self.set_steering.dump_log()
+		if self.intake_name:
+			dump_dataframe(self.intake_path)
+		self.exit()
 
 	def setup_steering(self, **kwargs):
 		self.keys = {65: False, 83: False, 68: False, 87: False}  # asdw
@@ -171,7 +180,7 @@ class MainApp(QWidget):
 
 	def save_video_stream(self):
 		picname = 'frame{:>05}_{}.jpg'.format(self.frame_number, time.time())
-		picpath = os.path.join(self.dump_folder, self.intake_name, picname)
+		picpath = os.path.join(self.intake_path, picname)
 		cv2.imwrite(picpath, self.frame)
 		self.frame_number += 1
 
