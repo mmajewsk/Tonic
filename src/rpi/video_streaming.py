@@ -22,8 +22,8 @@ binary_stream = connection.makefile('rb')
 
 with picamera.PiCamera() as camera:
     camera.resolution = (320, 240)
-    camera.framerate = 10
-    camera.color_effects = (128, 128)
+    camera.framerate = 15
+    #camera.color_effects = (128, 128)
     time.sleep(2)
     start = time.time()
     stream = io.BytesIO()
