@@ -4,15 +4,14 @@ import numpy as np
 stop_cascade = cv2.CascadeClassifier('cascade_xml/stop_sign.xml')
 
 def detect_stop(frame):
-	#@TODO this is not working
-	gray = cv2.imdecode(np.fromstring(frame, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
+	gray = cv2.cvtColor(frame.astype(np.uint8), cv2.COLOR_RGB2GRAY)
 	v = 0
 	threshold = 150
 	cascade_obj = stop_cascade.detectMultiScale(
 		gray,
 		scaleFactor=1.1,
 		minNeighbors=5,
-		minSize=(30, 30),
+		minSize=(20, 20),
 		flags=0
 	)
 	for (x_pos, y_pos, width, height) in cascade_obj:
@@ -24,5 +23,5 @@ def detect_stop(frame):
 	return frame
 
 vision_layers = {
-	"stop_light": detect_stop,
+	"stop_sign": detect_stop,
 }
