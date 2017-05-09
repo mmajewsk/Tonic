@@ -42,7 +42,7 @@ class MainApp(QWidget):
 			self.setup_steering(server_adress=self.steering_server_adress, intake_path=self.intake_path, dump=dump_steering, turn_on=self.steering)
 		if self.video:
 			self.setup_camera(dump=dump_video, turn_on=self.video)
-		self.vision_options = {'stop_light':True}
+		self.vision_options = {'stop_sign':True}
 		self.setup_ui()
 
 	def close(self):
@@ -101,7 +101,9 @@ class MainApp(QWidget):
 	def save_video_stream(self):
 		picname = 'frame{:>05}_{}.jpg'.format(self.frame_number, time.time())
 		picpath = os.path.join(self.intake_path, picname)
-		cv2.imwrite(picpath, self.frame)
+		if self.frame.shape[0]>20:
+			frame = cv2.cvtColor(self.frame, cv2.COLOR_RGB2BGR)
+			cv2.imwrite(picpath, frame)
 		self.frame_number += 1
 
 	def additional_visuals(self, frame):
