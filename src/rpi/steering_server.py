@@ -20,8 +20,8 @@ connection, adress = server.accept()
 
 start = time.time()
 
-steer = dict(velocity=40, frequency=50, high=100)
-thrust = dict(velocity=15, frequency=50, high=100)
+steer = dict(velocity=30, frequency=50, high=100)
+thrust = dict(velocity=12, frequency=50, high=100)
 steering_thread = SteeringTranslator(steer=steer, thrust=thrust, time_delay=0.05)
 
 while True:
