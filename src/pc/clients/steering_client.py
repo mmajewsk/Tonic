@@ -5,7 +5,8 @@ import os
 import json
 
 class SetSteering(QThread):
-
+	to_letters_dict = {87:'w', 83:'s', 68:'d', 65:'a'}
+	to_numbers_dict = {'w':87, 's':83, 'd':68, 'a':65}
 	@staticmethod
 	def key_events():
 		return {65: False, 83: False, 68: False, 87: False}
@@ -21,7 +22,6 @@ class SetSteering(QThread):
 		self.socket = socket.socket()
 		self.socket.connect(server_adress)
 		self.steering_log = []
-		self.to_letters_dict = {87:'w', 83:'s', 68:'d', 65:'a'}
 		self.steering = turn_on
 		if self.steering:
 			self.timer2 = QTimer()

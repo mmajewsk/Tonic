@@ -15,8 +15,8 @@ from clients.video_client import QTVideoClient
 from clients.steering_client import SetSteering
 from dataset import dump_dataframe
 
-from vision import vision_layers
-
+from logic import vision_layers
+from logic import logic_layers
 
 class MainApp(QWidget):
 	def __init__(self,
@@ -42,7 +42,8 @@ class MainApp(QWidget):
 			self.setup_steering(server_adress=self.steering_server_adress, intake_path=self.intake_path, dump=dump_steering, turn_on=self.steering)
 		if self.video:
 			self.setup_camera(dump=dump_video, turn_on=self.video)
-		self.vision_options = {'stop_sign':True}
+		pipeline_dict = {'stop_sign': True, }
+		self.setup_logic_pipeline(pipeline_dict)
 		self.setup_ui()
 
 	def close(self):
@@ -50,6 +51,13 @@ class MainApp(QWidget):
 		if self.intake_name:
 			dump_dataframe(self.intake_path)
 		self.exit()
+
+	def setup_logic_pipeline(self, pipeline_dict):
+		self.pipeline = logic_layers
+
+
+
+
 
 	def setup_steering(self, **kwargs):
 		self.keys = SetSteering.key_events()
@@ -106,15 +114,14 @@ class MainApp(QWidget):
 			cv2.imwrite(picpath, frame)
 		self.frame_number += 1
 
-	def additional_visuals(self, frame):
-		for func, apply_func in self.vision_options.items():
-			if apply_func:
-				frame = vision_layers[func](frame)
-		return frame
+	def apply_logic_pipeline(self, frame, keys):
+		for layer in self.logic_pipeline:
+			frame, keys = layer.action(frame, keys)
+		return frame, keys
 
 	def display_video_stream(self):
 		frame = self.frame
-		frame = self.additional_visuals(frame)
+		frame, self.keys = self.apply_logic_pipeline(frame, self.keys)
 		image = QImage(frame, frame.shape[1], frame.shape[0],
 					   frame.strides[0], QImage.Format_RGB888)
 		self.image_label.setPixmap(QPixmap.fromImage(image))
