@@ -1,3 +1,4 @@
+import argparse
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -9,7 +10,7 @@ import time, datetime
 
 class MainApp(QWidget):
 
-	def __init__(self, data_path):
+	def __init__(self, data_path, steering_file):
 		QWidget.__init__(self)
 		self.data_path = data_path
 		self.dirlist = os.listdir(self.data_path)
@@ -22,6 +23,7 @@ class MainApp(QWidget):
 		self.frame_list=[]
 		self.frames = {}
 		self.draw_border = 5
+		self.steering_file = steering_file
 		self.coord_draw = {
 			'a': (self.draw_border, self.video_size.height()//2),
 			'd': (self.video_size.width()-self.draw_border, self.video_size.height() // 2),
@@ -65,7 +67,7 @@ class MainApp(QWidget):
 		self.frames = self.to_common_datatype(self.data)
 
 	def load_new_dir(self):
-		dir_steering_path = os.path.join(self.current_dir,'steering_v1.csv')
+		dir_steering_path = os.path.join(self.current_dir,self.steering_file)
 		self.data = pd.read_csv(dir_steering_path)
 		self.create_frames()
 		self.slider.setMaximum(max(list(self.frames.keys())))
@@ -117,8 +119,14 @@ class MainApp(QWidget):
 
 
 if __name__ == "__main__":
+	parser = argparse.ArgumentParser(description='View the data')
+	parser.add_argument('folder', type=str)
+	parser.add_argument('--steering_file', metavar='steering_file', type=str, default='steering_v1.csv',
+						help='name of the file to use to reconstruct the steering signal')
+
+	args = parser.parse_args()
 	app = QApplication(sys.argv)
-	win = MainApp(sys.argv[1])
+	win = MainApp(args.folder, args.steering_file)
 	win.show()
 	sys.exit(app.exec_())
 
