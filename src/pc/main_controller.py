@@ -110,9 +110,10 @@ class MainApp(QWidget):
 		self.frame_number += 1
 
 	def apply_logic_pipeline(self, frame, keys):
-		for layer_name, layer in self.pipeline.items():
-			frame, kwrgs = layer.action(frame=frame, keys=keys)
-			keys = kwrgs['keys']
+		if frame.shape[0]>20:
+			for layer_name, layer in self.pipeline.items():
+				frame, kwrgs = layer.action(frame=frame, keys=keys)
+				keys = kwrgs['keys']
 		return frame, keys
 
 	def display_video_stream(self):

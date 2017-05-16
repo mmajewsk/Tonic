@@ -44,15 +44,15 @@ class OpencvAI(AI, Action):
 		resp[resp<0] = 0
 		return np.bool(resp)
 
-	def action(self, img, keys, **kwargs):
+	def action(self, frame, keys, **kwargs):
 		if True in keys.values():
-			return img, keys
+			return frame, keys
 		else:
-			new_keys = self.get_action(img)
+			new_keys = self.get_action(frame)
 			response = {}
 			for letter, value in self.key_sequence, new_keys:
 				response[SteeringClient.to_letters_dict[letter]] = value
-			return img, response
+			return frame, response
 
 
 
