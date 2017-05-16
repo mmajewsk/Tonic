@@ -15,7 +15,6 @@ from clients.video_client import QTVideoClient
 from clients.steering_client import SetSteering
 from dataset import dump_dataframe
 
-from logic import vision_layers
 from logic import logic_layers
 
 class MainApp(QWidget):
@@ -43,7 +42,7 @@ class MainApp(QWidget):
 		if self.video:
 			self.setup_camera(dump=dump_video, turn_on=self.video)
 		pipeline_dict = {'stop_sign': True, }
-		self.setup_logic_pipeline(pipeline_dict)
+		self.setup_logic_pipeline()
 		self.setup_ui()
 
 	def close(self):
@@ -52,7 +51,7 @@ class MainApp(QWidget):
 			dump_dataframe(self.intake_path)
 		self.exit()
 
-	def setup_logic_pipeline(self, pipeline_dict):
+	def setup_logic_pipeline(self):
 		self.pipeline = logic_layers
 
 
@@ -115,8 +114,9 @@ class MainApp(QWidget):
 		self.frame_number += 1
 
 	def apply_logic_pipeline(self, frame, keys):
-		for layer in self.logic_pipeline:
-			frame, keys = layer.action(frame, keys)
+		for layer_name, layer in self.pipeline.items():
+			frame, kwrgs = layer.action(frame=frame, keys=keys)
+			keys = kwrgs['keys']
 		return frame, keys
 
 	def display_video_stream(self):

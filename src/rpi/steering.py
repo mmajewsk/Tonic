@@ -87,7 +87,7 @@ class SteeringDriver(Steering):
 		self.motor_a.set_values(val, self.motor_a.LOW, self.motor_a.HIGH)
 
 	def stop_car(self, val=None):
-		self.motor_a.set_values(0, self.motor_a.HIGH, self.motor_a.HIGH)
+		self.motor_a.set_values(30, self.motor_a.HIGH, self.motor_a.HIGH)
 
 	def wheel_straight(self, val=None):
 		self.motor_b.set_values(val, self.motor_b.LOW, self.motor_b.LOW)

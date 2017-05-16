@@ -1,5 +1,7 @@
-from vision import StopDetector
-from ai import OpencvAI
+from logic.vision import StopDetector
+from logic.AI import OpencvAI, AI
+from logic.action import Action
+
 __all__ = ['AI','OpencvAI','Action', 'StopDetector']
 
 
