@@ -56,6 +56,7 @@ class MainApp(QWidget):
 
 	def setup_steering(self, **kwargs):
 		self.keys = SteeringClient.key_events()
+		self.keys[17] = False
 		self.thread_steering = QThread()
 		self.set_steering = SteeringClient(self, **kwargs)
 		self.set_steering.moveToThread(self.thread_steering)
@@ -117,18 +118,18 @@ class MainApp(QWidget):
 		return frame, keys
 
 	def display_video_stream(self):
-		frame = self.frame
+		frame = self.frame.copy()
 		frame, self.keys = self.apply_logic_pipeline(frame, self.keys)
 		image = QImage(frame, frame.shape[1], frame.shape[0],
 					   frame.strides[0], QImage.Format_RGB888)
 		self.image_label.setPixmap(QPixmap.fromImage(image))
 
 	def keyPressEvent(self, event):
-		if event.key() in [Qt.Key_W, Qt.Key_S, Qt.Key_A, Qt.Key_D]:
+		if event.key() in [Qt.Key_W, Qt.Key_S, Qt.Key_A, Qt.Key_D, Qt.Key_Control]:
 			self.keys[event.key()] = True
 
 	def keyReleaseEvent(self, event):
-		if event.key() in [Qt.Key_W, Qt.Key_S, Qt.Key_A, Qt.Key_D]:
+		if event.key() in [Qt.Key_W, Qt.Key_S, Qt.Key_A, Qt.Key_D, Qt.Key_Control]:
 			self.keys[event.key()] = False
 
 

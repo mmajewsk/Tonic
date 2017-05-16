@@ -40,7 +40,7 @@ class SteeringClient(QThread):
 
 	def signal_to_string(self, signal):
 		rval = " "
-		for key in signal:
+		for key in self.key_events():
 			if signal[key]:
 				rval += self.to_letters_dict[key]
 		return rval

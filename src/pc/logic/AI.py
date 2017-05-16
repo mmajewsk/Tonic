@@ -34,7 +34,8 @@ class OpencvAI(AI, Action):
 	def prepare_input(self, img):
 		img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 		img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
-		input = img[:, :, 1].flatten()
+		input = img[:, :].flatten()
+		input = np.float32(np.reshape(input,newshape=(1,19200)))
 		return input
 
 	def translate(self, prediction):
@@ -42,17 +43,21 @@ class OpencvAI(AI, Action):
 		resp = resp[0]
 		resp[resp>0] = 1
 		resp[resp<0] = 0
-		return np.bool(resp)
+		return resp.astype(bool)
 
 	def action(self, frame, keys, **kwargs):
-		if True in keys.values():
-			return frame, keys
+		if keys[17]:
+			kwargs['keys']=keys
+			return frame, kwargs
 		else:
 			new_keys = self.get_action(frame)
+			#print(new_keys)
 			response = {}
-			for letter, value in self.key_sequence, new_keys:
-				response[SteeringClient.to_letters_dict[letter]] = value
-			return frame, response
+			for letter, value in zip(self.key_sequence, new_keys):
+				response[SteeringClient.to_numbers_dict[letter]] = value
+			response[17]=False
+			kwargs['keys'] = response
+			return frame, kwargs
 
 
 
