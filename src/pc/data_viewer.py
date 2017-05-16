@@ -7,6 +7,9 @@ import os, sys
 import pandas as pd
 import json
 import time, datetime
+from logic import SignalPainter
+import cv2
+from clients import SteeringClient
 
 class MainApp(QWidget):
 
@@ -20,16 +23,16 @@ class MainApp(QWidget):
 		self._current_dir = os.path.join(self.data_path, '')
 		self.steering_hist = ''
 		self.pic_list = []
-		self.frame_list=[]
-		self.frames = {}
+		self.signal_list=[]
+		self.signal = {}
 		self.draw_border = 5
 		self.steering_file = steering_file
-		self.coord_draw = {
-			'a': (self.draw_border, self.video_size.height()//2),
-			'd': (self.video_size.width()-self.draw_border, self.video_size.height() // 2),
-			'w': (self.video_size.width()//2, self.draw_border),
-			's': (self.video_size.width()//2, self.video_size.height()-self.draw_border),
-		}
+		self.signal_painter = SignalPainter(
+			video_size= (320, 240),
+			draw_border=self.draw_border,
+			letters='wsad',
+		)
+
 
 	@property
 	def current_dir(self):
@@ -39,51 +42,48 @@ class MainApp(QWidget):
 	def current_dir(self, newdir):
 		self._current_dir = os.path.join(self.data_path, newdir.text())
 
-	def draw_signals(self, frame, image):
-		self.painter.begin(image)
-		self.painter.setPen(Qt.red)
-		self.painter.setBrush(QBrush(Qt.red))
-		for	signal in "wsad":
-			if frame[signal]:
-				x,y = self.coord_draw[signal]
-				self.painter.drawEllipse(x,y, 10, 10)
-		self.painter.end()
-		return image
+	def draw_keys(self, *args, **kwargs):
+		img, kwrgs = self.signal_painter.action(*args, **kwargs)
+		return img
 
-	def load_frame(self, frame_number):
-		frame = self.frames[frame_number]
-		image = QImage(os.path.join(self.current_dir, frame['filenames']))
-		image = self.draw_signals(frame, image)
+	def load_signal(self, signal_number):
+		signal = self.signal[signal_number]
+		picpath = os.path.join(self.current_dir, signal['filenames'])
+		frame = cv2.imread(picpath)
+		frame = self.draw_keys(frame, keys=signal['keys'])
+		image = QImage(frame, frame.shape[1], frame.shape[0],
+					   frame.strides[0], QImage.Format_RGB888)
 		self.image_label.setPixmap(QPixmap.fromImage(image))
 
 	@staticmethod
 	def to_common_datatype(df):
-		frames = {}
+		signal = {}
 		for i, (index , data) in enumerate(df.to_dict('index').items()):
-			frames[i] = dict(date=datetime.datetime.fromtimestamp(index), **data)
-		return frames
+			keys = {k:data[k] for k in 'wsad'}
+			signal[i] = dict(date=datetime.datetime.fromtimestamp(index), keys=keys, **data)
+		return signal
 
-	def create_frames(self):
-		self.frames = self.to_common_datatype(self.data)
+	def create_signal(self):
+		self.signal = self.to_common_datatype(self.data)
 
 	def load_new_dir(self):
 		dir_steering_path = os.path.join(self.current_dir,self.steering_file)
 		self.data = pd.read_csv(dir_steering_path)
-		self.create_frames()
-		self.slider.setMaximum(max(list(self.frames.keys())))
-		self.load_frame(0)
+		self.create_signal()
+		self.slider.setMaximum(max(list(self.signal.keys())))
+		self.load_signal(0)
 
 	def on_dir_change(self, curr, prev):
 		self.current_dir = curr
 		self.load_new_dir()
 
-	def change_frame(self, frame_number):
-		self.load_frame(frame_number)
-		frame = self.frames[frame_number]
-		t = frame['date']
+	def change_signal(self, signal_number):
+		self.load_signal(signal_number)
+		signal = self.signal[signal_number]
+		t = signal['date']
 		tim = t.strftime("%H:%M:%S.%f")
-		signal = "".join([k if frame[k]==True else '' for k in "wsad"])
-		self.image_data.setText("Number:{} Time:{} \n Signal:{}".format(frame_number, tim, signal))
+		signal = "".join([k if signal[k]==True else '' for k in "wsad"])
+		self.image_data.setText("Number:{} Time:{} \n Signal:{}".format(signal_number, tim, signal))
 
 	def setup_ui(self):
 		self.image_label = QLabel()
@@ -100,7 +100,7 @@ class MainApp(QWidget):
 		self.slider.setMinimum(0)
 		self.slider.setTickInterval(1)
 		self.slider.setMaximum(1)
-		self.slider.valueChanged.connect(self.change_frame)
+		self.slider.valueChanged.connect(self.change_signal)
 		self.image_layout.addWidget(self.slider)
 		self.main_layout.addLayout(self.image_layout)
 		self.file_list = QListWidget()
@@ -113,8 +113,8 @@ class MainApp(QWidget):
 		self.setLayout(self.main_layout)
 
 	def display_video_stream(self):
-		frame = self.frame
-		image = QImage(frame, frame.shape[1], frame.shape[0], frame.strides[0], QImage.Format_RGB888)
+		signal = self.signal
+		image = QImage(signal, signal.shape[1], signal.shape[0], signal.strides[0], QImage.Format_RGB888)
 		self.image_label.setPixmap(QPixmap.fromImage(image))
 
 

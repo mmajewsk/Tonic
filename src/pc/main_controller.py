@@ -12,7 +12,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from clients.video_client import QTVideoClient
-from clients.steering_client import SetSteering
+from clients.steering_client import SteeringClient
 from dataset import dump_dataframe
 
 from logic import logic_layers
@@ -54,14 +54,10 @@ class MainApp(QWidget):
 	def setup_logic_pipeline(self):
 		self.pipeline = logic_layers
 
-
-
-
-
 	def setup_steering(self, **kwargs):
-		self.keys = SetSteering.key_events()
+		self.keys = SteeringClient.key_events()
 		self.thread_steering = QThread()
-		self.set_steering = SetSteering(self, **kwargs)
+		self.set_steering = SteeringClient(self, **kwargs)
 		self.set_steering.moveToThread(self.thread_steering)
 
 	def setup_ui(self):

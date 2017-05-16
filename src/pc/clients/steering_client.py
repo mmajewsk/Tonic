@@ -4,12 +4,19 @@ import time
 import os
 import json
 
-class SetSteering(QThread):
+class SteeringClient(QThread):
 	to_letters_dict = {87:'w', 83:'s', 68:'d', 65:'a'}
 	to_numbers_dict = {'w':87, 's':83, 'd':68, 'a':65}
+	wsad_int = [87, 83, 65, 68]
+
+
 	@staticmethod
 	def key_events():
 		return {65: False, 83: False, 68: False, 87: False}
+
+	@staticmethod
+	def letter_to_numbers(d):
+		return {SteeringClient.to_numbers_dict[k]: v for k, v in d.items()}
 
 	def __init__(self, app, server_adress, intake_path=None, dump=True, turn_on=True, verbose=True):
 		self.intake_path = intake_path

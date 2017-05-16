@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from logic.action import Action
+from clients import SteeringClient
 
 class StopDetector(Action):
 	def __init__(self, classifier_path):
@@ -25,4 +26,32 @@ class StopDetector(Action):
 
 		return frame, kwargs
 
+class SignalPainter(Action):
+	def __init__(self, video_size, draw_border, letters="wsad", radius=5, color_bgr=(255, 0, 0)):
+		self.letters = letters
+		self.color = color_bgr
+		self.thickness = -1
+		self.radius = radius
+		self.draw_border = draw_border
+		self.video_w, self.video_h = video_size
+		coord_draw = {
+			'a': (self.draw_border, self.video_h//2),
+			'd': (self.video_w-self.draw_border, self.video_h // 2),
+			'w': (self.video_w//2, self.draw_border),
+			's': (self.video_w//2, self.video_h-self.draw_border),
+		}
+		if letters != 'wsad':
+			self.coord_draw = {l: coord_draw[l_wsad] for l_wsad, l in zip('wsad', letters)}
+		else:
+			self.coord_draw = coord_draw
 
+
+
+	def action(self, frame, keys, **kwrgs):
+		for	letter in self.letters:
+			print
+			if keys[letter]:
+				x, y = self.coord_draw[letter]
+				frame = cv2.circle(frame, (x, y), self.radius, self.color, self.thickness)
+		kwrgs['keys'] = keys
+		return frame, kwrgs

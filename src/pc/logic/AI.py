@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import cv2
-from clients.steering_client import SetSteering
+from clients.steering_client import SteeringClient
 import numpy as np
 from logic.action import Action
 
@@ -51,7 +51,7 @@ class OpencvAI(AI, Action):
 			new_keys = self.get_action(img)
 			response = {}
 			for letter, value in self.key_sequence, new_keys:
-				response[SetSteering.to_letters_dict[letter]] = value
+				response[SteeringClient.to_letters_dict[letter]] = value
 			return img, response
 
 
