@@ -6,6 +6,7 @@ import pandas as pd
 import os
 
 DATA_DIR = r'C:\Users\hawker\Dropbox\Public\data_intake'
+# DATA_DIR = 'C:/users/Wojtek/Dropbox/data_intake/'
 
 
 def load_data(train_folder):
