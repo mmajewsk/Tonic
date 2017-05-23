@@ -7,7 +7,7 @@ import os
 
 logic_layers = {
 	"stop_sign": StopDetector('cascade_xml/stop_sign.xml'),
-	"ai": OpencvAI(r"C:\Users\hawker\Dropbox\Public\data_intake\ann.xml"),
+	#"ai": OpencvAI(r"C:\Users\hawker\Dropbox\Public\data_intake\ann.xml"),
 	"signal_painter": SignalPainter(
 		video_size=(320, 240),
 		draw_border=5,
