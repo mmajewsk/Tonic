@@ -5,34 +5,24 @@ import socket
 from abc import ABCMeta, abstractmethod
 import multiprocessing
 import time
+from clients import Client
 
-class VideoClient:
+class VideoClient(Client):
 	__metaclass__ =ABCMeta
 
-	def __init__(self, server_adress=('192.168.1.212',2201), connect=False):
-		self.client_socket = None
-		self.binary_stream = None
-		self.client_socket = None
-		self.server_adress = server_adress
-		if connect:
-			self.connect()
-		# host = 'masterday.hopto.org'
+	def __init__(self, server_adress=('192.168.1.239',2201), connect=False):
+		super(VideoClient, self).__init__(server_adress, connect)
 
 	def connect(self):
-		self.client_socket = socket.socket()
-		self.client_socket.connect(self.server_adress)
+		super(VideoClient, self).connect()
 		self.binary_stream = self.client_socket.makefile('rb')
 		self.payload = b' '
 
 	def preprocess_image(self, img):
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-		img = cv2.flip(img, 1)
-		img = cv2.flip(img, 0)
+		#img = cv2.flip(img, 0)
+		#img = cv2.flip(img, 1)
 		return img
-
-	@abstractmethod
-	def return_data(self, frame):
-		pass
 
 	def run(self):
 		broadcast = True
@@ -55,8 +45,7 @@ class VideoClient:
 	def __del__(self):
 		if self.binary_stream is not None:
 			self.binary_stream.close()
-		if self.client_socket is not None:
-			self.client_socket.close()
+		super(VideoClient, self).__del__()
 
 class QTVideoClient(VideoClient, QThread):
 	image_downloaded = pyqtSignal(np.ndarray)
