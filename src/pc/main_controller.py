@@ -29,7 +29,8 @@ class MainApp(QWidget):
 		self.main_dump_folder = '../../data_intake2'
 		self.intake_name = intake_name[0] if intake_name else None
 		self.intake_path = None
-		self.steering_server_adress = ('192.168.1.212',2203)
+		self.steering_server_adress = ('192.168.1.239	',2203)
+		self.keys = SteeringClient.key_events()
 		if self.intake_name:
 			self.intake_path = os.path.join(self.main_dump_folder, self.intake_name)
 			if not os.path.exists(self.intake_path):
@@ -55,7 +56,6 @@ class MainApp(QWidget):
 		self.pipeline = logic_layers
 
 	def setup_steering(self, **kwargs):
-		self.keys = SteeringClient.key_events()
 		self.keys[17] = False
 		self.thread_steering = QThread()
 		self.set_steering = SteeringClient(self, **kwargs)

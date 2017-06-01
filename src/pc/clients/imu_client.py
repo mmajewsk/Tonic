@@ -54,7 +54,7 @@ class ImuWorker:
 
 if __name__=='__main__':
 	server_adress = ('192.168.1.239', 2204)
-	w = ImuWorker(server_adress=server_adress)
+	w = ImuWorker(server_adress=server_adress, dt=0.5)
 	while True:
 		print(w.read())
 		print("----")
