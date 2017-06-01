@@ -1,7 +1,7 @@
 import argparse
-from main_controller import QApplication,MainApp
+from views import QApplication,MainApp
 import sys
-from main_controller import Controller
+from controllers import Controller
 from clients import QTVideoClient, QTSteeringClient
 
 if __name__ == "__main__":
@@ -36,4 +36,6 @@ if __name__ == "__main__":
 							)
 	win = MainApp(controller)
 	win.show()
+	map_controller = MapController()
+	win2 = MainApp(win)
 	sys.exit(app.exec_())
