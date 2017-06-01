@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import cv2
-from clients.steering_client import SteeringClient
+from clients.steering_client import QTSteeringClient
 import numpy as np
 from logic.action import Action
 
@@ -63,7 +63,7 @@ class OpencvAI(AI, Action):
 			# print(new_keys)
 			response = {}
 			for letter, value in zip(self.key_sequence, new_keys):
-				response[SteeringClient.to_numbers_dict[letter]] = value
+				response[QTSteeringClient.to_numbers_dict[letter]] = value
 			response[17] = False
 			kwargs['keys'] = response
 			return frame, kwargs

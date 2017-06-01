@@ -9,7 +9,7 @@ import json
 import time, datetime
 from logic import SignalPainter
 import cv2
-from clients import SteeringClient
+from clients import QTSteeringClient
 
 class MainApp(QWidget):
 

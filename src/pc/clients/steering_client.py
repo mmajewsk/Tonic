@@ -4,7 +4,7 @@ import time
 import os
 import json
 
-class SteeringClient(QThread):
+class QTSteeringClient(QThread):
 	to_letters_dict = {87:'w', 83:'s', 68:'d', 65:'a'}
 	to_numbers_dict = {'w':87, 's':83, 'd':68, 'a':65}
 	wsad_int = [87, 83, 65, 68]
@@ -16,12 +16,10 @@ class SteeringClient(QThread):
 
 	@staticmethod
 	def letter_to_numbers(d):
-		return {SteeringClient.to_numbers_dict[k]: v for k, v in d.items()}
+		return {QTSteeringClient.to_numbers_dict[k]: v for k, v in d.items()}
 
-	def __init__(self, app, server_adress, intake_path=None, dump=True, turn_on=True, verbose=True):
-		self.intake_path = intake_path
-		self.dump = dump
-		self.app = app
+	def __init__(self, server_adress, verbose=True):
+		self.controller = None
 		QThread.__init__(self)
 		self.server_adress = server_adress
 		if verbose:
@@ -29,14 +27,15 @@ class SteeringClient(QThread):
 		self.socket = socket.socket()
 		self.socket.connect(server_adress)
 		self.steering_log = []
-		self.steering = turn_on
-		if self.steering:
-			self.timer2 = QTimer()
-			self.timer2.timeout.connect(self.ask_keys)
-			self.timer2.start(28)
+
+	def connect_controller(self, controller):
+		self.controller = controller
+		self.timer2 = QTimer()
+		self.timer2.timeout.connect(self.ask_keys)
+		self.timer2.start(28)
 
 	def ask_keys(self):
-		self.send(self.app.keys)
+		self.send(self.controller.keys)
 
 	def signal_to_string(self, signal):
 		rval = " "
@@ -50,13 +49,12 @@ class SteeringClient(QThread):
 		self.socket.send(signal.encode())
 		self.steering_log.append((dict(keys), time.time()))
 
-	def dump_log(self):
+	def dump_log(self, dumpath):
 		if self.dump is True:
-			with open(os.path.join(self.intake_path,'steering.json'), 'w') as f:
+			with open(os.path.join(dumpath,'steering.json'), 'w') as f:
 				f.write(json.dumps(self.steering_log))
 
 	def __del__(self):
-		if self.steering is not None:
-			self.socket.close()
+		self.socket.close()
 
 

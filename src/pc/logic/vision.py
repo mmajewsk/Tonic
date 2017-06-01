@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 from logic.action import Action
-from clients import SteeringClient
+from clients import QTSteeringClient
 
 class StopDetector(Action):
 	def __init__(self, classifier_path):
@@ -71,9 +71,10 @@ class SignalPainter(Action):
 
 
 	def action(self, frame, keys, **kwrgs):
-		for	letter in self.letters:
-			if keys[letter]:
-				x, y = self.coord_draw[letter]
-				frame = cv2.circle(frame, (x, y), self.radius, self.color, self.thickness)
+		if keys:
+			for	letter in self.letters:
+				if keys[letter]:
+					x, y = self.coord_draw[letter]
+					frame = cv2.circle(frame, (x, y), self.radius, self.color, self.thickness)
 		kwrgs['keys'] = keys
 		return frame, kwrgs

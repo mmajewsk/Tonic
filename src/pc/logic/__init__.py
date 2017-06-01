@@ -1,7 +1,7 @@
 from logic.vision import StopDetector, SignalPainter
 from logic.AI import OpencvAI, AI
 from logic.action import Action
-from clients import SteeringClient
+from clients import QTSteeringClient
 
 import os
 
@@ -11,7 +11,7 @@ logic_layers = {
 	"signal_painter": SignalPainter(
 		video_size=(320, 240),
 		draw_border=5,
-		letters=SteeringClient.wsad_int,
+		letters=QTSteeringClient.wsad_int,
 	)
 }
 

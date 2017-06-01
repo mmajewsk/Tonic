@@ -10,7 +10,13 @@ from clients import Client
 class VideoClient(Client):
 	__metaclass__ =ABCMeta
 
-	def __init__(self, server_adress=('192.168.1.239',2201), connect=False):
+	def __init__(
+			self,
+			server_adress=('192.168.1.239',2201),
+		 	video_size=(320, 240),
+		 	connect=False,
+		 	):
+		self.video_size=video_size
 		super(VideoClient, self).__init__(server_adress, connect)
 
 	def connect(self):
