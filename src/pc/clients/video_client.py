@@ -5,7 +5,7 @@ import socket
 from abc import ABCMeta, abstractmethod
 import multiprocessing
 import time
-from clients import Client
+from clients import Client, QTClient
 
 class VideoClient(Client):
 	__metaclass__ =ABCMeta
@@ -15,8 +15,10 @@ class VideoClient(Client):
 			server_adress=('192.168.1.239',2201),
 		 	video_size=(320, 240),
 		 	connect=False,
+			dt=0.1,
 		 	):
 		self.video_size=video_size
+		self.dt=dt
 		super(VideoClient, self).__init__(server_adress, connect)
 
 	def connect(self):
@@ -47,26 +49,19 @@ class VideoClient(Client):
 				#print('emitting {}'.format(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())))
 				self.return_data(frame)
 			# print('emitted{}'.format(time.time()))
+			time.sleep(self.dt)
 
 	def __del__(self):
 		if self.binary_stream is not None:
 			self.binary_stream.close()
 		super(VideoClient, self).__del__()
 
-class QTVideoClient(VideoClient, QThread):
-	image_downloaded = pyqtSignal(np.ndarray)
+
+class QTVideoClient(VideoClient, QTClient):
 	def __init__(self, *args, **kwargs):
-		QThread.__init__(self)
+		QTClient.__init__(self)
 		VideoClient.__init__(self, *args, **kwargs)
 
-	def __enter__(self):
-		self.connect()
-
-	def __exit__(self, type, value, traceback):
-		self.__del__()
-
-	def return_data(self, frame):
-		self.image_downloaded.emit(frame)
 
 
 class MultiVideoClient(VideoClient, multiprocessing.Process):

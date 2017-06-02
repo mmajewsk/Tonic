@@ -4,14 +4,15 @@ from abc import ABCMeta, abstractmethod
 import multiprocessing
 import time
 import json
-from clients import Client
+from clients import Client, QTClient
 import queue
 
 class ImuClient(Client):
 	__metaclass__ =ABCMeta
 
-	def __init__(self, server_adress=('192.168.1.239',2204), connect=False):
+	def __init__(self, server_adress=('192.168.1.239',2204), dt=0.1, connect=False):
 		super(ImuClient, self).__init__(server_adress, connect)
+		self.dt = dt
 
 	def run(self):
 		while True:
@@ -19,15 +20,15 @@ class ImuClient(Client):
 			data = self.client_socket.recv(1024).decode()
 			result = json.loads(data)
 			self.return_data(result)
+			time.sleep(self.dt)
 
 
 class MultiImuClient(ImuClient, multiprocessing.Process):
-	def __init__(self, task_queue, result_queue, dt=0.1, *args, **kwargs):
+	def __init__(self, task_queue, result_queue, *args, **kwargs):
 		multiprocessing.Process.__init__(self)
 		ImuClient.__init__(self, *args, **kwargs)
 		self.task_queue = task_queue
 		self.result_queue = result_queue
-		self.dt = dt
 
 	def run(self):
 		self.connect()
@@ -38,6 +39,12 @@ class MultiImuClient(ImuClient, multiprocessing.Process):
 		self.task_queue.task_done()
 		self.result_queue.put(frame)
 		time.sleep(self.dt)
+
+
+class QTImuClient(ImuClient, QTClient):
+	def __init__(self, *args, **kwargs):
+		QTClient.__init__(self)
+		ImuClient.__init__(self, *args, **kwargs)
 
 
 class ImuWorker:

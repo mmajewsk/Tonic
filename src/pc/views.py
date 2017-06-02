@@ -53,6 +53,7 @@ class MainApp(QWidget):
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.refresh_view)
 		self.timer.start(60)
+		print("dsada")
 		self.controller.connect_video()
 
 	def refresh_view(self):
@@ -82,4 +83,20 @@ class MapWindow(QWidget):
 		QWidget.__init__(self)
 		self.controller = controller
 
-	
+	def setup_ui(self):
+		"""Initialize widgets.
+		"""
+		self.image_label = QLabel()
+
+		self.main_layout = QVBoxLayout()
+		self.main_layout.addWidget(self.image_label)
+		self.setLayout(self.main_layout)
+
+	def refresh_view(self):
+		self.image_label.setText(self.controller.data)
+
+	def refresh(self):
+		self.timer = QTimer()
+		self.timer.timeout.connect(self.refresh_view)
+		self.timer.start(60)
+		self.controller.connect_imu()

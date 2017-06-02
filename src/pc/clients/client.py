@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod
 import socket
+from PyQt5.QtCore import QThread, pyqtSignal
+import numpy as np
 
 class Client:
 	__metaclass__ =ABCMeta
@@ -27,3 +29,18 @@ class Client:
 	def __del__(self):
 		if self.client_socket is not None:
 			self.client_socket.close()
+
+class QTClient(QThread):
+	__metaclass__ = ABCMeta
+	data_downloaded = pyqtSignal(np.ndarray)
+	def __init__(self):
+		QThread.__init__(self)
+
+	def __enter__(self):
+		self.connect()
+
+	def __exit__(self, type, value, traceback):
+		self.__del__()
+
+	def return_data(self, frame):
+		self.data_downloaded.emit(frame)
