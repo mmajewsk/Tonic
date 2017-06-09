@@ -75,7 +75,7 @@ class MainApp(QWidget):
 			self.keys[event.key()] = False
 
 	def close(self):
-		del self.controller
+		self.controller.close()
 		if self.children:
 			for child in self.children:
 				child.close()

@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import pandas as pd
 import os
@@ -21,11 +22,23 @@ class Imu:
 		self.gyr = data[3:6]
 		self.mag = data[6:]
 
-	@property
-	def data(self):
+	def _data(self):
 		self.list = [self.acc, self.gyr, self.mag]
 		return np.array(self.list).reshape((1,9))[0]
 
+	@property
+	def data(self):
+		return self._data()
+
+
+class ImuTimed(Imu):
+	def __init__(self, data:np.ndarray, t:float=None):
+		Imu.__init__(self, data)
+		self.time = time.time() if t==None else t
+
+	@property
+	def data(self):
+		return np.append(Imu._data(self), self.time)
 
 class ImuKeeper:
 	def __init__(
@@ -36,6 +49,7 @@ class ImuKeeper:
 				calib_size=20,
 				recalib_size=15,
 				dump_dir='',
+				dump_imu=False,
 				):
 		self.log_acc = []
 		self.log_gyr = []
@@ -57,7 +71,8 @@ class ImuKeeper:
 		self.last_recalib = True
 		self.dump_dir = dump_dir
 		self.dump_name = 'imu.csv'
-		self.dump_path = os.path.join(self.dump_dir, self.dump_name)
+		self.dump_path = os.path.join(self.dump_dir, self.dump_name) if self.dump_dir!= None else None
+		self.dump_imu = dump_imu
 
 	def log(self, imu):
 		self.log_acc.append(imu.acc)
@@ -123,7 +138,7 @@ class ImuKeeper:
 			self._create_calibrators()
 			data = self._process(data)
 		self.log(data)
-		self.raw_log(Imu(raw_data))
+		self.raw_log(ImuTimed(raw_data))
 		return data
 
 	def recalibrate(self):
@@ -131,15 +146,17 @@ class ImuKeeper:
 		self.calibrator_acc.level_out(calib_data)
 
 	def dump_logs(self):
-		log = np.array(self.log_all)
-		data={'acc_x':log[:,0],
-			  'acc_y':log[:,1],
-			  'acc_z':log[:,2],
-			  'gry_x':log[:,3],
-			  'gry_y':log[:,4],
-			  'gry_z':log[:,5],
-			  'mag_x':log[:,6],
-			  'mag_y':log[:,7],
-			  'mag_z':log[:,8]}
-		df = pd.DataFrame(data)
-		df.to_csv(self.dump_path)
+		if self.dump_path:
+			log = np.array(self.raw_log_all)
+			data={'acc_x':log[:,0],
+				  'acc_y':log[:,1],
+				  'acc_z':log[:,2],
+				  'gry_x':log[:,3],
+				  'gry_y':log[:,4],
+				  'gry_z':log[:,5],
+				  'mag_x':log[:,6],
+				  'mag_y':log[:,7],
+				  'mag_z':log[:,8],
+				  'time':log[:,9]}
+			df = pd.DataFrame(data)
+			df.to_csv(self.dump_path)

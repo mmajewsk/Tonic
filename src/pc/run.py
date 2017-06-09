@@ -14,9 +14,9 @@ if __name__ == "__main__":
 	parser.add_argument('-i', dest='imu', action='store_true',
 						help='imu on')
 	parser.add_argument('--dump_video', dest='dump_video', action='store_true', help='if folder is given, dump video')
-	parser.add_argument('--dump_steering', dest='dump_steering', action='store_true',
+	parser.add_argument('--dump_steering', dest='dump_steering', action='store_true', default=False,
 						help='if folder is given, dump video')
-	parser.add_argument('--dump_simu', dest='dump_imu', action='store_true',
+	parser.add_argument('--dump_imu', dest='dump_imu', action='store_true',
 						help='if folder is given, dump raw imu')
 	parser.add_argument('folder', metavar='folder', type=str, nargs=argparse.REMAINDER, default=None,
 						help='where to store data dump')
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 		steering_client = QTSteeringClient(server_adress=(server_ip, steering_port))
 	if args.imu:
 		imu_port = 2204
-		imu_client = QTImuClient(server_adress=(server_ip, steering_port))
+		imu_client = QTImuClient(server_adress=(server_ip, imu_port))
 	controller = Controller(video_client=video_client,
 							intake_name=args.folder,
 							steering_client=steering_client,

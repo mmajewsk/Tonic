@@ -50,9 +50,8 @@ class QTSteeringClient(QThread):
 		self.steering_log.append((dict(keys), time.time()))
 
 	def dump_log(self, dumpath):
-		if self.dump is True:
-			with open(os.path.join(dumpath,'steering.json'), 'w') as f:
-				f.write(json.dumps(self.steering_log))
+		with open(os.path.join(dumpath,'steering.json'), 'w') as f:
+			f.write(json.dumps(self.steering_log))
 
 	def __del__(self):
 		self.socket.close()

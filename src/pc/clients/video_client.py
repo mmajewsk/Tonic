@@ -15,7 +15,7 @@ class VideoClient(Client):
 			server_adress=('192.168.1.239',2201),
 		 	video_size=(320, 240),
 		 	connect=False,
-			dt=0.1,
+			dt=None,
 		 	):
 		self.video_size=video_size
 		self.dt=dt
@@ -49,7 +49,6 @@ class VideoClient(Client):
 				#print('emitting {}'.format(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())))
 				self.return_data(frame)
 			# print('emitted{}'.format(time.time()))
-			time.sleep(self.dt)
 
 	def __del__(self):
 		if self.binary_stream is not None:

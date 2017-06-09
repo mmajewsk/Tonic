@@ -18,9 +18,13 @@ def make_intake_path(intake_name):
 
 class BaseController:
 	def __init__(self, intake_name: str = None):
+		intake_name = intake_name[0] if intake_name else None
 		self.intake_name = intake_name
 		if self.intake_name:
 			self.intake_path = make_intake_path(intake_name)
+		else:
+			self.intake_path = None
+
 
 class Controller(BaseController):
 	def __init__(self,
@@ -31,7 +35,6 @@ class Controller(BaseController):
 				 dump_steering: bool = False):
 		BaseController.__init__(self, intake_name)
 		self.video_client = video_client
-		self.intake_name = intake_name[0] if intake_name else None
 		self.steering_client = steering_client
 		self.dump_video = dump_video
 		self.dump_steering = dump_steering
@@ -72,10 +75,9 @@ class Controller(BaseController):
 		self.video_client.moveToThread(self.thread_video)
 		self._frame_number = 0
 		self.video_client.start()
+		self._clean_frame = None
 
 	def add_image(self, frame):
-		if self.frame.shape[0]>10:
-			print("Image{}".format(np.sum(frame-self.frame)))
 		self._clean_frame = frame.copy()
 		frame, self._keys = self.apply_logic_pipeline(frame, self.keys)
 		self._frame = frame
@@ -83,7 +85,7 @@ class Controller(BaseController):
 	def save_video_stream(self):
 		picname = 'frame{:>05}_{}.jpg'.format(self._frame_number, time.time())
 		picpath = os.path.join(self.intake_path, picname)
-		if self._clean_frame.shape[0] > 20:
+		if self._clean_frame!=None and self._clean_frame.shape[0] > 20:
 			frame = cv2.cvtColor(self._clean_frame, cv2.COLOR_RGB2BGR)
 			cv2.imwrite(picpath, frame)
 		self._frame_number += 1
@@ -101,7 +103,6 @@ class Controller(BaseController):
 		if self.intake_name:
 			dump_dataframe(self.intake_path)
 
-
 	def __del__(self):
 		self.close()
 
@@ -111,7 +112,7 @@ class MapController(BaseController):
 		self.dump_imu = dump_imu
 		self.map_frame_size = (800, 800)
 		self.imu_client = imu_client
-		self.imu_processor = ImuKeeper()
+		self.imu_processor = ImuKeeper(dump_imu=dump_imu, dump_dir=self.intake_path)
 		if self.imu_client:
 			self.connect_imu()
 
