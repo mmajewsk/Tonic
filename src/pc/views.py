@@ -6,8 +6,9 @@ from logic import logic_layers
 
 
 class MainApp(QWidget):
-	def __init__(self, controller):
+	def __init__(self, controller, children=[]):
 		QWidget.__init__(self)
+		self.children = children
 		self.controller = controller
 		self.intake_path = None
 		if self.controller.steering_client:
@@ -53,7 +54,6 @@ class MainApp(QWidget):
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.refresh_view)
 		self.timer.start(60)
-		print("dsada")
 		self.controller.connect_video()
 
 	def refresh_view(self):
@@ -76,27 +76,40 @@ class MainApp(QWidget):
 
 	def close(self):
 		del self.controller
+		if self.children:
+			for child in self.children:
+				child.close()
 		QWidget.close(self)
 
 class MapWindow(QWidget):
 	def __init__(self, controller):
 		QWidget.__init__(self)
 		self.controller = controller
+		self.setup_ui()
+		self.setup_imu()
 
 	def setup_ui(self):
 		"""Initialize widgets.
 		"""
 		self.image_label = QLabel()
-
+		video_size = QSize(320,240)
+		self.image_label.setFixedSize(video_size)
 		self.main_layout = QVBoxLayout()
 		self.main_layout.addWidget(self.image_label)
 		self.setLayout(self.main_layout)
 
 	def refresh_view(self):
-		self.image_label.setText(self.controller.data)
+		text = "Acc:\n{}\nGyr:\n{}\nMag:\n{}"
+		data = self.controller.data
+		disp = text.format(data.acc, data.gyr, data.mag)
+		self.image_label.setText(disp)
 
-	def refresh(self):
+	def setup_imu(self):
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.refresh_view)
 		self.timer.start(60)
 		self.controller.connect_imu()
+
+	def close(self):
+		self.controller.close()
+		QWidget.close(self)

@@ -5,7 +5,7 @@ import socket
 from abc import ABCMeta, abstractmethod
 import multiprocessing
 import time
-from clients import Client, QTClient
+from clients import Client
 
 class VideoClient(Client):
 	__metaclass__ =ABCMeta
@@ -57,10 +57,20 @@ class VideoClient(Client):
 		super(VideoClient, self).__del__()
 
 
-class QTVideoClient(VideoClient, QTClient):
+class QTVideoClient(VideoClient, QThread):
+	data_downloaded = pyqtSignal(np.ndarray)
 	def __init__(self, *args, **kwargs):
-		QTClient.__init__(self)
+		QThread.__init__(self)
 		VideoClient.__init__(self, *args, **kwargs)
+
+	def __enter__(self):
+		self.connect()
+
+	def __exit__(self, type, value, traceback):
+		self.__del__()
+
+	def return_data(self, frame):
+		self.data_downloaded.emit(frame)
 
 
 

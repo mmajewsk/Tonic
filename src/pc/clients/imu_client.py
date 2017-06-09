@@ -4,7 +4,7 @@ from abc import ABCMeta, abstractmethod
 import multiprocessing
 import time
 import json
-from clients import Client, QTClient
+from clients import Client
 import queue
 
 class ImuClient(Client):
@@ -19,6 +19,7 @@ class ImuClient(Client):
 			self.client_socket.send(b' ')
 			data = self.client_socket.recv(1024).decode()
 			result = json.loads(data)
+			result = np.array(result, int)
 			self.return_data(result)
 			time.sleep(self.dt)
 
@@ -41,10 +42,22 @@ class MultiImuClient(ImuClient, multiprocessing.Process):
 		time.sleep(self.dt)
 
 
-class QTImuClient(ImuClient, QTClient):
+
+class QTImuClient(ImuClient, QThread):
+	data_downloaded = pyqtSignal(np.ndarray)
 	def __init__(self, *args, **kwargs):
-		QTClient.__init__(self)
+		QThread.__init__(self)
 		ImuClient.__init__(self, *args, **kwargs)
+
+	def __enter__(self):
+		self.connect()
+
+	def __exit__(self, type, value, traceback):
+		self.__del__()
+
+	def return_data(self, frame):
+		self.data_downloaded.emit(frame)
+
 
 
 class ImuWorker:
