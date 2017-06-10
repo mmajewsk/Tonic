@@ -2,11 +2,12 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
+from controllers import Controller
 from logic import logic_layers
 
 
 class MainApp(QWidget):
-	def __init__(self, controller, children=[]):
+	def __init__(self, controller: Controller, children=[]):
 		QWidget.__init__(self)
 		self.children = children
 		self.controller = controller
