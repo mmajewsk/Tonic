@@ -50,6 +50,7 @@ class MainApp(QWidget):
         signal = self.signal[signal_number]
         picpath = os.path.join(self.current_dir, signal['filenames'])
         frame = cv2.imread(picpath)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = self.draw_keys(frame, keys=signal['keys'])
         image = QImage(frame, frame.shape[1], frame.shape[0],
                        frame.strides[0], QImage.Format_RGB888)

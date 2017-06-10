@@ -9,9 +9,8 @@ def steering_df(directory, jsonfilename='steering.json',to_letters_dict=None):
         jdata = json.load(f)
     dictdata = dict(w=[],a=[],s=[],d=[],time=[])
     for d,t in jdata:
-        for keystroke in d:
-            letter=to_letters_dict[int(keystroke)]
-            dictdata[letter].append(d[keystroke])
+        for number, letter in to_letters_dict.items():
+            dictdata[letter].append(d[str(number)])
         dictdata['time'].append(t)
     df2 = pd.DataFrame(dictdata)
     return df2

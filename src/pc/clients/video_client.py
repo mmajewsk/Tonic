@@ -15,8 +15,10 @@ class VideoClient(Client):
 			server_adress=('192.168.1.239',2201),
 		 	video_size=(320, 240),
 		 	connect=False,
+			dt=None,
 		 	):
 		self.video_size=video_size
+		self.dt=dt
 		super(VideoClient, self).__init__(server_adress, connect)
 
 	def connect(self):
@@ -53,8 +55,9 @@ class VideoClient(Client):
 			self.binary_stream.close()
 		super(VideoClient, self).__del__()
 
+
 class QTVideoClient(VideoClient, QThread):
-	image_downloaded = pyqtSignal(np.ndarray)
+	data_downloaded = pyqtSignal(np.ndarray)
 	def __init__(self, *args, **kwargs):
 		QThread.__init__(self)
 		VideoClient.__init__(self, *args, **kwargs)
@@ -66,7 +69,8 @@ class QTVideoClient(VideoClient, QThread):
 		self.__del__()
 
 	def return_data(self, frame):
-		self.image_downloaded.emit(frame)
+		self.data_downloaded.emit(frame)
+
 
 
 class MultiVideoClient(VideoClient, multiprocessing.Process):
