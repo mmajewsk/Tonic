@@ -23,6 +23,24 @@ def pics_df(directory):
     df = pd.DataFrame(dict(filenames=files, pictimes=pictimes,a=emptycol,w=emptycol,s=emptycol,d=emptycol))
     return df
 
+def imu_df(directory):
+    imu = 'imu.csv'
+    imu_path = os.path.join(directory, imu)
+    idf = pd.read_csv(imu_path)
+    idf['imutime'] = idf['time']
+    del idf['time']
+    idf = idf.drop_duplicates('imutime')
+    return idf
+
+def combine(idf, vsdf):
+    alltimes= pd.concat([idf.imutime,vsdf.time])
+    xdf = pd.DataFrame({'alltimes':alltimes.sort_values()})
+    xdf = pd.merge(xdf,vsdf,how='left',left_on='alltimes', right_on='time')
+    xdf = pd.merge(xdf,idf,how='left',left_on='alltimes', right_on='imutime')
+    xdf = xdf.fillna(method='pad')
+    #xdf = xdf[xdf['filenames'].notnull()]
+    return xdf
+
 def conevert_dump_to_dataset(dumps_path):
     dfp = pics_df(dumps_path)
     dfs = steering_df(dumps_path)
@@ -38,4 +56,7 @@ def conevert_dump_to_dataset(dumps_path):
 
 def dump_dataframe(dumps_path):
     df = conevert_dump_to_dataset(dumps_path)
-    df.to_csv(os.path.join(dumps_path,'steering_v1.csv'),index=False)
+    df.to_csv(os.path.join(dumps_path, 'steering_v1.csv'), index=False)
+    idf = imu_df(dumps_path)
+    xdf = combine(idf, df)
+    xdf.to_csv(os.path.join(dumps_path, 'vis_v1.csv'), index=False)
