@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 from logic.filtering import KalmanFilter, SimpleCalibration, TiltCorrector
-
+from logic.ahrs.madgwickahrs import MadgwickAHRS
 
 def data_to_array(data):
 	return np.reshape(np.array(data),(3,3))
@@ -73,6 +73,7 @@ class ImuKeeper:
 		self.dump_name = 'imu.csv'
 		self.dump_path = os.path.join(self.dump_dir, self.dump_name) if self.dump_dir!= None else None
 		self.dump_imu = dump_imu
+		self.ahrs = MadgwickAHRS(sampleperiod=0.1, beta=0.3)
 
 	def log(self, imu):
 		self.log_acc.append(imu.acc)
@@ -129,7 +130,12 @@ class ImuKeeper:
 			print(tc)
 		'''
 
+	def rotation(self, raw_data):
+		data = Imu(raw_data)
+		return data
+
 	def imu_from_raw(self, raw_data)->Imu:
+		self.raw_log(ImuTimed(raw_data))
 		data = Imu(raw_data)
 		if len(self.log_acc) > self.calib_size:
 			self._check_recalib()
@@ -138,7 +144,6 @@ class ImuKeeper:
 			self._create_calibrators()
 			data = self._process(data)
 		self.log(data)
-		self.raw_log(ImuTimed(raw_data))
 		return data
 
 	def recalibrate(self):

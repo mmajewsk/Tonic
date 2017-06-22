@@ -6,6 +6,7 @@ from logic.imu_processing import ImuKeeper, Imu
 
 import os
 import logic.ahrs
+from logic.mapper import Mapper
 
 logic_layers = {
 	"stop_sign": StopDetector('cascade_xml/stop_sign.xml'),
@@ -19,5 +20,5 @@ logic_layers = {
 
 __all__ = ['StopDetector', 'SignalPainter', 'OpencvAI',
 		   'AI','Action',  'logic_layers','ImuKeeper','Imu',
-		   'ahrs']
+		   'ahrs', 'Mapper']
 

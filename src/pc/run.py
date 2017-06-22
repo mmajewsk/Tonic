@@ -2,8 +2,9 @@ import argparse
 from views import QApplication,MainApp, MapWindow
 import sys
 from controllers import Controller
-from clients import QTVideoClient, QTSteeringClient, QTImuClient
+from clients import QTVideoClient, QTSteeringClient, QTImuClient, ClientSink
 from controllers import MapController
+
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Control the remote car')
@@ -37,13 +38,15 @@ if __name__ == "__main__":
 	if args.imu:
 		imu_port = 2204
 		imu_client = QTImuClient(server_adress=(server_ip, imu_port))
-	controller = Controller(video_client=video_client,
+	client_sink = ClientSink(video_client=video_client,
+							 steering_client=steering_client,
+							 imu_client=imu_client)
+	controller = Controller(client_sink=client_sink,
 							intake_name=args.folder,
-							steering_client=steering_client,
 							dump_video=args.dump_video,
 							dump_steering=args.dump_steering
 							)
-	map_controller = MapController(imu_client,dump_imu=args.dump_imu, intake_name=args.folder)
+	map_controller = MapController(client_sink,dump_imu=args.dump_imu, intake_name=args.folder)
 	other_windows=[]
 	if args.imu:
 		win2 = MapWindow(map_controller)

@@ -6,6 +6,7 @@ import socket
 import logging
 import json
 from minimu import Minimu
+from imu_interceptor import ImuEuler
 
 class Server(asyncore.dispatcher):
 	def __init__(self, address):
@@ -31,7 +32,7 @@ class ClientHandler(asyncore.dispatcher):
 		asyncore.dispatcher.__init__(self, sock)
 		self.logger = logging.getLogger('Client ' + str(address))
 		self.data_to_write = []
-		self.imu = Minimu('/dev/i2c-1')
+		self.imu = ImuEuler()
 		self.imu.connect()
 
 	def writable(self):

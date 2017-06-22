@@ -12,12 +12,12 @@ class MainApp(QWidget):
 		self.children = children
 		self.controller = controller
 		self.intake_path = None
-		if self.controller.steering_client:
-			self.keys = self.controller.steering_client.key_events()
+		if self.controller.client_sink.steering_client:
+			self.keys = self.controller.client_sink.steering_client.key_events()
 			self.setup_steering()
 		else:
 			self.keys = {}
-		if self.controller.video_client:
+		if self.controller.client_sink.video_client:
 			self.setup_camera()
 		self.setup_logic_pipeline()
 		self.setup_ui()
@@ -33,8 +33,8 @@ class MainApp(QWidget):
 		"""Initialize widgets.
 		"""
 		self.image_label = QLabel()
-		if self.controller.video_client:
-			size = self.controller.video_client.video_size
+		if self.controller.client_sink.video_client:
+			size = self.controller.client_sink.video_client.video_size
 		else:
 			size = (320,240)
 		video_size = QSize(*size)
@@ -58,7 +58,7 @@ class MainApp(QWidget):
 		self.controller.connect_video()
 
 	def refresh_view(self):
-		if self.controller.video_client:
+		if self.controller.client_sink.video_client:
 			frame = self.controller.frame
 			self.display_video_stream(frame)
 
@@ -93,17 +93,27 @@ class MapWindow(QWidget):
 		"""Initialize widgets.
 		"""
 		self.image_label = QLabel()
-		video_size = QSize(320,240)
+		video_size = QSize(800,800)
 		self.image_label.setFixedSize(video_size)
 		self.main_layout = QVBoxLayout()
 		self.main_layout.addWidget(self.image_label)
 		self.setLayout(self.main_layout)
+		self.map_image = None
+
+	def display_video_stream(self, frame):
+		image = QImage(frame, frame.shape[1], frame.shape[0],
+					   frame.strides[0], QImage.Format_Grayscale8)
+		self.image_label.setPixmap(QPixmap.fromImage(image))
 
 	def refresh_view(self):
-		text = "Acc:\n{}\nGyr:\n{}\nMag:\n{}"
+		text = "R:\n{}\nP:\n{}\nY:\n{}"
 		data = self.controller.data
-		disp = text.format(data.acc, data.gyr, data.mag)
-		self.image_label.setText(disp)
+		disp = text.format(data[0], data[1], data[2])
+		self.map_image = self.controller.map()
+		if self.controller.client_sink.video_client:
+			self.display_video_stream(self.map_image)
+		#self.image_label.setText(disp)
+
 
 	def setup_imu(self):
 		self.timer = QTimer()
