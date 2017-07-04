@@ -69,6 +69,7 @@ class QTVideoClient(VideoClient, QThread):
 		self.__del__()
 
 	def return_data(self, frame):
+		#print(frame)
 		self.data_downloaded.emit(frame)
 
 

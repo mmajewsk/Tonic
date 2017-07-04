@@ -1,0 +1,20 @@
+info:
+  settings: v1
+  car:
+    build: mark2
+    name: car1
+hardware:
+  camera:
+    calibration_file:
+      path: camera_calibration/calib.p
+      type: pickle
+    image:
+      shape: [320, 240, 3]
+server:
+  ip: '127.0.0.1'
+  video:
+    port: 2201
+  steering:
+    port: 2203
+  imu:
+    port: 2204
