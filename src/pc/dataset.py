@@ -54,9 +54,12 @@ def conevert_dump_to_dataset(dumps_path):
     joind = joind.rename(str, {'asteer': 'a', 'wsteer': 'w', 'ssteer': 's', 'dsteer': 'd', 'pictimes': 'time'})
     return joind
 
-def dump_dataframe(dumps_path):
+def dump_dataframe(dumps_path, imu=False):
     df = conevert_dump_to_dataset(dumps_path)
     df.to_csv(os.path.join(dumps_path, 'steering_v1.csv'), index=False)
+
+def join_imu(dumps_path):
+    df = pd.read_csv(os.path.join(dumps_path, 'steering_v1.csv'))
     idf = imu_df(dumps_path)
     xdf = combine(idf, df)
     xdf.to_csv(os.path.join(dumps_path, 'vis_v1.csv'), index=False)

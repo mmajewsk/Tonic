@@ -78,7 +78,7 @@ class Controller(BaseController):
 	def save_video_stream(self):
 		picname = 'frame{:>05}_{}.jpg'.format(self._frame_number, time.time())
 		picpath = os.path.join(self.intake_path, picname)
-		if self._clean_frame!=None and self._clean_frame.shape[0] > 20:
+		if isinstance(self._clean_frame, np.ndarray) and self._clean_frame.shape[0] > 20:
 			frame = cv2.cvtColor(self._clean_frame, cv2.COLOR_RGB2BGR)
 			cv2.imwrite(picpath, frame)
 		self._frame_number += 1

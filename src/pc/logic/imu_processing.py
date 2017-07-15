@@ -131,6 +131,7 @@ class ImuKeeper:
 		'''
 
 	def rotation(self, raw_data):
+		self.raw_log(ImuTimed(raw_data))
 		data = Imu(raw_data)
 		return data
 

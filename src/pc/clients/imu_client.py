@@ -19,7 +19,7 @@ class ImuClient(Client):
 			self.client_socket.send(b' ')
 			data = self.client_socket.recv(1024).decode()
 			result = json.loads(data)
-			result = np.array(result, int)
+			result = np.array(result, float)
 			self.return_data(result)
 			time.sleep(self.dt)
 
