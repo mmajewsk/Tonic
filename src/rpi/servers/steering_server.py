@@ -25,7 +25,7 @@ thrust = dict(velocity=12, frequency=50, high=100)
 steering_thread = SteeringTranslator(steer=steer, thrust=thrust, time_delay=0.05)
 
 while True:
-	if time.time() - start > 60:
+	if time.time() - start > 600:
 		break
 	data = connection.recv(1024).decode()
 	print(data)

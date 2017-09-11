@@ -47,7 +47,9 @@ class VideoClient(Client):
 				image = cv2.imdecode(np.fromstring(self.jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
 				frame = self.preprocess_image(image)
 				#print('emitting {}'.format(time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())))
-				self.return_data(frame)
+				timestamp = time.time()
+				dframe = np.array([frame, timestamp])
+				self.return_data(dframe)
 			# print('emitted{}'.format(time.time()))
 
 	def __del__(self):

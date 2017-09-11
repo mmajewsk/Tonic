@@ -37,6 +37,8 @@ class Controller(BaseController):
 		self.dump_steering = dump_steering
 		self.view = None
 		self.setup_logic_pipeline()
+		self._frame_number = None
+		self._timestamp = None
 
 	def setup_logic_pipeline(self):
 		self.pipeline = logic_layers
@@ -71,12 +73,16 @@ class Controller(BaseController):
 		self.client_sink.connect_to_video(self.add_image)
 
 	def add_image(self, frame):
-		self._clean_frame = frame.copy()
-		frame, self._keys = self.apply_logic_pipeline(frame, self.keys)
-		self._frame = frame
+		img = frame[0]
+		self._timestamp = frame[1]
+		self._clean_frame = img.copy()
+		img, self._keys = self.apply_logic_pipeline(img, self.keys)
+		self._frame = img
 
 	def save_video_stream(self):
-		picname = 'frame{:>05}_{}.jpg'.format(self._frame_number, time.time())
+		if self._timestamp is None:
+			return
+		picname = 'frame{:>05}_{}.jpg'.format(self._frame_number, self._timestamp)
 		picpath = os.path.join(self.intake_path, picname)
 		if isinstance(self._clean_frame, np.ndarray) and self._clean_frame.shape[0] > 20:
 			frame = cv2.cvtColor(self._clean_frame, cv2.COLOR_RGB2BGR)
@@ -110,7 +116,10 @@ class MapController(BaseController):
 			self.connect_imu()
 		if self.client_sink.video_client:
 			self.connect_video()
+		if self.client_sink.slam_client:
+			self.connect_slam()
 		self.mapper = Mapper()
+		self.trajectory = ""
 
 	def connect_imu(self):
 		self.data = [0,0,0]
@@ -126,13 +135,27 @@ class MapController(BaseController):
 		#self.client_sink.start_video()
 		self.client_sink.connect_to_video(self.add_image)
 
+	def connect_slam(self):
+		self.client_sink.start_slam()
+		self.client_sink.connect_slam(self.set_trajectory)
+
+	def set_trajectory(self, traj):
+		self.trajectory = traj
+
+
+	def get_slam_trajectory(self):
+		self.client_sink.slam_client.trajectory.emit('')
+
+
 	def map(self):
 		if self.client_sink.video_client:
 			return self.mapper.update(self._frame, angle=self.data[0])
 		return None
 
 	def add_image(self, frame: np.ndarray):
-		self._frame = frame.copy()
+		self._frame = frame[0].copy()
+		timestamp = frame[1]
+		self.client_sink.slam_client.image_to_add.emit(self._frame, timestamp)
 
 	def add_data(self, raw_data: np.ndarray):
 		#self.data = self.imu_processor.imu_from_raw(raw_data)

@@ -33,7 +33,7 @@ with picamera.PiCamera() as camera:
         binary_stream.flush()
         stream.seek(0)
         binary_stream.write(stream.read())
-        if time.time() - start > 60:
+        if time.time() - start > 600:
             break
         stream.seek(0)
         stream.truncate()

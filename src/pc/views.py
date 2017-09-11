@@ -114,12 +114,20 @@ class MapWindow(QWidget):
 			self.display_video_stream(self.map_image)
 		#self.image_label.setText(disp)
 
+	def ask_trajectory(self):
+		self.controller.get_slam_trajectory()
+		print('TRAJ')
+		print(self.controller.trajectory)
+
 
 	def setup_imu(self):
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.refresh_view)
 		self.timer.start(60)
 		self.controller.connect_imu()
+		self.timer2 = QTimer()
+		self.timer2.timeout.connect(self.ask_trajectory)
+		self.timer2.start(5000)
 
 	def close(self):
 		self.controller.close()

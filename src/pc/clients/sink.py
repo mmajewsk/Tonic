@@ -3,13 +3,17 @@ from PyQt5.QtCore import QThread
 from clients.video_client import QTVideoClient
 from clients.steering_client import QTSteeringClient
 from clients.imu_client import ImuClient
+from clients.slam_client import QtSlamClientManager
 
 class ClientSink:
 	def __init__(self, video_client: QTVideoClient = None,
-				 steering_client:QTSteeringClient=None, imu_client:ImuClient=None):
+				 steering_client:QTSteeringClient=None,
+				 imu_client:ImuClient=None,
+				 slam_client:QtSlamClientManager=None):
 		self.video_client = video_client
 		self.steering_client = steering_client
 		self.imu_client = imu_client
+		self.slam_client = slam_client
 
 	def start_video(self):
 		self.thread_video = QThread()
@@ -33,3 +37,12 @@ class ClientSink:
 
 	def connect_to_imu(self, method):
 		self.imu_client.data_downloaded[np.ndarray].connect(method)
+
+	def start_slam(self):
+		self.thread_slam = QThread()
+		self.slam_client.connect()
+		self.slam_client.moveToThread(self.thread_slam)
+		self.slam_client.start()
+
+	def connect_slam(self, trajectory_receive_method):
+		self.slam_client.trajectory[str].connect(trajectory_receive_method)

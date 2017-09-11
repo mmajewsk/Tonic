@@ -9,10 +9,10 @@ import logic.ahrs
 from logic.mapper import Mapper
 
 logic_layers = {
-	"stop_sign": StopDetector('cascade_xml/stop_sign.xml'),
+	#"stop_sign": StopDetector('cascade_xml/stop_sign.xml'),
 	#"ai": OpencvAI(r"C:\Users\hawker\Dropbox\Public\data_intake\ann.xml"),
 	"signal_painter": SignalPainter(
-		video_size=(320, 240),
+		video_size=(640, 480),
 		draw_border=5,
 		letters=QTSteeringClient.wsad_int,
 	)

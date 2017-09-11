@@ -55,12 +55,12 @@ def processing(img):
 	cv2.imshow('denoise', proc)
 	#proc = cv2.equalizeHist(proc,)
 	#proc = gamma_correction(proc, 0.9)
-	kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
-	proc = cv2.filter2D(proc, -1, kernel)
-	cv2.imshow('equal', proc)
+	#kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
+	#proc = cv2.filter2D(proc, -1, kernel)
+	#cv2.imshow('equal', proc)
 	#proc = cv2.adaptiveThreshold(proc, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 15, 2)
 	#cv2.imshow('adap', proc)
-	proc = cv2.Canny(proc, 20, 150, apertureSize=3)
+	#proc = cv2.Canny(proc, 20, 150, apertureSize=3)
 	cv2.imshow('edge', proc)
 	return proc
 
