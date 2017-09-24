@@ -3,13 +3,13 @@ from PyQt5.QtCore import QThread
 from clients.video_client import QTVideoClient
 from clients.steering_client import QTSteeringClient
 from clients.imu_client import ImuClient
-from clients.slam_client import QtSlamClientManager
+from clients.slam_client import QtSlamClient
 
 class ClientSink:
 	def __init__(self, video_client: QTVideoClient = None,
 				 steering_client:QTSteeringClient=None,
 				 imu_client:ImuClient=None,
-				 slam_client:QtSlamClientManager=None):
+				 slam_client:QtSlamClient=None):
 		self.video_client = video_client
 		self.steering_client = steering_client
 		self.imu_client = imu_client
@@ -45,4 +45,4 @@ class ClientSink:
 		self.slam_client.start()
 
 	def connect_slam(self, trajectory_receive_method):
-		self.slam_client.trajectory[str].connect(trajectory_receive_method)
+		self.slam_client.trajectory_response[bytes].connect(trajectory_receive_method)

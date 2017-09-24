@@ -105,7 +105,7 @@ if __name__ == '__main__':
 	dirpath = r"C:\repositories\autonomic_car\selfie_car\data_intake3\v2.20"
 	perspective = InversePerspective(img_shape=(250, 250), desired_shape=(80, 160), marigin=0.25)
 	mapper = Mapper(map_size=(1200,1200),scale=1600.0, type='additive')
-	#df = pd.read_csv(os.path.join(dirpath, 'vis_v1.csv'))
+	df = pd.read_csv(os.path.join(dirpath, 'vis_v1.csv'))
 	#df = df[~df['filenames'].isnull()]
 	#df = calculate_position(df, dirpath)
 	df = pd.read_csv(os.path.join(dirpath, 'pos_v1.csv'))

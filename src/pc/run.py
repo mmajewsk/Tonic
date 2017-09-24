@@ -2,7 +2,7 @@ import argparse
 from views import QApplication,MainApp, MapWindow
 import sys
 from controllers import Controller
-from clients import QTVideoClient, QTSteeringClient, QTImuClient, ClientSink, QtSlamClientManager
+from clients import QTVideoClient, QTSteeringClient, QTImuClient, ClientSink, QtSlamClient
 from controllers import MapController
 import yaml
 
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 	if args.imu:
 		imu_port = settings['server']['imu']['port']
 		imu_client = QTImuClient(server_adress=(server_ip, imu_port))
-		slam_client = QtSlamClientManager()
+		slam_client = QtSlamClient(server_adress=('127.0.0.1', 2207))
 	client_sink = ClientSink(video_client=video_client,
 							 steering_client=steering_client,
 							 imu_client=imu_client,
@@ -55,12 +55,11 @@ if __name__ == "__main__":
 							dump_video=args.dump_video,
 							dump_steering=args.dump_steering
 							)
-	map_controller = MapController(client_sink,dump_imu=args.dump_imu, intake_name=args.folder)
 	other_windows=[]
 	if args.imu:
-		pass
-		#win2 = MapWindow(map_controller)
-		#other_windows.append(win2)
+		map_controller = MapController(client_sink,dump_imu=args.dump_imu, intake_name=args.folder)
+		win2 = MapWindow(map_controller)
+		other_windows.append(win2)
 	win = MainApp(controller, other_windows)
 	win.show()
 	for window in other_windows:

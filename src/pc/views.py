@@ -93,11 +93,11 @@ class MapWindow(QWidget):
 		"""Initialize widgets.
 		"""
 		self.image_label = QLabel()
-		video_size = QSize(800,800)
+		video_size = QSize(80,80)
 		self.image_label.setFixedSize(video_size)
-		self.main_layout = QVBoxLayout()
-		self.main_layout.addWidget(self.image_label)
-		self.setLayout(self.main_layout)
+		#self.main_layout = QVBoxLayout()
+		#self.main_layout.addWidget(self.image_label)
+		#self.setLayout(self.main_layout)
 		self.map_image = None
 
 	def display_video_stream(self, frame):
@@ -109,9 +109,9 @@ class MapWindow(QWidget):
 		text = "R:\n{}\nP:\n{}\nY:\n{}"
 		data = self.controller.data
 		disp = text.format(data[0], data[1], data[2])
-		self.map_image = self.controller.map()
-		if self.controller.client_sink.video_client:
-			self.display_video_stream(self.map_image)
+		#self.map_image = self.controller.map()
+		#if self.controller.client_sink.video_client:
+		#	self.display_video_stream(self.map_image)
 		#self.image_label.setText(disp)
 
 	def ask_trajectory(self):

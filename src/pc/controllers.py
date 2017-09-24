@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 
 from clients import QTVideoClient, QTSteeringClient, QTImuClient, ClientSink
-from dataset import dump_dataframe
+from dataset import dump_dataframe, join_imu
 from logic import logic_layers, ImuKeeper, Imu, Mapper
 
 def make_intake_path(intake_name):
@@ -119,7 +119,7 @@ class MapController(BaseController):
 		if self.client_sink.slam_client:
 			self.connect_slam()
 		self.mapper = Mapper()
-		self.trajectory = ""
+		self.trajectory = b""
 
 	def connect_imu(self):
 		self.data = [0,0,0]
@@ -142,10 +142,8 @@ class MapController(BaseController):
 	def set_trajectory(self, traj):
 		self.trajectory = traj
 
-
 	def get_slam_trajectory(self):
-		self.client_sink.slam_client.trajectory.emit('')
-
+		self.client_sink.slam_client.trajectory_request.emit()
 
 	def map(self):
 		if self.client_sink.video_client:
@@ -155,7 +153,7 @@ class MapController(BaseController):
 	def add_image(self, frame: np.ndarray):
 		self._frame = frame[0].copy()
 		timestamp = frame[1]
-		self.client_sink.slam_client.image_to_add.emit(self._frame, timestamp)
+		self.client_sink.slam_client.image_to_send.emit(self._frame, timestamp)
 
 	def add_data(self, raw_data: np.ndarray):
 		#self.data = self.imu_processor.imu_from_raw(raw_data)
@@ -163,4 +161,8 @@ class MapController(BaseController):
 
 	def close(self):
 		if self.dump_imu:
+			with open(os.path.join(self.intake_path,'slam_trajectory.csv'),'w') as f:
+				f.write(self.trajectory.decode())
 			self.imu_processor.dump_logs()
+			join_imu(self.intake_path)
+

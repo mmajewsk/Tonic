@@ -1,5 +1,5 @@
 import numpy as np
-from quaternions import Quaternion as Q
+#from quaternions import Quaternion as Q
 
 class KalmanFilter:
 	def __init__(self, error_measurement, starting_point=None):
