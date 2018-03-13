@@ -81,18 +81,20 @@ def calculate_flow(df, dirpath):
 	img0 = None
 	img1 = None
 	velo = Velo()
+	df.set_value(df.index[0], 'flow_x', 0)
+	df.set_value(df.index[0], 'flow_y', 0)
 	for i, row in df[1:].iterrows():
 		if pd.isnull(row['filenames']) or not isinstance(img0, np.ndarray):
-			flow_x=None
-			flow_y=None
+			flow_x=np.nan
+			flow_y=np.nan
 			if not pd.isnull(row['filenames']):
 				img0 = cv2.imread(os.path.join(dirpath, row['filenames']))
 		else:
 			img1 = cv2.imread(os.path.join(dirpath, row['filenames']))
 			v = velo.speed(img0, img1)
 			if v is None:
-				flow_x = None
-				flow_y = None
+				flow_x = np.nan
+				flow_y = np.nan
 			else:
 				flow_x, flow_y = v
 			img0 = img1.copy()
