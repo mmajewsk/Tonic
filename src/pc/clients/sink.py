@@ -4,16 +4,19 @@ from clients.video_client import QTVideoClient
 from clients.steering_client import QTSteeringClient
 from clients.imu_client import ImuClient
 from clients.slam_client import QtSlamClient
+from clients.odo_client import QTOdoClient
 
 class ClientSink:
 	def __init__(self, video_client: QTVideoClient = None,
-				 steering_client:QTSteeringClient=None,
-				 imu_client:ImuClient=None,
-				 slam_client:QtSlamClient=None):
+				 steering_client:QTSteeringClient = None,
+				 imu_client:ImuClient = None,
+				 slam_client:QtSlamClient = None,
+				 odo_client:QTOdoClient = None):
 		self.video_client = video_client
 		self.steering_client = steering_client
 		self.imu_client = imu_client
 		self.slam_client = slam_client
+		self.odo_client = odo_client
 
 	def start_video(self):
 		self.thread_video = QThread()
@@ -34,6 +37,15 @@ class ClientSink:
 		self.imu_client.connect()
 		self.imu_client.moveToThread(self.thread_imu)
 		self.imu_client.start()
+
+	def start_odo(self):
+		self.thread_odo = QThread()
+		self.odo_client.connect()
+		self.odo_client.moveToThread(self.thread_odo)
+		self.odo_client.start()
+
+	def connect_tot_odo(self, method):
+		self.odo_client.data_downloaded[dict].connect(method)
 
 	def connect_to_imu(self, method):
 		self.imu_client.data_downloaded[np.ndarray].connect(method)

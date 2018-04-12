@@ -3,7 +3,8 @@ import socket
 from PyQt5.QtCore import QThread, pyqtSignal
 import numpy as np
 
-class Client:
+class \
+		Client:
 	__metaclass__ =ABCMeta
 
 	def __init__(self, server_adress, connect=False):

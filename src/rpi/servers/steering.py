@@ -62,13 +62,58 @@ class Motor:
 		self.enabler.stop()
 		#self.plus.stop()
 		#self.minus.stop()
-
 		#GPIO.output(self.enabler_pin, self.LOW)
-		GPIO.output(self.plus_pin, self.LOW)
-		GPIO.output(self.minus_pin, self.LOW)
+		#GPIO.output(self.plus_pin, self.LOW)
+		#GPIO.output(self.minus_pin, self.LOW)
 
 
-class SteeringDriver(Steering):
+class SteeringDriverRobot(Steering):
+	def __init__(self, **kwargs):
+		GPIO.setmode(GPIO.BCM)
+		self.motor_a = Motor(enabler_pin=0, plus_pin=5, minus_pin=6, **kwargs['left_motor'])
+		self.motor_b = Motor(enabler_pin=26, plus_pin=19, minus_pin=13, **kwargs['right_motor'])
+
+	def wheel_right(self, val=None):
+		pass
+
+	def wheel_left(self, val=None):
+		pass
+
+	def forward(self, val=None):
+		self.motor_a.set_values(val, self.motor_a.HIGH, self.motor_a.LOW)
+		self.motor_b.set_values(val, self.motor_b.HIGH, self.motor_b.LOW)
+
+	def backward(self, val=None):
+		self.motor_a.set_values(val, self.motor_a.LOW, self.motor_a.HIGH)
+		self.motor_b.set_values(val, self.motor_b.LOW, self.motor_b.HIGH)
+
+	def stop_car(self, val=None):
+		self.motor_a.set_values(0, self.motor_a.HIGH, self.motor_a.HIGH)
+		self.motor_b.set_values(0, self.motor_b.HIGH, self.motor_b.HIGH)
+
+	def wheel_straight(self, val=None):
+		pass
+
+	def forward_left(self, val=None):
+		self.motor_a.set_values(10, self.motor_a.HIGH, self.motor_a.LOW)
+		self.motor_b.set_values(val, self.motor_b.HIGH, self.motor_b.LOW)
+
+	def backward_left(self, val=None):
+		self.motor_a.set_values(10, self.motor_a.LOW, self.motor_a.HIGH)
+		self.motor_b.set_values(val, self.motor_b.LOW, self.motor_b.HIGH)
+
+	def forward_right(self, val=None):
+		self.motor_a.set_values(val, self.motor_a.HIGH, self.motor_a.LOW)
+		self.motor_b.set_values(10, self.motor_b.HIGH, self.motor_b.LOW)
+
+	def backward_right(self, val=None):
+		self.motor_a.set_values(val, self.motor_a.LOW, self.motor_a.HIGH)
+		self.motor_b.set_values(10, self.motor_b.LOW, self.motor_b.HIGH)
+	def __del__(self):
+		GPIO.cleanup()
+
+
+class SteeringDriverCar(Steering):
 	def __init__(self, **kwargs):
 		GPIO.setmode(GPIO.BCM)
 		self.motor_a = Motor(enabler_pin=22, plus_pin=17, minus_pin=27, **kwargs['thrust'])
@@ -95,9 +140,9 @@ class SteeringDriver(Steering):
 	def __del__(self):
 		GPIO.cleanup()
 
-class SteeringTranslator(SteeringDriver):#,multiprocessing.Process):
+
+class SteeringTranslator(Steering):#,multiprocessing.Process):
 	def __init__(self, time_delay=0.4, **kwargs):
-		super().__init__(**kwargs)
 		self.time_delay = time_delay
 		self.translator={
 			'go_straight':[self.wheel_straight,self.forward],
@@ -150,6 +195,24 @@ class SteeringTranslator(SteeringDriver):#,multiprocessing.Process):
 			else:
 				return 'stop'
 
+class SteeringTranslatorCar(SteeringTranslator, SteeringDriverCar):
+	def __init__(self, **kwargs):
+		SteeringDriverCar.__init__(self, **kwargs)
+		SteeringTranslator.__init__(self, **kwargs)
+
+class SteeringTranslatorRobot(SteeringTranslator, SteeringDriverRobot):
+	def __init__(self, **kwargs):
+		SteeringDriverRobot.__init__(self, **kwargs)
+		SteeringTranslator.__init__(self, **kwargs)
+		self.translator['go_straight'] = [self.forward]
+		self.translator['go_backward'] = [self.backward]
+		self.translator['stop'] = [self.stop_car]
+		self.translator['forward_left'] = [self.forward_left]
+		self.translator['forward_right'] = [self.forward_right]
+		self.translator['backward_left'] = [self.backward_left]
+		self.translator['backward_right'] = [self.backward_right]
+
+
 def keys_to_command(keys):
 		w,s,a,d = 87,83,68,65
 		keytab = map(lambda x: keys[x], (w,s,a,d))
@@ -157,12 +220,55 @@ def keys_to_command(keys):
 		return command
 
 if __name__=='__main__':
-	s = SteeringTranslator()
+	GPIO.setmode(GPIO.BCM)
+	left_motor = dict(velocity=20, frequency=50, high=100)
+	right_motor = dict(velocity=20, frequency=50, high=100)
+	s = SteeringTranslatorRobot(left_motor=left_motor, right_motor=right_motor, time_delay=0.05)
 	#s.signal = 'w'
 	#s.run()
 	s.stop_car()
 	s.forward()
-	time.sleep(0.4)
+	time.sleep(0.2)
+	s.stop_car()
+	time.sleep(1)
+
+	s.stop_car()
+	s.forward()
+	time.sleep(0.2)
+	s.stop_car()
+	time.sleep(1)
+
+	s.stop_car()
+	s.backward()
+	time.sleep(0.2)
+	s.stop_car()
+	time.sleep(1)
+
+
+	s.stop_car()
+	s.forward_left()
+	time.sleep(0.2)
+	s.stop_car()
+	time.sleep(1)
+
+	s.stop_car()
+	s.backward_left()
+	time.sleep(0.2)
+	s.stop_car()
+	time.sleep(1)
+
+	s.stop_car()
+	s.forward_right()
+	time.sleep(0.2)
+	s.stop_car()
+	time.sleep(1)
+
+	s.stop_car()
+	s.backward_right()
+	time.sleep(0.2)
+	s.stop_car()
+	time.sleep(1)
+
 	s.signal = ''
 	#s.run()
 	del s

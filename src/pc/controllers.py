@@ -30,11 +30,13 @@ class Controller(BaseController):
 				 client_sink:ClientSink = None,
 				 intake_name: str = None,
 				 dump_video: bool = False,
-				 dump_steering: bool = False):
+				 dump_steering: bool = False,
+				 dump_odo: bool = False):
 		BaseController.__init__(self, intake_name)
 		self.client_sink=client_sink
 		self.dump_video = dump_video
 		self.dump_steering = dump_steering
+		self.dump_odo = dump_odo
 		self.view = None
 		self.setup_logic_pipeline()
 		self._frame_number = None
