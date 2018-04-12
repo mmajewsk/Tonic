@@ -1,13 +1,8 @@
 #http://picamera.readthedocs.io/en/release-1.10/recipes2.html#rapid-capture-and-streaming
 
-import io
 import socket
-import struct
 import time
-from steering import SteeringTranslator
-import picamera
-
-from datetime import datetime
+from steering import SteeringTranslatorRobot
 
 host =''
 port = 2203
@@ -20,9 +15,9 @@ connection, adress = server.accept()
 
 start = time.time()
 
-steer = dict(velocity=30, frequency=50, high=100)
-thrust = dict(velocity=12, frequency=50, high=100)
-steering_thread = SteeringTranslator(steer=steer, thrust=thrust, time_delay=0.05)
+left_motor = dict(velocity=45, frequency=70, high=100)
+right_motor = dict(velocity=45, frequency=70, high=100)
+steering_thread = SteeringTranslatorRobot(left_motor=left_motor, right_motor=right_motor, time_delay=0.05)
 
 while True:
 	if time.time() - start > 600:

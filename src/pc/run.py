@@ -2,7 +2,7 @@ import argparse
 from views import QApplication,MainApp, MapWindow
 import sys
 from controllers import Controller
-from clients import QTVideoClient, QTSteeringClient, QTImuClient, ClientSink, QtSlamClient
+from clients import QTVideoClient, QTSteeringClient, QTImuClient, ClientSink, QtSlamClient, QTOdoClient
 from controllers import MapController
 import yaml
 
@@ -16,11 +16,15 @@ if __name__ == "__main__":
 						help='steering on')
 	parser.add_argument('-i', dest='imu', action='store_true',
 						help='imu on')
+	parser.add_argument('-o', dest='odo', action='store_true',
+						help='odometry on')
 	parser.add_argument('--dump_video', dest='dump_video', action='store_true', help='if folder is given, dump video')
 	parser.add_argument('--dump_steering', dest='dump_steering', action='store_true', default=False,
 						help='if folder is given, dump video')
 	parser.add_argument('--dump_imu', dest='dump_imu', action='store_true',
 						help='if folder is given, dump raw imu')
+	parser.add_argument('--dump_odo', dest='dump_odo', action='store_true',
+						help='if folder is given, dump raw odometry')
 	parser.add_argument('folder', metavar='folder', type=str, nargs=argparse.REMAINDER, default=None,
 						help='where to store data dump')
 
@@ -35,6 +39,7 @@ if __name__ == "__main__":
 	steering_client = None
 	imu_client = None
 	slam_client=None
+	odo_client=None
 	video_size = settings['hardware']['camera']['image']['shape'][:2]
 	if args.video:
 		video_port = settings['server']['video']['port']
@@ -46,14 +51,20 @@ if __name__ == "__main__":
 		imu_port = settings['server']['imu']['port']
 		imu_client = QTImuClient(server_adress=(server_ip, imu_port))
 		slam_client = QtSlamClient(server_adress=('127.0.0.1', 2207))
+	if args.odo:
+		odo_port = settings['server']['odo']['port']
+		odo_client = QTOdoClient(server_adress=(server_ip, odo_port))
+
 	client_sink = ClientSink(video_client=video_client,
 							 steering_client=steering_client,
 							 imu_client=imu_client,
-							 slam_client=slam_client)
+							 slam_client=slam_client,
+							 odo_client=odo_client)
 	controller = Controller(client_sink=client_sink,
 							intake_name=args.folder,
 							dump_video=args.dump_video,
-							dump_steering=args.dump_steering
+							dump_steering=args.dump_steering,
+							dump_odo=args.dump_odo
 							)
 	other_windows=[]
 	if args.imu:

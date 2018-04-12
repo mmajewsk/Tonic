@@ -1,17 +1,16 @@
-#!/usr/bin/env python
-''' Async TCP server to make first tests of newly received GPS trackers '''
-
-import asyncore
 import socket
-import logging
 import json
-from minimu import Minimu
-from imu_interceptor import ImuEuler
+from abc import ABCMeta, abstractmethod
+import asyncore
+import logging
 
-class ImuServer(asyncore.dispatcher):
+class BaseServer(asyncore.dispatcher):
+	__metaclass__ = ABCMeta
+
 	def __init__(self, address):
 		asyncore.dispatcher.__init__(self)
-		self.logger = logging.getLogger('Server')
+		classname = type(self).__name__
+		self.logger = logging.getLogger(classname)
 		self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.set_reuse_addr()
 		self.bind(address)
@@ -19,21 +18,27 @@ class ImuServer(asyncore.dispatcher):
 		self.logger.debug('binding to %s', self.address)
 		self.listen(5)
 
+	@abstractmethod
+	def create_client(self, *args, **kwargs):
+		pass
+
 	def handle_accept(self):
 		# Called when a client connects to our socket
 		client_info = self.accept()
 		if client_info is not None:
 			self.logger.debug('handle_accept() -> %s', client_info[1])
-			ImuClientHandler(client_info[0], client_info[1])
+			self.create_client(client_info[0], client_info[1])
 
 
-class ImuClientHandler(asyncore.dispatcher):
+class BaseClientHandler(asyncore.dispatcher):
+	__metaclass__ = ABCMeta
+
 	def __init__(self, sock, address):
 		asyncore.dispatcher.__init__(self, sock)
-		self.logger = logging.getLogger('Client ' + str(address))
+		classname = type(self).__name__
+		self.logger = logging.getLogger(classname + ' ' + str(address))
 		self.data_to_write = []
-		self.imu = ImuEuler()
-		self.imu.connect()
+
 
 	def writable(self):
 		return bool(self.data_to_write)
@@ -46,24 +51,25 @@ class ImuClientHandler(asyncore.dispatcher):
 			self.data_to_write.append(remaining)
 		self.logger.debug('handle_write() -> (%d) "%s"', sent, data[:sent].rstrip())
 
+	@abstractmethod
+	def readout(self, input_data):
+		pass
+
 	def handle_read(self):
 		data = self.recv(1024)
-		self.logger.debug('handle_read() -> (%d) "%s"', len(data), data.rstrip())
-		response = json.dumps(self.imu.read())
+		input_data = data.rstrip()
+		self.logger.debug('handle_read() -> (%d) "%s"', len(input_data), input_data.rstrip())
+		readout = self.readout(input_data.decode())
+		response = json.dumps(readout).encode()
 		self.data_to_write.insert(0, response)
 
 	def handle_close(self):
 		self.logger.debug('handle_close()')
 		self.close()
 
-
 def main():
 	logging.basicConfig(level=logging.DEBUG, format='%(name)s:[%(levelname)s]: %(message)s')
 	HOST = ''
 	PORT = 2204
-	s = ImuServer((HOST, PORT))
+	s = Server((HOST, PORT))
 	asyncore.loop()
-
-
-if __name__ == '__main__':
-	main()

@@ -95,6 +95,7 @@ if __name__=='__main__':
 		img_path_0 = images[i-1]
 		img_0 = cv2.imread(img_path_0)
 		img_1 = cv2.imread(img_path_1)
+
 		img_0 = to_inverse_perspective(perspective, img_0)
 		img_1 = to_inverse_perspective(perspective, img_1)
 		proc = np.zeros(img_1.shape)
