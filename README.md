@@ -1,11 +1,11 @@
 ![](https://i.imgur.com/eh1QMvS.jpg)
 
-# auTONomous Intelligent Car 
+# ABSOLUTELY AMAZING THING: auTONomous Intelligent Car 
 
-![](https://media.giphy.com/media/OK27wINdQS5YQ/giphy.gif)
+![wwwwowww](https://media.giphy.com/media/OK27wINdQS5YQ/giphy.gif)
 
 
-I present to You, 
+I present to You, the project of an autonomic car, almost entirely written in Python.
 
 # Second Version*
 
