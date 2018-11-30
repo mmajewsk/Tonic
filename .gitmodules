@@ -1,3 +1,0 @@
-[submodule "src\\pc\\logic\\ahrs"]
-	path = src\\pc\\logic\\ahrs
-	url = https://github.com/morgil/madgwick_py.git

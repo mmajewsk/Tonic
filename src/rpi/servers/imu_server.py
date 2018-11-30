@@ -5,7 +5,6 @@ import asyncore
 import socket
 import logging
 import json
-from minimu import Minimu
 from imu_interceptor import ImuEuler
 
 class ImuServer(asyncore.dispatcher):

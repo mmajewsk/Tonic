@@ -12,7 +12,7 @@ class VideoClient(Client):
 
 	def __init__(
 			self,
-			server_adress=('192.168.1.239',2201),
+			server_adress=('192.168.1.98',2201),
 		 	video_size=(320, 240),
 		 	connect=False,
 			dt=None,

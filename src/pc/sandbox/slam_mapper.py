@@ -13,13 +13,13 @@ def row_to_quaternion(row):
 if __name__ == '__main__':
 	cal_data = r"C:\repositories\autonomic_car\selfie_car\src\pc\settings\camera_calibration\calib.json"
 	cal = VideoCalibration(cal_data, (320, 240))
-	dirpath = r"C:\repositories\autonomic_car\selfie_car\data_intake3\slam_testing_v1.111"
+	dirpath = r"C:\repositories\autonomic_car\selfie_car\data_intake4\v1.011"
 	perspective = InversePerspective(img_shape=(250, 250), desired_shape=(80, 160), marigin=0.25)
 	mapper = Mapper(map_size=(1200,1200),scale=300.0, type='additive')
 	df = pd.read_csv(os.path.join(dirpath, 'vis_v1.csv'))
 	df = df[~df['filenames'].isnull()]
 	columns = ['time','x','y','z','q1','q2','q3','q4']
-	slam_df = pd.read_csv(os.path.join(dirpath,'slam_trajectory2.csv'), sep=' ', names=columns)
+	slam_df = pd.read_csv(os.path.join(dirpath,'slam_trajectory.csv'), sep=' ', names=columns)
 #	imu_df = calculate_position(df, dirpath)
 	for i, row in slam_df.iterrows():
 		#if pd.isnull(row['filenames']):

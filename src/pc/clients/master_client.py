@@ -25,8 +25,8 @@ class QTMasterClient(Client, QThread):
 	def get_status(self):
 		data = self.client_socket.recv(1024).decode()
 		data = json.loads(data)
-		print(data)
-		print(type(data))
+		#print(data)
+		#print(type(data))
 		self.status.emit(data)
 
 	def connect_status(self):
@@ -35,7 +35,7 @@ class QTMasterClient(Client, QThread):
 		self.timer1.start(1000)
 
 	def send_request(self, request):
-		print("Request: [{}]".format(request))
+		#print("Request: [{}]".format(request))
 		self.client_socket.send(json.dumps(request).encode())
 		self.get_status()
 

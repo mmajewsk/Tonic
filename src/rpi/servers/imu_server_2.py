@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+1#!/usr/bin/env python
 ''' Async TCP server to make first tests of newly received GPS trackers '''
 
 import asyncore

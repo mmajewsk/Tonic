@@ -1,5 +1,6 @@
 import os
 import time
+import json
 
 import cv2
 import numpy as np
@@ -9,7 +10,7 @@ from dataset import dump_dataframe, join_imu
 from logic import logic_layers, ImuKeeper, Imu, Mapper
 
 def make_intake_path(intake_name):
-	main_dump_folder = '../../data_intake3'
+	main_dump_folder = '../../data_intake4'
 	intake_path = os.path.join(main_dump_folder, intake_name)
 	if not os.path.exists(intake_path):
 		os.makedirs(intake_path)
@@ -41,6 +42,7 @@ class Controller(BaseController):
 		self.setup_logic_pipeline()
 		self._frame_number = None
 		self._timestamp = None
+		self.odo_data = dict(left=[], right=[])
 
 	def setup_logic_pipeline(self):
 		self.pipeline = logic_layers
@@ -74,12 +76,21 @@ class Controller(BaseController):
 		self.client_sink.start_video()
 		self.client_sink.connect_to_video(self.add_image)
 
+	def connect_odo(self):
+		self.odo_data = dict(left=[],right=[])
+		self.client_sink.start_odo()
+		self.client_sink.connect_to_odo(self.add_odo)
+
 	def add_image(self, frame):
 		img = frame[0]
 		self._timestamp = frame[1]
 		self._clean_frame = img.copy()
 		img, self._keys = self.apply_logic_pipeline(img, self.keys)
 		self._frame = img
+
+	def add_odo(self, odo_response):
+		self.odo_data['left']+=odo_response['left']
+		self.odo_data['right']+=odo_response['right']
 
 	def save_video_stream(self):
 		if self._timestamp is None:
@@ -101,8 +112,12 @@ class Controller(BaseController):
 	def close(self):
 		if self.client_sink.steering_client and self.dump_steering:
 			self.client_sink.steering_client.dump_log(self.intake_path)
+		if self.client_sink.odo_client and self.dump_odo:
+			with open(os.path.join(self.intake_path, 'odo_data.json'), 'w') as f:
+				json.dump(self.odo_data,f)
 		if self.intake_name:
 			dump_dataframe(self.intake_path)
+
 
 	def __del__(self):
 		self.close()
@@ -163,9 +178,9 @@ class MapController(BaseController):
 
 	def close(self):
 		if self.dump_imu:
+			self.imu_processor.dump_logs()
 			with open(os.path.join(self.intake_path,'slam_trajectory.csv'),'w') as f:
 				f.write(self.trajectory.decode())
-			self.imu_processor.dump_logs()
 			join_imu(self.intake_path)
 
 

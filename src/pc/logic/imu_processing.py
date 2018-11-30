@@ -4,7 +4,6 @@ import pandas as pd
 import os
 
 from logic.filtering import KalmanFilter, SimpleCalibration, TiltCorrector
-from logic.ahrs.madgwickahrs import MadgwickAHRS
 
 def data_to_array(data):
 	return np.reshape(np.array(data),(3,3))
@@ -73,7 +72,6 @@ class ImuKeeper:
 		self.dump_name = 'imu.csv'
 		self.dump_path = os.path.join(self.dump_dir, self.dump_name) if self.dump_dir!= None else None
 		self.dump_imu = dump_imu
-		self.ahrs = MadgwickAHRS(sampleperiod=0.1, beta=0.3)
 
 	def log(self, imu):
 		self.log_acc.append(imu.acc)
@@ -154,6 +152,7 @@ class ImuKeeper:
 	def dump_logs(self):
 		if self.dump_path:
 			log = np.array(self.raw_log_all)
+			np.savetxt(self.dump_path+'2', log, delimiter='\t')
 			data={'acc_x':log[:,0],
 				  'acc_y':log[:,1],
 				  'acc_z':log[:,2],

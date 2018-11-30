@@ -19,6 +19,8 @@ class MainApp(QWidget):
 			self.keys = {}
 		if self.controller.client_sink.video_client:
 			self.setup_camera()
+		if self.controller.client_sink.odo_client:
+			self.setup_odo()
 		self.setup_logic_pipeline()
 		self.setup_ui()
 
@@ -28,6 +30,9 @@ class MainApp(QWidget):
 	def setup_steering(self):
 		self.keys[17] = False
 		self.controller.connect_steering(self)
+
+	def setup_odo(self):
+		self.controller.connect_odo()
 
 	def setup_ui(self):
 		"""Initialize widgets.
@@ -116,8 +121,8 @@ class MapWindow(QWidget):
 
 	def ask_trajectory(self):
 		self.controller.get_slam_trajectory()
-		print('TRAJ')
-		print(self.controller.trajectory)
+		#print('TRAJ')
+		#print(self.controller.trajectory)
 
 
 	def setup_imu(self):

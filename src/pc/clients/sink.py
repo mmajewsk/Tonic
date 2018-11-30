@@ -44,7 +44,7 @@ class ClientSink:
 		self.odo_client.moveToThread(self.thread_odo)
 		self.odo_client.start()
 
-	def connect_tot_odo(self, method):
+	def connect_to_odo(self, method):
 		self.odo_client.data_downloaded[dict].connect(method)
 
 	def connect_to_imu(self, method):

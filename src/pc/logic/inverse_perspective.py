@@ -13,11 +13,19 @@ HAXOR_SRC = np.array([
 		(0+12,240-24),
 
 	]).astype(np.float32)
+
+HAXOR_SRC2 = np.array([
+		(80,160),
+		(216,160),
+		(320-28, 240-23),
+		(0+12,240-24),
+
+	]).astype(np.float32)
 ##for rect 2x1
 
 
 class InversePerspective(Action):
-	def __init__(self, perspective_area=HAXOR_SRC, img_shape=(700, 700), desired_shape=(150,300), marigin=12):
+	def __init__(self, perspective_area=HAXOR_SRC2, img_shape=(700, 700), desired_shape=(150,300), marigin=12):
 		self.logger = logging.getLogger('inverse_perspective.InversePerspective')
 		self.perspective_area = perspective_area
 		self.canvas_shape = img_shape
@@ -73,7 +81,7 @@ class InversePerspective(Action):
 if __name__=='__main__':
 	cal_data = r"C:\repositories\autonomic_car\selfie_car\src\pc\settings\camera_calibration\calib.json"
 	cal = VideoCalibration(cal_data, (320, 240))
-	dirpath = r"C:\repositories\autonomic_car\selfie_car\data_intake3\calib4"
+	dirpath = r"C:\repositories\autonomic_car\selfie_car\data_intake4\distance_calib_1"
 	marigin = 15
 	"""
 			(102,153),
@@ -109,6 +117,6 @@ if __name__=='__main__':
 		cv2.imshow('maskpoints', img)
 		img = cv2.bitwise_and(img,img,mask=perspective.roi_mask)
 		cv2.imshow('masked', img)
-		cv2.waitKey(20)
+		cv2.waitKey(0)
 
 	cv2.destroyAllWindows()

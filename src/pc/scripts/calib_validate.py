@@ -1,7 +1,10 @@
+import time
 import numpy as np
 import cv2
 import argparse
 import os
+import sys
+sys.path.append(r'C:\repositories\autonomic_car\selfie_car\src\pc')
 from clients import video_client
 import multiprocessing
 
@@ -16,9 +19,11 @@ class ServerSource:
 
 	def get_data(self):
 		self.tasks.put(True)
+		img=None
 		while not self.results.empty():
-			img = self.results.get()
-		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+			img, t = self.results.get()
+			#print(img.shape)
+			img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 		return img
 
 	@property
@@ -71,6 +76,10 @@ def calib(output_folder, live=False, source_folder=None):
 	data_source.connect()
 	for fname in data_source.range:
 		img = data_source.get_data()
+		if img == None:
+			time.sleep(0.3)
+			print("no response")
+			continue
 		if img.shape[0] > 20:
 			# Find the chess board corners
 

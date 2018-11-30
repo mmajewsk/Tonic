@@ -81,7 +81,7 @@ class OdoLink(ProcessLink):
 
 	def read(self):
 		self.input_queue.put("read")
-		readout = None
+		readout = dict(left=[],right=[])
 		while not self.output_queue.empty():
 			readout = self.output_queue.get()
 		return readout

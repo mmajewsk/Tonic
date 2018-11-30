@@ -54,7 +54,7 @@ class MultiOdoClient(OdoClient, multiprocessing.Process):
 
 
 class QTOdoClient(OdoClient, QThread):
-	data_downloaded = pyqtSignal(np.ndarray)
+	data_downloaded = pyqtSignal(dict)
 	def __init__(self, *args, **kwargs):
 		QThread.__init__(self)
 		OdoClient.__init__(self, *args, **kwargs)

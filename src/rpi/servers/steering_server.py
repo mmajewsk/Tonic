@@ -15,8 +15,8 @@ connection, adress = server.accept()
 
 start = time.time()
 
-left_motor = dict(velocity=45, frequency=70, high=100)
-right_motor = dict(velocity=45, frequency=70, high=100)
+left_motor = dict(velocity=20, frequency=50, high=100)
+right_motor = dict(velocity=20, frequency=50, high=100)
 steering_thread = SteeringTranslatorRobot(left_motor=left_motor, right_motor=right_motor, time_delay=0.05)
 
 while True:

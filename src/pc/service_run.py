@@ -39,7 +39,7 @@ class ServerConnection(QGroupBox):
 		status_message, status_time = self.process_status_response(_status)
 		self.status_message = status_message
 		if status_time is not None:
-			print(self.start_time, status_time)
+			#print(self.start_time, status_time)
 			if self.start_time is None:
 				self.start_time = status_time
 			self.time_elapsed = (status_time-self.start_time).total_seconds()
