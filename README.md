@@ -5,7 +5,7 @@
 ![wwwwowww](https://media.giphy.com/media/OK27wINdQS5YQ/giphy.gif)
 
 
-I present to You, the project of an autonomic car, almost entirely written in Python.
+I present to You, the autonomous car, almost entirely written in Python.
 
 # Second Version*
 
@@ -73,3 +73,12 @@ Looks a bit worse, but is waaaaay more effective ;]
 ![](https://rlv.zcache.com/uncle_sam_i_want_you_poster-rad708dab64b04b6e8f41bb6beece2194_q1kv_8byvr_540.jpg)
 
 If you would like to help, or have questions regarding the project, see ![here](https://github.com/mmajewsk/Tonic/issues).
+
+
+
+# Setting up
+
+- Follow the hardware guide (❌ Not created yet)
+- Follow the device setup guide (❌ Not created yet)
+- Create orb slam docker, using [this repo](https://github.com/mmajewsk/orb_slam_py2_docker/)  (✔️)
+- Follow the software setup guide (❌ Not created yet)
