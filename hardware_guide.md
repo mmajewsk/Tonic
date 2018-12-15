@@ -9,7 +9,7 @@
 -  - [sunny connector for camera](https://botland.com.pl/moduly-i-zestawy-raspberry-pi-zero/8764-adapter-do-kamery-dla-raspberry-pi-zero.html?search_query=pi+zero&results=64)
 - [Li-Pol Redox 900mAh 20C 3S 11,1V](https://botland.com.pl/akumulatory-li-pol-3s-111v-/8320-pakiet-li-pol-redox-900mah-20c-3s-111v.html) - I could not find that part on amazon, but battery with simmilar specs could do, but you might need to change the connector
 - [Charger for battery](https://botland.com.pl/ladowarki-lipol-sieciowe/1240-ladowarka-redox-lipo-z-zasilaczem.html)
-- [L298 - Dual Drive control](https://www.amazon.com/Qunqi-Controller-Module-Stepper-Arduino/dp/B014KMHSW6/ref=sr_1_1?ie=UTF8&qid=1544008236&sr=8-1&keywords=l298) ~ 7$
+- [L298N - Dual Drive control](https://www.amazon.com/Qunqi-Controller-Module-Stepper-Arduino/dp/B014KMHSW6/ref=sr_1_1?ie=UTF8&qid=1544008236&sr=8-1&keywords=l298) ~ 7$
 -  - Pair of T-DEAN connectors
 - for RPI0 [GPIO pins](https://www.amazon.com/DIKAVS-Break-Away-2x20-pin-Header-Raspberry/dp/B075VNBD3R/ref=sr_1_4?ie=UTF8&qid=1544008428&sr=8-4&keywords=gpio+raspberry+pi+zero) you may find already in some raspberry pi zero sets
 - some [connecting cables](https://www.amazon.com/Elegoo-EL-CP-004-Multicolored-Breadboard-arduino/dp/B01EV70C78/ref=sr_1_3?ie=UTF8&qid=1544008389&sr=8-3&keywords=gpio+wires)
@@ -21,15 +21,78 @@
 ### First build the chassis 
 This should be pretty intuitive.
 
+### Mount raspberry
+
+I used ot glue and zip-tie. Remember to orient it correct way, and leave the video connector accessible.
+
 ### Next mount the camera
-Mount Imu as well.
+Mount Imu as well. Ideally youwant it as close to the camera as possible.
+I used some bolts and nuts to mount it with front wheel.
+
+[camera-mount-image]
+
+[imu-mounted-image]
+
+
 
 ## Mount the battery and on switch
+Attach the battery under the chassis. I used a cable tie around PI and created a loop underneath chassis.
+
+[battery-mount]
 
 ### Mount the drive control and RPI0
 
+I used hot glue. Do not let cables touch the radiatior. Make it as stable as possible.
+
 ## Connecting the wires
 
-## 
+For the reference to the RPI0 pinout, use [this](https://pinout.xyz/) website. I will use both the board numbering and BCM.
+So here is the wiring scheme:
+
+[wiring-scheme-bb]
+
+Some components may not match their real counterparts. Don't worry, I will guide through each component.
+
+### PI0 to Camera
+
+This is easy; just lift the plugs a little bit both at camera and PI.
+The one on the raspberry is **very ease to break** so be careful, but dont feel bad if you accidentaly will break it. It just happens ;) 
+
+[camera-wiring]
+
+### PI0 to L298N
+This one is is the trickiest.
+
+Steering pins:
+
+Pin 	|Raspberry BCM 	| L298N
+37 	| BCM 26 	| ENA
+35 	| BCM 19 	| IN1
+33 	| BCM 13 	| IN2
+31 	| BCM 6 	| IN3
+29 	| BCM 29 	| IN4
+27 	| BCM 0 	| ENB
+
+Power:
+
+Pin 	|Raspberry BCM 	| L298N
+2 	| 5v Power 	| +5V
+6 	| Ground 	| GND
+
+### PI0 to encoders
+
+### PI0 to IMU
+
+
+### L298N to motors
+
+Just connect OUT1 and OUT2 to the right motor, and OUT3 and OUT4 to the left.
+If steering does not work properly, try switching cables in the motor.
+
+### L298 to Power
+
+### L298 to capacitor
+
+### Power and switch
 
 
