@@ -73,16 +73,43 @@ Pin 	|Raspberry BCM 	| L298N
 29 	| BCM 29 	| IN4
 27 	| BCM 0 	| ENB
 
+[wiring-driver-pins]
+
 Power:
 
 Pin 	|Raspberry BCM 	| L298N
 2 	| 5v Power 	| +5V
 6 	| Ground 	| GND
 
+[wiring-driver-power]
+
 ### PI0 to encoders
+
+Wiring of the pins and ground are as follow:
+
+Pin 	|Raspberry BCM 	| Encoder
+36 	| BCM 16 	| Right Encoder OUT
+34 	| Ground 	| GND
+32 	| BCM 12 	| Left Encoder OUT
+30 	| Ground 	| GND
+
+[encoders-wiring]
+
+When it comes to voltage, I just split the cable coming from Pin 4 (5v Power) of RPI0
+
+[encoders-power-split]
 
 ### PI0 to IMU
 
+Be sure **not to mix those up**. They are a bit confusing. 
+
+Pin 	|Raspberry BCM 	| IMU
+1 	| 3v3 Power 	| VDD
+3 	| BCM 2 	| SDA
+5 	| BCM 3 	| SCL
+9 	| Ground 	| GND
+
+[IMU-wiring]
 
 ### L298N to motors
 
@@ -91,8 +118,16 @@ If steering does not work properly, try switching cables in the motor.
 
 ### L298 to Power
 
+Use power switch on one of the cables. Make sure that they cannot touch anything else.
+**If you close the circuit on the battery it might blow up**
+I also used t-dean connectors, and unplug it when im transporting the robot.
+
 ### L298 to capacitor
 
-### Power and switch
+Im using 1500 micro-farad 16V capacitor. **Its polarised so make sure to properly orient it, and to put the minus into the ground**
+It acts as a stabiliser, its not necessary but greatly improves the stability of the circuit.
+
+[capacitor]
+
 
 
