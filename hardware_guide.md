@@ -66,6 +66,7 @@ This one is is the trickiest.
 Steering pins:
 
 Pin 	|Raspberry BCM 	| L298N
+===============================
 37 	| BCM 26 	| ENA
 35 	| BCM 19 	| IN1
 33 	| BCM 13 	| IN2
@@ -78,6 +79,7 @@ Pin 	|Raspberry BCM 	| L298N
 Power:
 
 Pin 	|Raspberry BCM 	| L298N
+===============================
 2 	| 5v Power 	| +5V
 6 	| Ground 	| GND
 
@@ -88,6 +90,7 @@ Pin 	|Raspberry BCM 	| L298N
 Wiring of the pins and ground are as follow:
 
 Pin 	|Raspberry BCM 	| Encoder
+===============================
 36 	| BCM 16 	| Right Encoder OUT
 34 	| Ground 	| GND
 32 	| BCM 12 	| Left Encoder OUT
@@ -104,6 +107,7 @@ When it comes to voltage, I just split the cable coming from Pin 4 (5v Power) of
 Be sure **not to mix those up**. They are a bit confusing. 
 
 Pin 	|Raspberry BCM 	| IMU
+===============================
 1 	| 3v3 Power 	| VDD
 3 	| BCM 2 	| SDA
 5 	| BCM 3 	| SCL
