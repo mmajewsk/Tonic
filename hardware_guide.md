@@ -14,7 +14,7 @@
 - for RPI0 [GPIO pins](https://www.amazon.com/DIKAVS-Break-Away-2x20-pin-Header-Raspberry/dp/B075VNBD3R/ref=sr_1_4?ie=UTF8&qid=1544008428&sr=8-4&keywords=gpio+raspberry+pi+zero) you may find already in some raspberry pi zero sets
 - some [connecting cables](https://www.amazon.com/Elegoo-EL-CP-004-Multicolored-Breadboard-arduino/dp/B01EV70C78/ref=sr_1_3?ie=UTF8&qid=1544008389&sr=8-3&keywords=gpio+wires)
 - something like this [chassis](https://www.amazon.com/d/Robotics-Kit/diymore-Chassis-Encoder-Battery-Arduino/B01LWYUQPH/ref=sr_1_fkmr2_3?ie=UTF8&qid=1544653043&sr=8-3-fkmr2&keywords=chassis+Rectangle+2WD) to mount everythin with a pair of wheels with motors
-- something like [this](https://www.amazon.com/Waveshare-Photo-Interrupter-Sensor-Measuring/dp/B01N0FQ21B/ref=sr_1_1?ie=UTF8&qid=1544653159&sr=8-1&keywords=waveshare+photo+interrupter)
+- something like this [photo interrupter](https://www.amazon.com/Waveshare-Photo-Interrupter-Sensor-Measuring/dp/B01N0FQ21B/ref=sr_1_1?ie=UTF8&qid=1544653159&sr=8-1&keywords=waveshare+photo+interrupter)
 
 ## How to build this
 
