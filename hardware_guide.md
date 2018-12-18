@@ -27,18 +27,15 @@ I used ot glue and zip-tie. Remember to orient it correct way, and leave the vid
 
 ### Next mount the camera
 Mount Imu as well. Ideally youwant it as close to the camera as possible.
-I used some bolts and nuts to mount it with front wheel.
+I used some bolts and nuts to mount over front wheel.
 
-[camera-mount-image]
-
-[imu-mounted-image]
-
+![camera-mount-image](https://imgur.com/h7iWKCl.jpg)
 
 
 ## Mount the battery and on switch
 Attach the battery under the chassis. I used a cable tie around PI and created a loop underneath chassis.
 
-[battery-mount]
+![battery-mount](https://imgur.com/JN1e4w5.jpg)
 
 ### Mount the drive control and RPI0
 
@@ -49,7 +46,8 @@ I used hot glue. Do not let cables touch the radiatior. Make it as stable as pos
 For the reference to the RPI0 pinout, use [this](https://pinout.xyz/) website. I will use both the board numbering and BCM.
 So here is the wiring scheme:
 
-[wiring-scheme-bb]
+![wiring-scheme-bb](https://imgur.com/DKIMYCb.jpg)
+![overall_wires](https://imgur.com/C4JZ7Y8.jpg)
 
 Some components may not match their real counterparts. Don't worry, I will guide through each component.
 
@@ -58,7 +56,7 @@ Some components may not match their real counterparts. Don't worry, I will guide
 This is easy; just lift the plugs a little bit both at camera and PI.
 The one on the raspberry is **very ease to break** so be careful, but dont feel bad if you accidentaly will break it. It just happens ;) 
 
-[camera-wiring]
+![camera-wiring](https://imgur.com/fBtAxvY.jpg)
 
 ### PI0 to L298N
 This one is is the trickiest.
@@ -66,54 +64,56 @@ This one is is the trickiest.
 Steering pins:
 
 Pin 	|Raspberry BCM 	| L298N
-===============================
-37 	| BCM 26 	| ENA
-35 	| BCM 19 	| IN1
-33 	| BCM 13 	| IN2
-31 	| BCM 6 	| IN3
-29 	| BCM 29 	| IN4
-27 	| BCM 0 	| ENB
+------|---------------|--------
+37 	  | BCM 26 	      | ENA
+35 	  | BCM 19 	      | IN1
+33 	  | BCM 13 	      | IN2
+31 	  | BCM 6 	      | IN3
+29 	  | BCM 29 	      | IN4
+27 	  | BCM 0 	      | ENB
 
-[wiring-driver-pins]
+
 
 Power:
 
 Pin 	|Raspberry BCM 	| L298N
-===============================
-2 	| 5v Power 	| +5V
-6 	| Ground 	| GND
+------|---------------|--------
+2 	  | 5v Power 	    | +5V
+6 	  | Ground 	      | GND
 
-[wiring-driver-power]
+![wiring-driver-pins](https://imgur.com/das1gKi.jpg)
+
+The colors used on the wiring scheme are coresponding with photos.
 
 ### PI0 to encoders
 
 Wiring of the pins and ground are as follow:
 
 Pin 	|Raspberry BCM 	| Encoder
-===============================
-36 	| BCM 16 	| Right Encoder OUT
-34 	| Ground 	| GND
-32 	| BCM 12 	| Left Encoder OUT
-30 	| Ground 	| GND
+------|---------------|-----------
+36 	  | BCM 16 	      | Right Encoder OUT
+34 	  | Ground 	      | GND
+32 	  | BCM 12 	      | Left Encoder OUT
+30 	  | Ground 	      | GND
 
-[encoders-wiring]
+![encoders-wiring](https://imgur.com/dbG5z4o)
 
 When it comes to voltage, I just split the cable coming from Pin 4 (5v Power) of RPI0
 
-[encoders-power-split]
+![encoders-power-split](https://imgur.com/k0W4KPd)
 
 ### PI0 to IMU
 
 Be sure **not to mix those up**. They are a bit confusing. 
 
 Pin 	|Raspberry BCM 	| IMU
-===============================
-1 	| 3v3 Power 	| VDD
-3 	| BCM 2 	| SDA
-5 	| BCM 3 	| SCL
-9 	| Ground 	| GND
+------|---------------|---------
+1 	  | 3v3 Power 	  | VDD
+3 	  | BCM 2 	      | SDA
+5 	  | BCM 3 	      | SCL
+9 	  | Ground 	      | GND
 
-[IMU-wiring]
+![IMU-wiring](https://imgur.com/hTLW2rE.jpg)
 
 ### L298N to motors
 
@@ -131,7 +131,6 @@ I also used t-dean connectors, and unplug it when im transporting the robot.
 Im using 1500 micro-farad 16V capacitor. **Its polarised so make sure to properly orient it, and to put the minus into the ground**
 It acts as a stabiliser, its not necessary but greatly improves the stability of the circuit.
 
-[capacitor]
 
 
 
