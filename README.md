@@ -78,7 +78,7 @@ If you would like to help, or have questions regarding the project, see ![here](
 
 # Setting up
 
-- Follow the hardware guide (❌ Not created yet)
+- Follow the [hardware guide](https://github.com/mmajewsk/Tonic/blob/master/hardware_guide.md) (✔️)
 - Follow the device setup guide (❌ Not created yet)
 - Create orb slam docker, using [this repo](https://github.com/mmajewsk/orb_slam_py2_docker/)  (✔️)
 - Follow the software setup guide (❌ Not created yet)
