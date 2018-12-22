@@ -26,5 +26,8 @@ server:
   odo:
     port: 2206
     command: "python3 -u odometry.py"
+  slam:
+    ip: '127.0.0.1'
+    port: 2207
   master:
     port: 2205

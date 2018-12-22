@@ -40,6 +40,8 @@ if __name__ == "__main__":
 	imu_client = None
 	slam_client=None
 	odo_client=None
+	slam_ip = settings['server']['slam']['ip']
+	slam_port = settings['server']['slam']['port']
 	video_size = settings['hardware']['camera']['image']['shape'][:2]
 	if args.video:
 		video_port = settings['server']['video']['port']
@@ -50,7 +52,7 @@ if __name__ == "__main__":
 	if args.imu:
 		imu_port = settings['server']['imu']['port']
 		imu_client = QTImuClient(server_adress=(server_ip, imu_port))
-		slam_client = QtSlamClient(server_adress=('127.0.0.1', 2207))
+		slam_client = QtSlamClient(server_adress=(slam_ip, slam_port))
 	if args.odo:
 		odo_port = settings['server']['odo']['port']
 		odo_client = QTOdoClient(server_adress=(server_ip, odo_port))
