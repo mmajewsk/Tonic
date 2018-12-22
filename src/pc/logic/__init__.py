@@ -5,7 +5,6 @@ from clients import QTSteeringClient
 from logic.imu_processing import ImuKeeper, Imu
 
 import os
-import logic.ahrs
 from logic.mapper import Mapper
 
 logic_layers = {
