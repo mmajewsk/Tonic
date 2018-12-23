@@ -4,6 +4,16 @@
 
 I present to You, the autonomous car, (almost) entirely written in Python.
 
+**Contents:**
+
+1. [Old Version](#old-version)
+2. [New Version](#the-third-version)
+3. [Hardware Guide](#hardware-guide)
+4. [List of components](#list-of-components)
+5. [Connecting the wires](#connecting-the-wires)
+6. [Software Guide](#software-guide)
+7. [Device setup](#device-setup)
+
 # Old version
 
 Video
@@ -28,11 +38,11 @@ To implement a SLAM capability, that would enable the car to map the environemnt
   - Partian SLAM implemented
   - Using only the feed from camera, it can map the environment to "birds eye view"
   
-  **Attention! This is cool!** ORB-slam working on the camera deed:
+  **Attention! This is cool!** ORB-slam working on the camera feed (video):
   
   [![Second version (video)](https://img.youtube.com/vi/XR-vKycwOm8/0.jpg)](https://www.youtube.com/watch?v=XR-vKycwOm8)
   
-  **C A R E F U L! This is cool as well** 2D map from the video feed:
+  **C A R E F U L! This is cool as well** 2D map from the video feed (video):
   
   [![Second version (video)](https://img.youtube.com/vi/Wd5jEd4hx6U/0.jpg)](https://www.youtube.com/watch?v=Wd5jEd4hx6U)
   
@@ -227,7 +237,7 @@ pip install -r requirements.txt
 
 There is some set up required, before you can run this:
 
-0. Set up the [RPI0](https://github.com/mmajewsk/Tonic/blob/master/device_setup.md), and [SLAM docker](https://github.com/mmajewsk/orb_slam_py2_docker)
+0. Set up the [RPI0](#device-setup), and [SLAM docker](https://github.com/mmajewsk/orb_slam_py2_docker)
 1. callibrate the camera
 2. callibrate the IMU
 3. Set up the `settings.yml` correctly
@@ -235,7 +245,7 @@ There is some set up required, before you can run this:
 5. Run Tonic 
 
 ### Seting up RPI0 and SLAM
-For guide for setting up RPI0 look [here](https://github.com/mmajewsk/Tonic/blob/master/device_setup.md).
+For guide for setting up RPI0 look [here](#device-setup).
 How to set up SLAM docker see [here](https://github.com/mmajewsk/orb_slam_py2_docker).
 
 ### Configuring settings.yml
@@ -288,7 +298,7 @@ Also fill in the `ip` in `slam`, if you are not running it on the same machine a
 
 
 ### Setting up services
-You can find the guide [here](https://github.com/mmajewsk/Tonic/blob/master/device_setup.md#setting-up-the-raspberry).
+You can find the guide [here](#setting-up-the-raspberry). You have to be running services to access them with Tonic.
 
 ## Running Tonic
 
@@ -297,7 +307,7 @@ python run.py -v -s
 ```
 
 This should run the Tonic with connected Video feed and active steering.
-The steering is only active when you have clicked into the window with the feed.
+The steering (WASD keys only!) is only active when you have clicked into the window with the feed.
 You can run Tonic with any number of options specified in the help menu.
 Altough, **to run SLAM you have to run it with Imu** (`-i`).
 
@@ -313,6 +323,7 @@ Each of the options is described in help `python run.py -h`.
 ### Turning the services by Tonic (not fully supported)
 
 There was an attempt to simplify the process of turning everything on, you can see the code used to do that in the file `service_run.py`.
+
 # Device Setup
 
 This file will guide throug the usage of the `rpi` folder.
@@ -323,8 +334,8 @@ It was not tested on any other device.
 
 First of all, you need to e connected to the same network as the device that you will be running Tonic on.
 There is enough guides on how to connect the RPI to the wifi already so go and find one.
-Remember to put the Raspberrys IP into the [settings]()
-If you will do that, you should build the device toghether, as it is inthe [hardware guide]()
+Remember to put the Raspberrys IP into the [settings](#configuring-settings.yml)
+If you will do that, you should build the device toghether, as it is inthe [hardware guide](#hardware-guide)
 
 ## How to use this
 
@@ -335,7 +346,7 @@ Yes, this is not nice, but unifying everything so it would work as reliably and 
 
 ### Requirements
 
-This service requires **Python 2** [picamer](https://picamera.readthedocs.io), but it should already be in your raspberry.
+This service requires **Python 2** [picamera](https://picamera.readthedocs.io), but it should already be in your raspberry.
 Remember to enable the camera in the RPI settings!
 
 
