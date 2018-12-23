@@ -1,30 +1,14 @@
 ![](https://i.imgur.com/eh1QMvS.jpg)
 
-# ABSOLUTELY AMAZING THING: auTONomous Intelligent Car 
+# Autonomous Intelligent Car 
 
-![wwwwowww](https://media.giphy.com/media/OK27wINdQS5YQ/giphy.gif)
+I present to You, the autonomous car, (almost) entirely written in Python.
 
+# Old version
 
-I present to You, the autonomous car, almost entirely written in Python.
+Video
 
-# Second Version*
-
-![Second Version](https://lh3.googleusercontent.com/xZi2YtqGj9eyGwgN6Cv7f8IOTtTGhyF9R63gP46E6o_FYAIG0sE6KshoPQIdHI0yB0M_12FqhraWmgf5IVwChfGCR2R8_xB3VU9uThSF9Swo1kTQs50YQw0wuFENgqzi8uNtJzIkJLxglpeXTPdaTHxA_LHPb80bH_POSiPaGubV4qFAL0eRO4jUh0VOYhyAYfb7j2-ZfgoqDgAC3rcJ3TWbuNi-qLxAQKupFlW5ZhBKi_qju2IA98hOyAfwRD92LxWDya2be6XsyNzHlpJT-XeSdNu_LKqHBJZzExF3fIL10ag0dK9orViAvptESs7cL5s5owkRAvwpUKaaDm1F4QMnlOoFgy_4oQPYg4aeNTdIakgZdmuUQfz2G_dRnHjbeNHXEoDy4z5yWqFr_M2v0PPmH87NnbOYrEjge-KF7mY1HNYH8oGjzq5pnKOrO7UAB0LrGO7smxilqWQ2T3-dK-V-ppEujbIzZRjaw02xdh94a-Pj9x0Q0iKmAUXI370z01C_racZTcPeCKxjOabj1A8OgADNkjUt1_UHfw-kYKIC4roeObC4l-dr3D-8ymsQc9FuoLTXJAgi5Vhq193Wyel-LUcL44efAl4PglNH6oVdimggdyzmqH-57Al1r8WmkB7a9NM4V1o2uDVj38rdWyZFSQ=w1791-h1007-no)
-
-(*First one totally not worth showing xD)
-
-## Hardware MARK2:
-- RC Range Rover Car [like this one](http://allegro.pl/range-rover-evoque-sterowany-rastar-1-24-full-r-c-i5741237813.html)
-- [Raspberry Pi Zero](https://botland.com.pl/moduly-i-zestawy-raspberry-pi-zero/8330-raspberry-pi-zero-w-512mb-ram-1ghz-wifi-bt-41.html?search_query=raspberry+pi+zero&results=30) 
-- [Pololu MinIMU-9 v5](https://botland.com.pl/czujniki-9dof-imu/5528-pololu-minimu-9-v5-9dof-akcelerometr-zyroskop-i-magnetometr-i2c.html)
-- [Pi Camera](https://botland.com.pl/kamery-do-raspberry-pi-32b/5619-camera-hd-c-kamera-dla-raspberry-pi-zgodna-z-wersja-oryginalna.html?search_query=pi+kamera&results=236) with connecting tape
-- [Pakiet Li-Pol Redox 900mAh 20C 3S 11,1V](https://botland.com.pl/akumulatory-li-pol-3s-111v-/8320-pakiet-li-pol-redox-900mah-20c-3s-111v.html)
-- [L298 -](https://botland.com.pl/sterowniki-silnikow-moduly/3164-l298-dwukanalowy-sterownik-silnikow-modul.html)
-
-Second version on video
-
-[![Druga działająca wersja (wideo)](https://img.youtube.com/vi/XM7lNRdp8ow/0.jpg)](https://www.youtube.com/watch?v=XM7lNRdp8ow)
- 
+[![second version (video)](https://img.youtube.com/vi/XM7lNRdp8ow/0.jpg)](https://www.youtube.com/watch?v=XM7lNRdp8ow)
 
 ## How does it work:
 
@@ -52,7 +36,8 @@ To implement a SLAM capability, that would enable the car to map the environemnt
   
   [![Second version (video)](https://img.youtube.com/vi/Wd5jEd4hx6U/0.jpg)](https://www.youtube.com/watch?v=Wd5jEd4hx6U)
   
-  
+  ![wwwwowww](https://media.giphy.com/media/OK27wINdQS5YQ/giphy.gif)
+
   
 # The third version
 
@@ -78,7 +63,7 @@ If you would like to help, or have questions regarding the project, see ![here](
 
 # Setting up
 
-- Follow the [hardware guide](https://github.com/mmajewsk/Tonic/blob/master/hardware_guide.md) (✔️)
-- Follow the device setup guide (❌ Not created yet)
-- Create orb slam docker, using [this repo](https://github.com/mmajewsk/orb_slam_py2_docker/)  (✔️)
-- Follow the software setup guide (❌ Not created yet)
+- Follow the [hardware guide](https://github.com/mmajewsk/Tonic/blob/master/hardware_guide.md) 
+- Follow the [device setup guide](https://github.com/mmajewsk/Tonic/blob/master/device_setup.md)
+- Create orb slam docker, using [this repo](https://github.com/mmajewsk/orb_slam_py2_docker/) 
+- Follow the [software setup guide ](https://github.com/mmajewsk/Tonic/blob/master/software_guide.md)
