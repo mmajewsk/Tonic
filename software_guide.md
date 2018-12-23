@@ -5,7 +5,7 @@
 ### Python
 
 Of course, Tonic is written almost entirely in python, so you will be needing python 3.6 at least.
-I highly recommend using [Anaconda]()
+I highly recommend using [Anaconda](https://www.anaconda.com/download/)
 
 ### OpenCV
 
@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 There is some set up required, before you can run this:
 
-0. Set up the [RPI0](), and [SLAM docker]()
+0. Set up the [RPI0](https://github.com/mmajewsk/Tonic/blob/dev/device_setup.md), and [SLAM docker](https://github.com/mmajewsk/orb_slam_py2_docker)
 1. callibrate the camera
 2. callibrate the IMU
 3. Set up the `settings.yml` correctly
@@ -40,8 +40,8 @@ There is some set up required, before you can run this:
 5. Run Tonic 
 
 ### Seting up RPI0 and SLAM
-For guide for setting up RPI0 look [here]().
-How to set up SLAM docker see [here]().
+For guide for setting up RPI0 look [here](https://github.com/mmajewsk/Tonic/blob/dev/device_setup.md).
+How to set up SLAM docker see [here](https://github.com/mmajewsk/orb_slam_py2_docker).
 
 ### Configuring settings.yml
 
@@ -90,7 +90,7 @@ Also fill in the `ip` in `slam`, if you are not running it on the same machine.
 
 
 ### Setting up services
-You can find the guide [here]().
+You can find the guide [here](https://github.com/mmajewsk/Tonic/blob/dev/device_setup.md#setting-up-the-raspberry).
 
 ## Running Tonic
 
