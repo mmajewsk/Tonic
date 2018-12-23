@@ -96,11 +96,11 @@ Pin 	|Raspberry BCM 	| Encoder
 32 	  | BCM 12 	      | Left Encoder OUT
 30 	  | Ground 	      | GND
 
-![encoders-wiring](https://imgur.com/dbG5z4o)
+![encoders-wiring](https://imgur.com/dbG5z4o.jpg)
 
 When it comes to voltage, I just split the cable coming from Pin 4 (5v Power) of RPI0
 
-![encoders-power-split](https://imgur.com/k0W4KPd)
+![encoders-power-split](https://imgur.com/k0W4KPd.jpg)
 
 ### PI0 to IMU
 
