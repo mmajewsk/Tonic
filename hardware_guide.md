@@ -2,7 +2,7 @@
 
 ## List of components
 
-
+- [Raspberry Pi Zero W](https://www.amazon.com/Raspberry-Pi-Zero-Wireless-model/dp/B06XFZC3BX) 
 - [Pololu MinIMU-9 v5] ~20$ - It does not need to be a exact match, but you will have to modify the code to cover it.
 - [Pi Camera](https://www.amazon.com/kuman-Raspberry-Camera-Module-OV5647/dp/B06XKLLT6G/ref=sr_1_5?ie=UTF8&qid=1544007564&sr=8-5&keywords=pi+camera+zero) with connecting tape ~ 16$ - You need specifically this connecting tape for pi zero, as it is different than for other raspberry versions
 - [camera case](https://www.amazon.com/components-Latest-Raspberry-Camera-Megapixel/dp/B00IJZJKK4/ref=sr_1_15?ie=UTF8&qid=1544007656&sr=8-15&keywords=pi+camera+case) this camera case, or you can 3Dprint one.
