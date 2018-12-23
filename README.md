@@ -1,4 +1,4 @@
-![](https://i.imgur.com/eh1QMvS.jpg)
+![](https://imgur.com/uKuppcF.jpg)
 
 # Autonomous Intelligent Car 
 
