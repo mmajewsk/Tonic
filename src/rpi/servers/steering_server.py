@@ -1,5 +1,3 @@
-#http://picamera.readthedocs.io/en/release-1.10/recipes2.html#rapid-capture-and-streaming
-
 import socket
 import time
 from steering import SteeringTranslatorRobot
