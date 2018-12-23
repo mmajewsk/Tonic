@@ -112,4 +112,6 @@ python run.py -s -v -i -o --dump_video --dump_steering --dump_imu --dump_odo /pa
 Each of the options ins described in help `python run.py -h`.
 **Remember to change the folder if you want to take new data, because it will defaultly overwrite existing data**
 
+### Turning the services by Tonic (not fully supported)
 
+There was an attempt to simplify the process of turning everything on, you can see the code used to do that in the file `service_run.py`.
