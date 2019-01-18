@@ -5,18 +5,23 @@ import asyncore
 import socket
 import logging
 import json
-from base_server import BaseServer, BaseClientHandler
+from server_management import BaseServer, BaseClientHandler
 from imu_interceptor import ImuEuler
 
 
 class ImuClientHandler(BaseClientHandler):
-	def __init__(self, sock, address):
-		BaseClientHandler.__init__(self, sock, address)
+	def __init__(self, sock, address, jsonify=True):
+		BaseClientHandler.__init__(self, sock, address, jsonify=jsonify)
 		self.imu = ImuEuler()
 		self.imu.connect()
 
 	def readout(self, input_data):
-		return self.imu.read()
+		imu_data = self.imu.read()
+		if 'data' in imu_data:
+			return imu_data['data']
+		elif 'info' in imu_data:
+			self.logger.info(' ==========[{}]==========='.format(imu_data['info']))
+
 
 
 class ImuServer(BaseServer):
@@ -31,7 +36,7 @@ class ImuServer(BaseServer):
 def main():
 	logging.basicConfig(level=logging.DEBUG, format='%(name)s:[%(levelname)s]: %(message)s')
 	HOST = ''
-	PORT = 2206
+	PORT = 2204
 	s = ImuServer((HOST, PORT))
 	asyncore.loop()
 

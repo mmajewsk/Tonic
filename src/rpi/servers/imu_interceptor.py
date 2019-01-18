@@ -1,7 +1,6 @@
-from __future__ import print_function # Only Python 2.x
 import subprocess
 import multiprocessing
-
+from interruptingcow import timeout
 
 class MultiImuSubprocess(multiprocessing.Process):
 	def __init__(self, result_queue, death_pill_queue, cmd, *args, **kwargs):
@@ -12,16 +11,29 @@ class MultiImuSubprocess(multiprocessing.Process):
 		self.cmd = cmd
 
 	def run(self):
-		cmd = self.cmd
-		popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
-		for stdout_line in iter(popen.stdout.readline, ""):
-			s = stdout_line
-			self.data = [float(number) for number in s.split()]
-			self.return_data()
-			if not self.death_pill_queue.empty():
+		while True:
+			cmd = self.cmd
+			popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+			exit_really = False
+			try:
+				iterator = iter(popen.stdout.readline, "")
+				while True:
+					with timeout(0.8, exception=RuntimeError):
+						stdout_line = next(iterator)
+					s = stdout_line
+					self.data = {'data': [float(number) for number in s.split()]}
+					self.return_data()
+					if not self.death_pill_queue.empty():
+						exit_really = True
+						break
+			except RuntimeError:
+				self.data = {'info': "Minimu response timeout"}
+				self.return_data()
+			popen.stdout.close()
+			if exit_really:
+				return_code = popen.wait()
 				break
-		popen.stdout.close()
-		return_code = popen.wait()
+			popen.kill()
 		if return_code:
 			raise subprocess.CalledProcessError(return_code, cmd)
 
@@ -42,7 +54,9 @@ class ImuEuler:
 		self.process.start()
 
 	def read(self):
-		data = self.result_queue.get()
+		data = {}
+		if self.result_queue.empty():
+			data = self.result_queue.get()
 		return data
 
 	def __del__(self):
