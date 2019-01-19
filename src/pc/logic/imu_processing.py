@@ -4,6 +4,7 @@ import pandas as pd
 import os
 
 from logic.filtering import KalmanFilter, SimpleCalibration, TiltCorrector
+import warnings
 
 def data_to_array(data):
 	return np.reshape(np.array(data),(3,3))
@@ -39,7 +40,49 @@ class ImuTimed(Imu):
 	def data(self):
 		return np.append(Imu._data(self), self.time)
 
+
 class ImuKeeper:
+	def __init__(self, dump_dir='', dump_imu=False):
+		self.raw_log_acc = []
+		self.raw_log_gyr = []
+		self.raw_log_mag = []
+		self.raw_log_all = []
+		self.dump_dir = dump_dir
+		self.dump_name = 'imu.csv'
+		self.dump_path = os.path.join(self.dump_dir, self.dump_name) if self.dump_dir != None else None
+		self.dump_imu = dump_imu
+
+	def raw_log(self, imu: Imu):
+		self.raw_log_acc.append(imu.acc)
+		self.raw_log_gyr.append(imu.gyr)
+		self.raw_log_mag.append(imu.mag)
+		self.raw_log_all.append(imu.data)
+
+	def rotation(self, raw_data) -> Imu:
+		self.raw_log(ImuTimed(raw_data))
+		data = Imu(raw_data)
+		return data
+
+	def dump_logs(self):
+		if self.dump_path:
+			log = np.array(self.raw_log_all)
+			np.savetxt(self.dump_path+'2', log, delimiter='\t')
+			data={'acc_x':log[:,0],
+				  'acc_y':log[:,1],
+				  'acc_z':log[:,2],
+				  'gyr_x':log[:,3],
+				  'gyr_y':log[:,4],
+				  'gyr_z':log[:,5],
+				  'mag_x':log[:,6],
+				  'mag_y':log[:,7],
+				  'mag_z':log[:,8],
+				  'time':log[:,9]}
+			df = pd.DataFrame(data)
+			df.to_csv(self.dump_path)
+
+
+class ImuKeeperOld(ImuKeeper):
+
 	def __init__(
 				self,
 				conv_acc= 0.01,
@@ -47,9 +90,13 @@ class ImuKeeper:
 				conv_mag=1,
 				calib_size=20,
 				recalib_size=15,
-				dump_dir='',
-				dump_imu=False,
+				dump_dir='', dump_imu=False
 				):
+		"""
+		This class is deprecated !!
+		"""
+		warnings.warn("deprecated", DeprecationWarning)
+		ImuKeeper.__init__(dump_dir=dump_dir, dump_imu=dump_imu)
 		self.log_acc = []
 		self.log_gyr = []
 		self.log_mag = []
@@ -58,7 +105,6 @@ class ImuKeeper:
 		self.raw_log_gyr = []
 		self.raw_log_mag = []
 		self.raw_log_all = []
-		#self.logger =
 		self.conv_acc = conv_acc
 		self.conv_gyr = conv_gyr
 		self.conv_mag = conv_mag
@@ -68,10 +114,22 @@ class ImuKeeper:
 		self.calib_size = calib_size
 		self.recalib_size = recalib_size
 		self.last_recalib = True
-		self.dump_dir = dump_dir
-		self.dump_name = 'imu.csv'
-		self.dump_path = os.path.join(self.dump_dir, self.dump_name) if self.dump_dir!= None else None
-		self.dump_imu = dump_imu
+
+	def imu_from_raw(self, raw_data)->Imu:
+		self.raw_log(ImuTimed(raw_data))
+		data = Imu(raw_data)
+		if len(self.log_acc) > self.calib_size:
+			self._check_recalib()
+			data = self._process(data)
+		elif len(self.log_acc) == self.calib_size:
+			self._create_calibrators()
+			data = self._process(data)
+		self.log(data)
+		return data
+
+	def recalibrate(self):
+		calib_data = self.log_acc[-self.calib_size:]
+		self.calibrator_acc.level_out(calib_data)
 
 	def log(self, imu):
 		self.log_acc.append(imu.acc)
@@ -82,13 +140,6 @@ class ImuKeeper:
 	def log_recalib(self):
 		self.log_acc.append(None)
 		self.log_all.append(None)
-
-	def raw_log(self, imu):
-		self.raw_log_acc.append(imu.acc)
-		self.raw_log_gyr.append(imu.gyr)
-		self.raw_log_mag.append(imu.mag)
-		self.raw_log_all.append(imu.data)
-
 
 	def _process(self, data:Imu):
 		data.acc = self.calibrator_acc.apply(data.acc)
@@ -120,48 +171,5 @@ class ImuKeeper:
 				print("Recalibrated acc:\n{}".format(self.calibrator_acc))
 				self.last_recalib=len(self.log_acc)
 				self.log_recalib()
-		''''
-		tmp2 = len(self.log_acc)-600
-		if (tmp2)%self.recalib_size==0 and tmp2>0:
-			tmp = np.mean(self.log_acc,axis=0)
-			tc = TiltCorrector(tmp,[1,0,0])
-			print(tc)
-		'''
 
-	def rotation(self, raw_data):
-		self.raw_log(ImuTimed(raw_data))
-		data = Imu(raw_data)
-		return data
 
-	def imu_from_raw(self, raw_data)->Imu:
-		self.raw_log(ImuTimed(raw_data))
-		data = Imu(raw_data)
-		if len(self.log_acc) > self.calib_size:
-			self._check_recalib()
-			data = self._process(data)
-		elif len(self.log_acc) == self.calib_size:
-			self._create_calibrators()
-			data = self._process(data)
-		self.log(data)
-		return data
-
-	def recalibrate(self):
-		calib_data = self.log_acc[-self.calib_size:]
-		self.calibrator_acc.level_out(calib_data)
-
-	def dump_logs(self):
-		if self.dump_path:
-			log = np.array(self.raw_log_all)
-			np.savetxt(self.dump_path+'2', log, delimiter='\t')
-			data={'acc_x':log[:,0],
-				  'acc_y':log[:,1],
-				  'acc_z':log[:,2],
-				  'gyr_x':log[:,3],
-				  'gyr_y':log[:,4],
-				  'gyr_z':log[:,5],
-				  'mag_x':log[:,6],
-				  'mag_y':log[:,7],
-				  'mag_z':log[:,8],
-				  'time':log[:,9]}
-			df = pd.DataFrame(data)
-			df.to_csv(self.dump_path)
