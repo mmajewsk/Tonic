@@ -48,8 +48,14 @@ class ImuClientHandler(asyncore.dispatcher):
 	def handle_read(self):
 		data = self.recv(1024)
 		self.logger.debug('handle_read() -> (%d) "%s"', len(data), data.rstrip())
-		response = json.dumps(self.imu.read())
-		self.data_to_write.insert(0, response)
+		while True:
+			imu_data = self.imu.read()
+			if 'data' in imu_data:
+				response = json.dumps(imu_data['data']).encode()
+				self.data_to_write.insert(0, response)
+				break
+			elif 'info' in imu_data:
+				self.logger.info(' ==========[{}]==========='.format(imu_data['info']))
 
 	def handle_close(self):
 		self.logger.debug('handle_close()')

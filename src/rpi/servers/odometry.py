@@ -96,8 +96,8 @@ class OdoLink(ProcessLink):
 
 
 class OdoClientHandler(BaseClientHandler):
-	def __init__(self, sock, address, odo):
-		BaseClientHandler.__init__(self, sock, address)
+	def __init__(self, sock, address, odo, jsonify=True):
+		BaseClientHandler.__init__(self, sock, address, jsonify=jsonify)
 		self.odo=odo
 
 	def readout(self, input_data):

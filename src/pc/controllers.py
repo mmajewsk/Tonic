@@ -174,7 +174,10 @@ class MapController(BaseController):
 
 	def add_data(self, raw_data: np.ndarray):
 		#self.data = self.imu_processor.imu_from_raw(raw_data)
-		self.data = self.imu_processor.rotation(raw_data).acc
+		try:
+			self.data = self.imu_processor.rotation(raw_data).acc
+		except ValueError as e:
+			raise e
 
 	def close(self):
 		if self.dump_imu:

@@ -33,11 +33,12 @@ class BaseServer(asyncore.dispatcher):
 class BaseClientHandler(asyncore.dispatcher):
 	__metaclass__ = ABCMeta
 
-	def __init__(self, sock, address):
+	def __init__(self, sock, address, jsonify=False):
 		asyncore.dispatcher.__init__(self, sock)
 		classname = type(self).__name__
 		self.logger = logging.getLogger(classname + ' ' + str(address))
 		self.data_to_write = []
+		self.jsonify_output = jsonify
 
 
 	def writable(self):
@@ -60,7 +61,10 @@ class BaseClientHandler(asyncore.dispatcher):
 		input_data = data.rstrip()
 		self.logger.debug('handle_read() -> (%d) "%s"', len(input_data), input_data.rstrip())
 		readout = self.readout(input_data.decode())
-		response = json.dumps(readout).encode()
+		if self.jsonify_output:
+			response = json.dumps(readout).encode()
+		else:
+			response = readout
 		self.data_to_write.insert(0, response)
 
 	def handle_close(self):
