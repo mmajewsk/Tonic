@@ -116,7 +116,7 @@ I used hot glue. Do not let cables touch the radiatior. Make it as stable as pos
 ## Connecting the wires
 
 For the reference to the RPI0 pinout, use [this](https://pinout.xyz/) website. I will use both the board numbering and BCM.
-So here is the wiring scheme (ITS NOT CORRECT - SEE ISSUE #18 ):
+So here is the wiring scheme (**ITS NOT CORRECT - SEE ISSUE [#18](https://github.com/mmajewsk/Tonic/issues/18)** ):
 
 ![wiring-scheme-bb](https://imgur.com/DKIMYCb.jpg)
 ![overall_wires](https://imgur.com/C4JZ7Y8.jpg)
