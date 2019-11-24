@@ -103,6 +103,10 @@ I used some bolts and nuts to mount over front wheel.
 
 ![camera-mount-image](https://imgur.com/h7iWKCl.jpg)
 
+**PS**
+There is [3D mount](https://github.com/mmajewsk/Tonic/issues/19) availible for 3D printing. Done thanks to [panovv](https://github.com/panovvv)
+![camera-mount-vadim](https://i.imgur.com/HBv4bao.jpg?2)
+
 
 ## Mount the battery and on switch
 Attach the battery under the chassis. I used a cable tie around PI and created a loop underneath chassis.
