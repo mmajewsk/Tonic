@@ -89,3 +89,10 @@ ENV/
 .ropeproject
 
 /data_*
+
+# Autodesk Inventor files
+lockfile.lck
+OldVersions/
+
+# OS-related files
+.DS_Store
