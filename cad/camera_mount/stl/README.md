@@ -7,6 +7,10 @@ Go for 100% if you can.
 
 * Generate supports: yes
 
+## camera_mount.stl
+
+* Generate supports: no
+
 ## platform_mount.stl
 
 * Generate supports: yes
