@@ -46,6 +46,8 @@ To implement a SLAM capability, that would enable the car to map the environemnt
   
   [![Second version (video)](https://img.youtube.com/vi/Wd5jEd4hx6U/0.jpg)](https://www.youtube.com/watch?v=Wd5jEd4hx6U)
   
+  [![3D reconstruction](https://img.youtube.com/vi/oRmxJyJHEtU/0.jpg)](https://www.youtube.com/watch?v=oRmxJyJHEtU)
+  
   ![wwwwowww](https://media.giphy.com/media/OK27wINdQS5YQ/giphy.gif)
 
   
