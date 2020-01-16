@@ -1,6 +1,7 @@
 ![](https://imgur.com/uKuppcF.jpg)
 
 # Autonomous Intelligent Car 
+(Or just a Roomba, that does not suck ;) )
 
 I present to You, the autonomous car, (almost) entirely written in Python.
 
