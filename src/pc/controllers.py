@@ -116,7 +116,8 @@ class Controller(BaseController):
 			with open(os.path.join(self.intake_path, 'odo_data.json'), 'w') as f:
 				json.dump(self.odo_data,f)
 		if self.intake_name:
-			dump_dataframe(self.intake_path)
+			#dump_dataframe(self.intake_path)
+			pass
 
 
 	def __del__(self):
@@ -170,7 +171,8 @@ class MapController(BaseController):
 	def add_image(self, frame: np.ndarray):
 		self._frame = frame[0].copy()
 		timestamp = frame[1]
-		self.client_sink.slam_client.image_to_send.emit(self._frame, timestamp)
+		if self.client_sink.slam_client is not None:
+			self.client_sink.slam_client.image_to_send.emit(self._frame, timestamp)
 
 	def add_data(self, raw_data: np.ndarray):
 		#self.data = self.imu_processor.imu_from_raw(raw_data)

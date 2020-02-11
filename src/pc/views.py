@@ -93,6 +93,9 @@ class MapWindow(QWidget):
 		self.controller = controller
 		self.setup_ui()
 		self.setup_imu()
+		if controller.client_sink.slam_client is not None:
+			self.setup_slam()
+
 
 	def setup_ui(self):
 		"""Initialize widgets.
@@ -130,6 +133,8 @@ class MapWindow(QWidget):
 		self.timer.timeout.connect(self.refresh_view)
 		self.timer.start(60)
 		self.controller.connect_imu()
+
+	def setup_slam(self):
 		self.timer2 = QTimer()
 		self.timer2.timeout.connect(self.ask_trajectory)
 		self.timer2.start(5000)

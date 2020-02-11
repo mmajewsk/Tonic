@@ -164,7 +164,7 @@ class SteeringTranslator(Steering):
 
 
 	def run(self):
-		signal = self.command_to_signal(self.command)
+		signal = self.command_to_signal(self.command
 		print(signal)
 		self.work(signal)
 
