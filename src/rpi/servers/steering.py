@@ -59,6 +59,23 @@ class Motor:
 	def __del__(self):
 		self.enabler.stop()
 
+class MotorDriver(Steering):
+	def __init__(self, **kwargs):
+		GPIO.setmode(GPIO.BCM)
+		self.motor_a = Motor(enabler_pin=0, plus_pin=5, minus_pin=6, **kwargs['left_motor'])
+		self.motor_b = Motor(enabler_pin=26, plus_pin=19, minus_pin=13, **kwargs['right_motor'])
+		self.old_signal = None
+		self.time_delay = 0.2
+
+	def go(self, steering_dict):
+		if self.old_signal is not None and self.old_signal!=steering_dict:
+			self.motor_a.set_values(steering_dict['left'], self.motor_a.HIGH, self.motor_a.LOW)
+			self.motor_b.set_values(steering_dict['right'], self.motor_b.HIGH, self.motor_b.LOW)
+			self.old_signal = steering_dict
+		time.sleep(self.time_delay)
+
+	def __del__(self):
+		GPIO.cleanup()
 
 class SteeringDriverRobot(Steering):
 	"""
@@ -164,7 +181,7 @@ class SteeringTranslator(Steering):
 
 
 	def run(self):
-		signal = self.command_to_signal(self.command
+		signal = self.command_to_signal(self.command)
 		print(signal)
 		self.work(signal)
 
