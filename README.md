@@ -428,5 +428,9 @@ You can see the code in the file `master_server.py`.
 
 
 
-# Setting up SLAM
-Create orb slam docker, using [this repo](https://github.com/mmajewsk/orb_slam_py2_docker/) 
+# SLAM and other connected repos
+- [My fork of ORB_SLAM2](https://github.com/mmajewsk/ORB_SLAM2)
+- [My fork of Osmap](https://github.com/mmajewsk/osmap) - Dumps ORB_SLAM2 to file
+- [My fork of PythonBindings](https://github.com/mmajewsk/ORB_SLAM2-PythonBindings) - this one combines osmap with orb slam python bindings!
+- [TonicSlamDunk](https://github.com/mmajewsk/TonicSlamDunk) - Install scripts for all of the above, includes scripts for ubuntu, and dockerfile.
+- [TonicOrange](https://github.com/mmajewsk/TonicOrange) - **Examplary use of orb slam, for path finding**
