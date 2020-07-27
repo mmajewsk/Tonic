@@ -12,6 +12,7 @@ from datetime import datetime
 host =''
 port = 2201
 server = socket.socket()
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server.bind((host, port))
 server.listen(0)
 print("Starting server at {} port {}. Listening...".format(host,port))

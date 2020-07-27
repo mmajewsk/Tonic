@@ -26,9 +26,12 @@ while True:
 	if time.time() - start > 600:
 		break
 	data = connection.recv(1024).decode()
-	print(data)
+	print(data, "<---data")
 	data = data.replace(" ","")
-	steering_dict = json.load(data)
+	data=data.split("br")[-2]
+	print(data, "<---data3")
+	steering_dict = json.loads(data)
+	print(type(steering_dict))
 	steering_thread.go(steering_dict)
 
 server.close()

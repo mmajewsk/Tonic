@@ -52,6 +52,7 @@ class Motor:
 
 	def set_values(self, val, p_val, m_val):
 		val = val if val is not None else self.default_velocity
+		print(val)
 		self.enabler.ChangeDutyCycle(val)
 		GPIO.output(self.plus_pin,p_val)
 		GPIO.output(self.minus_pin, m_val)
@@ -59,16 +60,16 @@ class Motor:
 	def __del__(self):
 		self.enabler.stop()
 
-class MotorDriver(Steering):
+class MotorDriver:
 	def __init__(self, **kwargs):
 		GPIO.setmode(GPIO.BCM)
-		self.motor_a = Motor(enabler_pin=0, plus_pin=5, minus_pin=6, **kwargs['left_motor'])
-		self.motor_b = Motor(enabler_pin=26, plus_pin=19, minus_pin=13, **kwargs['right_motor'])
+		self.motor_a = Motor(enabler_pin=0, plus_pin=5, minus_pin=6, **kwargs)
+		self.motor_b = Motor(enabler_pin=26, plus_pin=19, minus_pin=13, **kwargs)
 		self.old_signal = None
 		self.time_delay = 0.2
 
 	def go(self, steering_dict):
-		if self.old_signal is not None and self.old_signal!=steering_dict:
+		if self.old_signal is not None or self.old_signal!=steering_dict:
 			self.motor_a.set_values(steering_dict['left'], self.motor_a.HIGH, self.motor_a.LOW)
 			self.motor_b.set_values(steering_dict['right'], self.motor_b.HIGH, self.motor_b.LOW)
 			self.old_signal = steering_dict
