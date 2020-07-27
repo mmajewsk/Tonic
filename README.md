@@ -1,6 +1,7 @@
 ![](https://imgur.com/uKuppcF.jpg)
 
 # Autonomous Intelligent Car 
+(Or just a Roomba, that does not suck ;) )
 
 I present to You, the autonomous car, (almost) entirely written in Python.
 
@@ -45,6 +46,8 @@ To implement a SLAM capability, that would enable the car to map the environemnt
   **C A R E F U L! This is cool as well** 2D map from the video feed (video):
   
   [![Second version (video)](https://img.youtube.com/vi/Wd5jEd4hx6U/0.jpg)](https://www.youtube.com/watch?v=Wd5jEd4hx6U)
+  
+  [![3D reconstruction](https://img.youtube.com/vi/oRmxJyJHEtU/0.jpg)](https://www.youtube.com/watch?v=oRmxJyJHEtU)
   
   ![wwwwowww](https://media.giphy.com/media/OK27wINdQS5YQ/giphy.gif)
 
@@ -103,6 +106,10 @@ I used some bolts and nuts to mount over front wheel.
 
 ![camera-mount-image](https://imgur.com/h7iWKCl.jpg)
 
+**PS**
+There is [3D mount](https://github.com/mmajewsk/Tonic/issues/19) availible for 3D printing. Done thanks to [panovv](https://github.com/panovvv)
+![camera-mount-vadim](https://i.imgur.com/HBv4bao.jpg?2)
+
 
 ## Mount the battery and on switch
 Attach the battery under the chassis. I used a cable tie around PI and created a loop underneath chassis.
@@ -116,7 +123,7 @@ I used hot glue. Do not let cables touch the radiatior. Make it as stable as pos
 ## Connecting the wires
 
 For the reference to the RPI0 pinout, use [this](https://pinout.xyz/) website. I will use both the board numbering and BCM.
-So here is the wiring scheme:
+So here is the wiring scheme (**ITS NOT CORRECT - SEE ISSUE [#18](https://github.com/mmajewsk/Tonic/issues/18)** ):
 
 ![wiring-scheme-bb](https://imgur.com/DKIMYCb.jpg)
 ![overall_wires](https://imgur.com/C4JZ7Y8.jpg)
@@ -421,5 +428,9 @@ You can see the code in the file `master_server.py`.
 
 
 
-# Setting up SLAM
-Create orb slam docker, using [this repo](https://github.com/mmajewsk/orb_slam_py2_docker/) 
+# SLAM and other connected repos
+- [My fork of ORB_SLAM2](https://github.com/mmajewsk/ORB_SLAM2)
+- [My fork of Osmap](https://github.com/mmajewsk/osmap) - Dumps ORB_SLAM2 to file
+- [My fork of PythonBindings](https://github.com/mmajewsk/ORB_SLAM2-PythonBindings) - this one combines osmap with orb slam python bindings!
+- [TonicSlamDunk](https://github.com/mmajewsk/TonicSlamDunk) - Install scripts for all of the above, includes scripts for ubuntu, and dockerfile.
+- [TonicOrange](https://github.com/mmajewsk/TonicOrange) - **Examplary use of orb slam, for path finding**

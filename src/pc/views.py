@@ -9,7 +9,6 @@ from logic import logic_layers
 class MainApp(QWidget):
 	def __init__(self, controller: Controller, children=[]):
 		QWidget.__init__(self)
-		self.children = children
 		self.controller = controller
 		self.intake_path = None
 		if self.controller.client_sink.steering_client:
@@ -82,9 +81,9 @@ class MainApp(QWidget):
 
 	def close(self):
 		self.controller.close()
-		if self.children:
-			for child in self.children:
-				child.close()
+		#if self.children:
+		#	for child in self.children:
+		#		child.close()
 		QWidget.close(self)
 
 class MapWindow(QWidget):
@@ -140,5 +139,6 @@ class MapWindow(QWidget):
 		self.timer2.start(5000)
 
 	def close(self):
+		win = MainApp(controller)
 		self.controller.close()
 		QWidget.close(self)
