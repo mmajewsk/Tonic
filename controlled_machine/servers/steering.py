@@ -32,6 +32,9 @@ class Steering(metaclass=ABCMeta):
 		pass
 
 class Motor:
+	"""
+	This class conttains logic for GPIO motor.
+	"""
 	def __init__(self, enabler_pin, plus_pin, minus_pin, velocity=0, high=100, frequency=100):
 		self.enabler_pin = enabler_pin
 		self.default_velocity = velocity
@@ -41,8 +44,6 @@ class Motor:
 		GPIO.setup(minus_pin, GPIO.OUT)
 		GPIO.setup(plus_pin, GPIO.OUT)
 		self.enabler = GPIO.PWM(enabler_pin, frequency)
-		#self.minus = GPIO.PWM(minus_pin, frequency)
-		#self.plus = GPIO.PWM(plus_pin, frequency)
 		self.LOW = 0
 		self.HIGH = high
 		self.enabler.start(0)
@@ -51,23 +52,37 @@ class Motor:
 
 	def set_values(self, val, p_val, m_val):
 		val = val if val is not None else self.default_velocity
+		print(val)
 		self.enabler.ChangeDutyCycle(val)
-		#self.plus.start(p_val)
-		#self.minus.start(m_val)
-		#GPIO.output(self.enabler_pin, val)
 		GPIO.output(self.plus_pin,p_val)
 		GPIO.output(self.minus_pin, m_val)
 
 	def __del__(self):
 		self.enabler.stop()
-		#self.plus.stop()
-		#self.minus.stop()
-		#GPIO.output(self.enabler_pin, self.LOW)
-		#GPIO.output(self.plus_pin, self.LOW)
-		#GPIO.output(self.minus_pin, self.LOW)
 
+class MotorDriver:
+	def __init__(self, **kwargs):
+		GPIO.setmode(GPIO.BCM)
+		self.motor_a = Motor(enabler_pin=0, plus_pin=5, minus_pin=6, **kwargs)
+		self.motor_b = Motor(enabler_pin=26, plus_pin=19, minus_pin=13, **kwargs)
+		self.old_signal = None
+		self.time_delay = 0.2
+
+	def go(self, steering_dict):
+		if self.old_signal is not None or self.old_signal!=steering_dict:
+			self.motor_a.set_values(steering_dict['left'], self.motor_a.HIGH, self.motor_a.LOW)
+			self.motor_b.set_values(steering_dict['right'], self.motor_b.HIGH, self.motor_b.LOW)
+			self.old_signal = steering_dict
+		time.sleep(self.time_delay)
+
+	def __del__(self):
+		GPIO.cleanup()
 
 class SteeringDriverRobot(Steering):
+	"""
+	This class implements the functions of the movement for the car.
+	You can create a new one like this so it would cover your configuration.
+	"""
 	def __init__(self, **kwargs):
 		GPIO.setmode(GPIO.BCM)
 		self.motor_a = Motor(enabler_pin=0, plus_pin=5, minus_pin=6, **kwargs['left_motor'])
@@ -141,7 +156,7 @@ class SteeringDriverCar(Steering):
 		GPIO.cleanup()
 
 
-class SteeringTranslator(Steering):#,multiprocessing.Process):
+class SteeringTranslator(Steering):
 	def __init__(self, time_delay=0.4, **kwargs):
 		self.time_delay = time_delay
 		self.translator={
@@ -201,6 +216,9 @@ class SteeringTranslatorCar(SteeringTranslator, SteeringDriverCar):
 		SteeringTranslator.__init__(self, **kwargs)
 
 class SteeringTranslatorRobot(SteeringTranslator, SteeringDriverRobot):
+	"""
+	This class translates the commands to the functions of steering.
+	"""
 	def __init__(self, **kwargs):
 		SteeringDriverRobot.__init__(self, **kwargs)
 		SteeringTranslator.__init__(self, **kwargs)

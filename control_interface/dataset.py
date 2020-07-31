@@ -32,11 +32,12 @@ def imu_df(directory):
     idf = idf.drop_duplicates('imutime')
     return idf
 
-def combine(idf, vsdf):
-    alltimes= pd.concat([idf.imutime,vsdf.time])
-    xdf = pd.DataFrame({'alltimes':alltimes.sort_values()})
-    xdf = pd.merge(xdf,vsdf,how='left',left_on='alltimes', right_on='time')
-    xdf = pd.merge(xdf,idf,how='left',left_on='alltimes', right_on='imutime')
+def combine(a_df, b_df, new_column_name='alltimes', right_on='time', left_on='imutime'):
+	#@TODO Those defaults arguments should be pushed to the upper calls during refactor
+    new_column = pd.concat([a_df[left_on],b_df[right_on]])
+    xdf = pd.DataFrame({new_column_name:new_column.sort_values()})
+    xdf = pd.merge(xdf,b_df,how='left',left_on=new_column_name, right_on=right_on)
+    xdf = pd.merge(xdf,a_df,how='left',left_on=new_column_name, right_on=left_on)
     xdf = xdf.fillna(method='pad')
     #xdf = xdf[xdf['filenames'].notnull()]
     return xdf

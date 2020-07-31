@@ -6,8 +6,39 @@ import datetime
 from server_management import BaseServer, BaseClientHandler, ProcessLink
 import logging
 import asyncore
+from abc import import ABC, abstractmethod
 
-class Odometer:
+
+class OdometerBase(ABC):
+	"""
+	This class only purpose is to contain "history" property.
+	"""
+
+	@property
+	@abstractmethod
+	def history(self):
+		"""
+		This function should reset the history before returning the data (the return data should not repeat)
+		Returns:
+			List of tuples of (state, str(datetime.now())
+		"""
+		pass
+
+class OdoSystemBase(ABC):
+	"""
+
+	"""
+	@property
+	@abstractmethod
+	def data(self):
+		"""
+		Returns:
+			Dict of history from OdometerBase
+		"""
+		pass
+
+
+class Odometer(OdometerBase):
 	def __init__(self, input_pin):
 		self.input_pin = input_pin
 		GPIO.setup(input_pin, GPIO.IN)
@@ -30,7 +61,7 @@ class Odometer:
 		self._history = []
 		return tmp
 
-class OdoSystem(multiprocessing.Process):
+class OdoSystem(multiprocessing.Process, OdometerSystemBase):
 	def __init__(self, left_pin, right_pin, input_queue, output_queue, dt=0.05):
 		multiprocessing.Process.__init__(self)
 		self.dt=dt

@@ -77,7 +77,7 @@ class QTVideoClient(VideoClient, QThread):
 
 
 class MultiVideoClient(VideoClient, multiprocessing.Process):
-	def __init__(self, task_queue, result_queue, dt=0.1, *args, **kwargs):
+	def __init__(self, task_queue, result_queue, dt=0.001, *args, **kwargs):
 		multiprocessing.Process.__init__(self)
 		VideoClient.__init__(self, *args, **kwargs)
 		self.task_queue = task_queue

@@ -4,7 +4,7 @@ import cv2
 import argparse
 import os
 import sys
-sys.path.append(r'C:\repositories\autonomic_car\selfie_car\src\pc')
+sys.path.append('/home/mwm/repositories/Tonic/src/pc/')
 from clients import video_client
 import multiprocessing
 
@@ -12,7 +12,7 @@ class ServerSource:
 	def __init__(self):
 		self.tasks = multiprocessing.JoinableQueue()
 		self.results = multiprocessing.Queue()
-		self.thread_video = video_client.MultiVideoClient(self.tasks, self.results)
+		self.thread_video = video_client.MultiVideoClient(self.tasks, self.results, server_adress=('10.12.10.71', 2201))
 
 	def connect(self):
 		self.thread_video.start()
@@ -76,7 +76,7 @@ def calib(output_folder, live=False, source_folder=None):
 	data_source.connect()
 	for fname in data_source.range:
 		img = data_source.get_data()
-		if img == None:
+		if img is None:
 			time.sleep(0.3)
 			print("no response")
 			continue

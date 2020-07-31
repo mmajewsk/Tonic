@@ -1,6 +1,7 @@
 import subprocess
 import multiprocessing
 from interruptingcow import timeout
+from abc import ABC
 
 class MultiImuSubprocess(multiprocessing.Process):
 	def __init__(self, result_queue, death_pill_queue, cmd, *args, **kwargs):
@@ -43,7 +44,29 @@ class MultiImuSubprocess(multiprocessing.Process):
 			self.result_queue.get()
 		self.result_queue.put(self.data)
 
-class ImuEuler:
+class ImuBase(ABC):
+	"""
+	The purpose of this class is to help you write your own IMU interceptor class.
+	The most important methods are contained here.
+	These two methods are the only ones used in imu_server, so it should be easy for you to overwrite this.
+	"""
+
+	@abstractmethod
+	def connect(self):
+		"""
+		This method is called at start up.
+		"""
+		pass
+
+	@abstractmethod
+	def read(self):
+		"""
+		Returns:
+			dict: this dict should contain data under 'data' key, or 'info'. 'data' should be jsonizable.
+		"""
+		pass
+
+class ImuEuler(ImuBase):
 	def __init__(self):
 		cmd = ["minimu9-ahrs",'--output','euler']
 		self.result_queue = multiprocessing.Queue()

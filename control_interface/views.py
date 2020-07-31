@@ -9,7 +9,6 @@ from logic import logic_layers
 class MainApp(QWidget):
 	def __init__(self, controller: Controller, children=[]):
 		QWidget.__init__(self)
-		self.children = children
 		self.controller = controller
 		self.intake_path = None
 		if self.controller.client_sink.steering_client:
@@ -82,9 +81,9 @@ class MainApp(QWidget):
 
 	def close(self):
 		self.controller.close()
-		if self.children:
-			for child in self.children:
-				child.close()
+		#if self.children:
+		#	for child in self.children:
+		#		child.close()
 		QWidget.close(self)
 
 class MapWindow(QWidget):
@@ -93,6 +92,9 @@ class MapWindow(QWidget):
 		self.controller = controller
 		self.setup_ui()
 		self.setup_imu()
+		if controller.client_sink.slam_client is not None:
+			self.setup_slam()
+
 
 	def setup_ui(self):
 		"""Initialize widgets.
@@ -130,10 +132,13 @@ class MapWindow(QWidget):
 		self.timer.timeout.connect(self.refresh_view)
 		self.timer.start(60)
 		self.controller.connect_imu()
+
+	def setup_slam(self):
 		self.timer2 = QTimer()
 		self.timer2.timeout.connect(self.ask_trajectory)
 		self.timer2.start(5000)
 
 	def close(self):
+		win = MainApp(controller)
 		self.controller.close()
 		QWidget.close(self)
