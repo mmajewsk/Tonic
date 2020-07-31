@@ -1,9 +1,8 @@
 import cv2
-from logic.action import Action
 import json
 import numpy as np
 
-class VideoCalibration(Action):
+class VideoCalibration:
     def __init__(self, calibration_data, image_shape, new_shape=None):
         """
         Adds calibration_data values as members
