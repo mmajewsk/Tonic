@@ -1,5 +1,22 @@
 # Hardware Guide
 
+## Before you start
+
+
+![current_version](https://i.imgur.com/HBv4bao.jpg?2)
+
+Remember that all you really need for this to work is steering and camera, and the IMU and odomoetry are optional. 
+This entire hardware guide is __just a guide__. 
+It is also a little bit outdated. You can see the actual version of the build im using right now in the picture above.
+This guid is still valid, the changes that I have made are as follows.
+ - Since it was created I have changed the version of the raspberry PI to A+
+ - And also changed the orientation of the camera (now the two wheels are front, and single one is on the back, as per this picture)
+ - Thanks to [panovv](https://github.com/panovvv) the camera is now mounted with a [3D printed mount](https://github.com/mmajewsk/Tonic/issues/19), cad files of which you can find in the repository.
+ 
+Feel free to modify your build.
+If you can please reach me and send me pictures of your build, or your version of the guide ;)
+
+
 ## List of components
 
 - [Raspberry Pi Zero W](https://www.amazon.com/Raspberry-Pi-Zero-Wireless-model/dp/B06XFZC3BX) 
@@ -18,8 +35,8 @@
 
 ## How to build this
 
-### First build the chassis 
-This should be pretty intuitive.
+### First assmble the chassis 
+This should be pretty intuitive. But you can check out [this video](https://www.youtube.com/watch?v=H78t6dnSoG0).
 
 ### Mount raspberry
 
@@ -30,10 +47,6 @@ Mount Imu as well. Ideally youwant it as close to the camera as possible.
 I used some bolts and nuts to mount over front wheel.
 
 ![camera-mount-image](https://imgur.com/h7iWKCl.jpg)
-
-**PS**
-There is [3D mount](https://github.com/mmajewsk/Tonic/issues/19) availible for 3D printing. Done thanks to [panovv](https://github.com/panovvv)
-![camera-mount-vadim](https://i.imgur.com/HBv4bao.jpg?2)
 
 
 ## Mount the battery and on switch
