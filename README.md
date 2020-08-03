@@ -1,9 +1,16 @@
-![](https://imgur.com/uKuppcF.jpg)
+<div align="center">
+  
+  ![](https://imgur.com/eh1QMvS.jpg)
 
-# Autonomous Intelligent Car 
+# An open-sourced project of autonomous car 
 (Or just a Roomba, that does not suck ;) )
 
-I present to You, the autonomous car, (almost) entirely written in Python.
+Written in Python (mostly).
+
+[![Discord Server](https://img.shields.io/discord/739733971944079401?color=blue&label=Discord%20Chat&logo=discord&logoColor=white&style=flat-square)][Discord]
+
+[discord]: https://discord.gg/55WuPN
+</div>
 
 **Contents:**
 
