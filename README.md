@@ -1,10 +1,14 @@
 <div align="center">
-  [Introduction](#introduction) • [Documentation](#ok-so-how-do-I-start?) • [Screenshots] • [Contribute](#contribute) 
-  ![](https://imgur.com/eh1QMvS.jpg)
+  
+# An open-sourced project of autonomous car 
+  
+[Introduction](#introduction) • [Documentation](#ok-so-how-do-I-start?) • [Screenshots] • [Contribute](#contribute) 
+  
+![Tonic logo](https://imgur.com/eh1QMvS.jpg)
 
 [![Discord Server](https://img.shields.io/discord/739733971944079401?color=blue&label=Discord%20Chat&logo=discord&logoColor=white&style=flat-square)][Discord]
 
-# An open-sourced project of autonomous car 
+
 (Or just a Roomba, that does not suck ;) )
 
 Written in Python (mostly).
