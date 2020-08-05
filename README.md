@@ -21,7 +21,7 @@ Written in Python (mostly).
 
 ---
 
-**Contents:**
+### Contents:
 
 - [Introduction](#introduction)
 - [Features](#features.) 
