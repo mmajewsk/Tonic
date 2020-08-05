@@ -10,7 +10,7 @@
 ![Licence](https://img.shields.io/github/license/mmajewsk/tonic)
 [![Discord Server](https://img.shields.io/discord/739733971944079401?color=blue&label=Discord%20Chat&logo=discord&logoColor=white&style=flat-square)][Discord]
 
-![](https://i.imgur.com/5sbLwHH.gif)
+![demo](https://imgur.com/HAA9xJo.gif)
 
 a.k.a.: "Roomba, that does not suck"
 
@@ -43,7 +43,7 @@ All of that to be possible for as cheap as possible, with raspberry PI and only 
 
 # Features.
 
-  <img src="https://imgur.com/oA3ERWN.gif" width="45%" height="45%"align="right" />
+  <img src="https://imgur.com/oA3ERWN.gif" width="45%" height="45%" align="right" />
 
   - Camera live feed and recording.
   - Live steering system and recording.
