@@ -12,9 +12,9 @@
 
 ![demo](https://imgur.com/HAA9xJo.gif)
 
-a.k.a.: "Roomba, that does not suck"
+_a.k.a.: "Roomba, that does not suck"_
 
-Written in Python (mostly).
+Written in Python 🐍 (mostly).
 
 
 </div>
@@ -54,7 +54,7 @@ All of that to be possible for as cheap as possible, with raspberry PI and only 
 
 # How does it work
 
-As for now, this repository ([mmajewsk/Tonic]) contains hardware build guide, and software for running and steering the car for the **data taking**.
+As for now, this repository ([mmajewsk/Tonic]) contains guides and software for building, running and steering the car 🚘 for the **data taking**.
 The code is divided, into [Tonic/control_interface] and [Tonic/controlled_machine]. 
 
 The [Tonic/control_interface] contains the code that is meant to be run on your laptop/pc/mac, that will controll the raspberry pi [Tonic/controlled_machine].
@@ -82,9 +82,10 @@ In order to make your machine drive autonomously, follow the soon upcoming guide
 
 # Contribution
 
-This project initially is meant to be open for everyone. The contributions are welcome.
-If you would like to help see what's new or listed in the issues [here](https://github.com/mmajewsk/Tonic/issues).
-Also you can join the [discord server](discord) if you are looking for quick help, or just want to say hi ;) 
+🧑‍🔧 This project initially is meant to be open for everyone. The contributions are welcome.
+If you would like to help see what's new or listed in the issues [here](https://github.com/mmajewsk/Tonic/issues) .
+
+Also you can join the 🗣️ [discord server](discord) if you are looking for quick help, or just want to say hi ;) 
 
 
 # Related repos
