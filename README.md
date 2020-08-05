@@ -6,25 +6,29 @@
   
 ![Tonic logo](https://imgur.com/eh1QMvS.jpg)
 
+![Latest commit](https://img.shields.io/github/last-commit/mmajewsk/tonic/master?style=flat-square)
+![Licence](https://img.shields.io/github/license/mmajewsk/tonic)
 [![Discord Server](https://img.shields.io/discord/739733971944079401?color=blue&label=Discord%20Chat&logo=discord&logoColor=white&style=flat-square)][Discord]
 
+![](https://i.imgur.com/5sbLwHH.gif)
 
-(Or just a Roomba, that does not suck ;) )
+a.k.a.: "Roomba, that does not suck"
 
 Written in Python (mostly).
 
 
 </div>
 
+---
+
 **Contents:**
 
-1. [Introduction](#introduction)
-2. [Features](#features.) 
-3. [How does it work](#how-does-it-work) 
-4. [How to start](#ok-so-how-do-I-start?)
-5. [Contribution](#contribution)
-6. [Related repos](#related-repos)
-
+- [Introduction](#introduction)
+- [Features](#features.) 
+- [How does it work](#how-does-it-work) 
+- [How to start](#ok-so-how-do-I-start?)
+- [Contribution](#contribution)
+- [Related repos](#related-repos)
 
 # Introduction
 
@@ -38,6 +42,9 @@ The core idea for how this should work is as follows:
 All of that to be possible for as cheap as possible, with raspberry PI and only single camera.
 
 # Features.
+
+  <img src="https://imgur.com/oA3ERWN.gif" width="45%" height="45%"align="right" />
+
   - Camera live feed and recording.
   - Live steering system and recording.
   - Working IMU live streaming and recording.
@@ -66,14 +73,14 @@ The navigation and autonomous steering part are currently under making on under 
 # Ok so how do I start?
 
 0. Take a look at previous versions and the current one in [video and screenshots][Screenshots].
-1. First start by [assembling the hardware](doc/hardware_build_guide.md).
-2. Then setup the [machine and interface software](doc/software_machine_setup.md).
-3. Do the data taking run, duming steering and video data, [as described here](doc/software_machine_setup.md##running-tonic).
+1. First start by [assembling the hardware](doc/hardware_guide.md).
+2. Then setup the [machine and interface software](doc/running_software.md).
+3. Do the data taking run, duming steering and video data, [as described here](doc/running_software.md##running-tonic).
 
 In order to make your machine drive autonomously, follow the soon upcoming guide in [TonicOrange] repo.
   
 
-# Contribution:
+# Contribution
 
 This project initially is meant to be open for everyone. The contributions are welcome.
 If you would like to help see what's new or listed in the issues [here](https://github.com/mmajewsk/Tonic/issues).
