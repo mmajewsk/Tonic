@@ -35,9 +35,10 @@ Written in Python 🐍 (mostly).
 This repository contains main software and documentation for the Tonic project. This project aims to create an open-sourced autonomous driving system, along with it's hardware prototype implementation. Some essential parts of the projects are contained in other related repos. See [the list of related repos](#related-repos)
 The core idea for how this should work is as follows:
 
-1. After setting up the robot/car, drive it manually to create a [](3D mapping of the environment) (this part is called __data taking__).
-2. Define paths, on which the machine will drive.
-3. Program the car to drive on the defined paths.
+1. After setting up the robot/car, drive it manually, and dump the video and steering feed (this part is called _data taking_).
+2. Create a 3D mapping of the environment with [TonicOrange].
+3. Define checkpoints, through which the machine will drive.
+4. Program the car to drive on the defined paths.
 
 All of that to be possible for as cheap as possible, with raspberry PI and only single camera.
 
@@ -54,18 +55,18 @@ All of that to be possible for as cheap as possible, with raspberry PI and only 
 
 # How does it work
 
-As for now, this repository ([mmajewsk/Tonic]) contains guides and software for building, running and steering the car 🚘 for the **data taking**.
-The code is divided, into [Tonic/control_interface] and [Tonic/controlled_machine]. 
+As for now, this repository ([mmajewsk/Tonic]) contains guides and software for building, running and steering the car 🚘 for the _data taking_.
+The code is divided, into [Tonic/remote_control] and [Tonic/car]. 
 
-The [Tonic/control_interface] contains the code that is meant to be run on your laptop/pc/mac, that will controll the raspberry pi [Tonic/controlled_machine].
+The [Tonic/remote_control] contains the code that is meant to be run on your laptop/pc/mac, that will controll the raspberry pi [Tonic/car].
 
 The machine and control interface are communicating via WiFi network, using sockets. 
 
-Sensors, camera, and steering - each one is implemented
-as a separate service using sockets.
+Sensors, camera, and steering - each one is implemented as a separate service using sockets.
 You can steer it with keyboard on PC, and with live feed from camera.
 All of the sensors, stearing and video can be dumped to files on PC.
 You don't need to turn all of the sensors to make this work.
+
 **The odometry and IMU are not necessesary to make a envrionment mapping**
 
 The navigation and autonomous steering part are currently under making on under [TonicOrange] repository.
@@ -98,8 +99,8 @@ Also you can join the 🗣️ [discord server](discord) if you are looking for q
 
 [discord]: https://discord.gg/55WuPN
 [mmajewsk/Tonic]: https://github.com/mmajewsk/Tonic
-[Tonic/control_interface]: https://github.com/mmajewsk/Tonic/control_interface
-[Tonic/controlled_machine]: https://github.com/mmajewsk/Tonic/controlled_machine
+[Tonic/remote_control]: https://github.com/mmajewsk/Tonic/remote_control
+[Tonic/car]: https://github.com/mmajewsk/Tonic/car
 [My fork of ORB_SLAM2]: https://github.com/mmajewsk/ORB_SLAM2
 [My fork of Osmap]: https://github.com/mmajewsk/osmap 
 [My fork of PythonBindings]: https://github.com/mmajewsk/ORB_SLAM2-PythonBindings 
