@@ -81,7 +81,7 @@ The navigation and autonomous steering part are currently under making on under 
 To make your machine drive autonomously, follow the soon upcoming guide in [TonicOrange] repo.
   
 
-# Contribution
+# Contribute
 
 🧑‍🔧 This project initially is meant to be open for everyone. The contributions are welcome.
 If you would like to help see what's new or listed in the issues [here](https://github.com/mmajewsk/Tonic/issues) .
