@@ -86,7 +86,7 @@ To make your machine drive autonomously, follow the soon upcoming guide in [Toni
 🧑‍🔧 This project initially is meant to be open for everyone. The contributions are welcome.
 If you would like to help see what's new or listed in the issues [here](https://github.com/mmajewsk/Tonic/issues) .
 
-Also, you can join the 🗣️ [discord server](discord) if you are looking for quick help, or just want to say hi ;) 
+Also, you can join the 🗣️ [discord server][discord] if you are looking for quick help, or just want to say hi ;) 
 
 
 # Related repos
