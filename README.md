@@ -2,7 +2,7 @@
   
 # An open-sourced project of autonomous car 
   
-[Introduction](#introduction) • [Documentation](#ok-so-how-do-I-start?) • [Screenshots] • [Contribute](#contribute) 
+[Introduction](#introduction) • [Documentation](#ok-so-how-do-i-start) • [Screenshots] • [Contribute](#contribute) 
   
 ![Tonic logo](https://imgur.com/eh1QMvS.jpg)
 
@@ -71,7 +71,7 @@ You don't need to turn all of the sensors to make this work.
 
 The navigation and autonomous steering part are currently under making on under [TonicOrange] repository.
 
-# Ok so how do I start?
+# Ok so how do I start
 
 0. Take a look at previous versions and the current one in [video and screenshots][Screenshots].
 1. First start by [assembling the hardware](doc/hardware_guide.md).
