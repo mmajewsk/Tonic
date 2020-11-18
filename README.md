@@ -13,7 +13,10 @@
 ![demo](https://imgur.com/HAA9xJo.gif)
 
 **Demo of autonomous driving (click to play)**
+
 [![autonomic navigation](http://img.youtube.com/vi/4x-8iYDJs7I/0.jpg)](http://www.youtube.com/watch?v=4x-8iYDJs7I "video demo")
+
+
 _a.k.a.: "Roomba, that does not suck"_
 
 Written in Python 🐍 (mostly).
