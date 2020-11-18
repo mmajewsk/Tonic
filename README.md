@@ -68,7 +68,7 @@ The [Tonic/remote_control] contains the code that is meant to be run on your lap
 The machine and control interface is communicating via WiFi network, using sockets. 
 
 Sensors, camera, and steering - each one is implemented as a separate service using sockets.
-You can steer it with the keyboard on PC, and with live feed from the camera.
+You can steer it with the keyboard on PC, while seeing live feed from the camera.
 All of the sensors, steering and video can be dumped to files on PC.
 You don't need to turn all of the sensors to make this work.
 
