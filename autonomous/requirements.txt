@@ -1,0 +1,7 @@
+simple-pid
+pyyaml
+pandas
+scipy
+matplotlib
+protobuf
+pyqt5

@@ -12,6 +12,7 @@ class MotorClient(Client):
 
 	def send(self, input):
 		signal = self.signal_to_string(input)
+		print("blorgoooooo")
 		self.client_socket.send(signal.encode())
 		self.steering_log.append((input, time.time()))
 

@@ -7,7 +7,8 @@ import numpy as np
 
 from clients import QTVideoClient, QTSteeringClient, QTImuClient, ClientSink
 from dataset import dump_dataframe, join_imu
-from logic import logic_layers, ImuKeeper, Imu, Mapper
+#from logic import logic_layers, ImuKeeper, Imu, Mapper
+from logic import ImuKeeper, Imu, Mapper
 
 def make_intake_path(intake_name):
 	main_dump_folder = '../../data_intake4'
@@ -39,13 +40,13 @@ class Controller(BaseController):
 		self.dump_steering = dump_steering
 		self.dump_odo = dump_odo
 		self.view = None
-		self.setup_logic_pipeline()
+		#self.setup_logic_pipeline()
 		self._frame_number = None
 		self._timestamp = None
 		self.odo_data = dict(left=[], right=[])
 
-	def setup_logic_pipeline(self):
-		self.pipeline = logic_layers
+	# def setup_logic_pipeline(self):
+		# self.pipeline = logic_layers
 
 	def connect_steering(self, view):
 		self.view = view
@@ -85,7 +86,7 @@ class Controller(BaseController):
 		img = frame[0]
 		self._timestamp = frame[1]
 		self._clean_frame = img.copy()
-		img, self._keys = self.apply_logic_pipeline(img, self.keys)
+		#img, self._keys = self.apply_logic_pipeline(img, self.keys)
 		self._frame = img
 
 	def add_odo(self, odo_response):
@@ -102,12 +103,12 @@ class Controller(BaseController):
 			cv2.imwrite(picpath, frame)
 		self._frame_number += 1
 
-	def apply_logic_pipeline(self, frame, keys):
-		if frame.shape[0] > 20:
-			for layer_name, layer in self.pipeline.items():
-				frame, kwrgs = layer.action(frame=frame, keys=keys)
-				keys = kwrgs['keys']
-		return frame, keys
+	# def apply_logic_pipeline(self, frame, keys):
+	# 	if frame.shape[0] > 20:
+	# 		for layer_name, layer in self.pipeline.items():
+	# 			frame, kwrgs = layer.action(frame=frame, keys=keys)
+	# 			keys = kwrgs['keys']
+		# return frame, keys
 
 	def close(self):
 		if self.client_sink.steering_client and self.dump_steering:

@@ -1,6 +1,6 @@
 # Software Guide
 
-So in order to make the robot work, you need to setup everything on raspberry ([car setup]) and on your pc ([remote control]).
+So in order to make the robot work, you need to setup everything on raspberry ([car setup](#car-setup)) and on your pc ([remote control](#remote-control)).
 
 ## Steps to run in data taking mode
 
@@ -10,7 +10,7 @@ There is some set up required, before you can run this:
 1. (callibrate the IMU, but only if you need it)
 2. Set up the `settings.yml` correctly
 3. Set up desired services on the RPI0(Video, Steering, Imu, Odometry).
-4. Set up and run [remote control].
+4. [Set up remote control](#remote-control-setup) and run it.
 
 ## (Deprecated) Steps to run in live orb_slam mode
 

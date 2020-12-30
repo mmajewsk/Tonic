@@ -3,7 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from controllers import Controller
-from logic import logic_layers
+#from logic import logic_layers
 
 
 class MainApp(QWidget):
@@ -20,11 +20,11 @@ class MainApp(QWidget):
 			self.setup_camera()
 		if self.controller.client_sink.odo_client:
 			self.setup_odo()
-		self.setup_logic_pipeline()
+		# self.setup_logic_pipeline()
 		self.setup_ui()
 
-	def setup_logic_pipeline(self):
-		self.pipeline = logic_layers
+	# def setup_logic_pipeline(self):
+	# 	self.pipeline = logic_layers
 
 	def setup_steering(self):
 		self.keys[17] = False
