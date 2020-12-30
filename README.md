@@ -12,6 +12,11 @@
 
 ![demo](https://imgur.com/HAA9xJo.gif)
 
+
+[![autonomic navigation](http://img.youtube.com/vi/4x-8iYDJs7I/0.jpg)](http://www.youtube.com/watch?v=4x-8iYDJs7I "video demo")
+
+**Demo of autonomous driving (click above to play)**
+
 _a.k.a.: "Roomba, that does not suck"_
 
 Written in Python 🐍 (mostly).
@@ -63,7 +68,7 @@ The [Tonic/control] contains the code that is meant to be run on your laptop/pc/
 The machine and control interface is communicating via WiFi network, using sockets. 
 
 Sensors, camera, and steering - each one is implemented as a separate service using sockets.
-You can steer it with the keyboard on PC, and with live feed from the camera.
+You can steer it with the keyboard on PC, while seeing live feed from the camera.
 All of the sensors, steering and video can be dumped to files on PC.
 You don't need to turn all of the sensors to make this work.
 
