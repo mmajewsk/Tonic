@@ -99,7 +99,7 @@ Also, you can join the 🗣️ [discord server][discord] if you are looking for 
 - [My fork of Osmap] - Dumps ORB_SLAM2 to file
 - [My fork of PythonBindings] - this one combines osmap with orb slam python bindings!
 - [TonicSlamDunk] - Install scripts for all of the above, includes scripts for ubuntu, and dockerfile.
-- [TonicOrange] - **Exemplary use of orb slam, for pathfinding**
+- ~~[TonicOrange] - **Exemplary use of orb slam, for pathfinding**~~ (moved to [Tonic/autonomous])
   
 
 [discord]: https://discord.gg/55WuPN
@@ -112,3 +112,4 @@ Also, you can join the 🗣️ [discord server][discord] if you are looking for 
 [TonicSlamDunk]: https://github.com/mmajewsk/TonicSlamDunk 
 [TonicOrange]: https://github.com/mmajewsk/TonicOrange 
 [Screenshots]: doc/video_and_screenshots.md
+[Tonic/autonomous]: https://github.com/mmajewsk/Tonic/autonomous
