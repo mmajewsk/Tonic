@@ -1,21 +1,20 @@
 import cv2
 import numpy as np
 from scipy.integrate import cumtrapz
-from logic.velo4 import calculate_flow, calculate_stop
 
 
 def retrofit_slice(series, start, stop):
     error = np.arange(stop - start)
-    error = error / (1. * error[-1])
+    error = error / (1.0 * error[-1])
     pedestal = series.loc[stop]
     error = error * pedestal
-    series.loc[start:stop - 1] -= error
+    series.loc[start : stop - 1] -= error
     series.loc[stop:] -= pedestal
     return series, error, pedestal
 
 
-def integrate(df, target='vel_x', source='gyr_x'):
-    cumtrapz_result = cumtrapz(df[source].values, df['alltimes'].values)
+def integrate(df, target="vel_x", source="gyr_x"):
+    cumtrapz_result = cumtrapz(df[source].values, df["alltimes"].values)
     # print(df.loc[1:, target].shape,cumtrapz_result.shape)
     df.loc[1:, target] = cumtrapz_result
     df.loc[0, target] = df.loc[1, target]
@@ -26,9 +25,9 @@ def fix_drift(df, column):
     for i, rows in df.iterrows():
         value = df[column].loc[i]
         # print(bool(rows['stop']),bool(df['stop'].iloc[i-1]))
-        if rows['stop'] == 0 and df['stop'].iloc[i - 1] != 0:
+        if rows["stop"] == 0 and df["stop"].iloc[i - 1] != 0:
             start = i
-        elif rows['stop'] != 0 and df['stop'].iloc[i - 1] == 0:
+        elif rows["stop"] != 0 and df["stop"].iloc[i - 1] == 0:
             # fig = plt.figure()
             # ax1 = fig.add_subplot(111)
             # ax1.plot(df[column].index, df[column], color='green')
@@ -38,42 +37,20 @@ def fix_drift(df, column):
         # ax1.plot(df[column].index, df[column], color='blue')
         # ax1.plot(series[start:stop].index, error, color='red')
         # print(pedestal)
-        if rows['stop'] != 0:
+        if rows["stop"] != 0:
             df[column][i:] -= value
-            df.set_value(i, column, 0.)
+            df.set_value(i, column, 0.0)
     return df
-
-
-def calculate_position(df_original, dirpath):
-    df = df_original.copy()
-    df = calculate_flow(df, dirpath)
-    df['flow_x'] = df['flow_x'].fillna(method='ffill')
-    df['flow_y'] = df['flow_y'].fillna(method='ffill')
-    df = calculate_stop(df)
-    df = integrate(df, 'vel_x', 'gyr_x')
-    df = integrate(df, 'vel_y', 'gyr_y')
-    df = integrate(df, 'vel_z', 'gyr_z')
-    df2 = fix_drift(df.copy(), 'vel_y')
-    df2 = fix_drift(df2, 'vel_x')
-    df2 = fix_drift(df2, 'vel_z')
-    df2['vel'] = np.sqrt(df2['vel_y'] ** 2 + df2['vel_x'] ** 2)
-    df2 = integrate(df2, 'pos', 'vel')
-    df2 = integrate(df2, 'pos_x', 'vel_x')
-    df2 = integrate(df2, 'pos_y', 'vel_y')
-    return df2
-
-
-from logic.deprecated import Mapper as OldMapper
 
 
 def Mapper(*args, **kwargs):
     from warnings import warn
+
     warn("This class ios deprecated! Use Mapper2")
     return OldMapper(*args, **kwargs)
 
 
 class Mapping:
-
     def convert(self, point: tuple):
         pass
 
@@ -93,23 +70,29 @@ class LinearMapping(Mapping):
 
 
 class Mapper2:
-    def __init__(self, map_shape=(800, 800, 3), type='show_only'):
-        assert type in ['show_only', 'additive']
+    def __init__(
+        self,
+        map_shape=(800, 800, 3),
+        coord_coef=((100, 400), (150, 400)),
+        rot_cent_coef=((0.5, 0), (1.1, 0)),
+        type="show_only",
+    ):
+        assert type in ["show_only", "additive"]
         self.map_type = type
         self.map_size = map_shape[:2]
         self.map_shape = map_shape
         self._map = np.zeros(self.map_shape, dtype=np.uint8)
         # This one transforms x,y position from real world
         # to position on created map
-        self.coordinates_mapping = LinearMapping((100,400),(150,400))
+        self.coordinates_mapping = LinearMapping(*coord_coef)
         # Sets the center based on the shape of the image
-        self.rotation_center_mapping = LinearMapping((0.5,0),(1.1,0))
+        self.rotation_center_mapping = LinearMapping(*rot_cent_coef)
         self.base = None
-        self.resize_img = lambda x: cv2.resize(x, (0,0), fx=0.4, fy=0.4)
+        self.resize_img = lambda x: cv2.resize(x, (0, 0), fx=0.4, fy=0.4)
 
     @property
     def blanc(self):
-        #@TODO fix the shape to be color
+        # @TODO fix the shape to be color
         return np.zeros(self.map_shape[:2], np.uint8)
 
     def set_rotation_center_mapping(self, mapping: Mapping):
@@ -122,9 +105,9 @@ class Mapper2:
     def get_base(self):
         if self.base is None:
             self.base = np.zeros(self.map_shape, np.uint8)
-        if self.map_type == 'show_only':
+        if self.map_type == "show_only":
             return self.blanc
-        elif self.map_type == 'additive':
+        elif self.map_type == "additive":
             return self.base
 
     def set_mapping(self, mapping: Mapping):
@@ -142,10 +125,12 @@ class Mapper2:
         center_of_rotation = tuple(map(int, center_of_rotation))
         frame = cv2.cvtColor(frame.astype(np.uint8), cv2.COLOR_RGB2GRAY)
         canvas = self.blanc
-        y_origin = canvas.shape[0]/2 - frame.shape[0]/2
-        x_origin = canvas.shape[1]/2 - frame.shape[1]/2
+        y_origin = canvas.shape[0] / 2 - frame.shape[0] / 2
+        x_origin = canvas.shape[1] / 2 - frame.shape[1] / 2
         y_origin, x_origin = map(int, (y_origin, x_origin))
-        canvas[y_origin:y_origin+frame.shape[0], x_origin:x_origin+frame.shape[1]] = frame
+        canvas[
+            y_origin : y_origin + frame.shape[0], x_origin : x_origin + frame.shape[1]
+        ] = frame
         canvas_cor = center_of_rotation[0] + y_origin, center_of_rotation[1] + x_origin
         rot = cv2.getRotationMatrix2D(canvas_cor, angle, scale=1)
         dst = cv2.warpAffine(canvas, rot, self.map_size)
@@ -154,7 +139,7 @@ class Mapper2:
     def position_after_rotation(self, img, center_of_rotation):
         # cut patch out of the image afer rotation
         # return this patch and on-patch coordinates of center of rotation
-        thresh= cv2.threshold(img, 1, 255, cv2.THRESH_BINARY)[1]
+        thresh = cv2.threshold(img, 1, 255, cv2.THRESH_BINARY)[1]
         cnts = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if len(cnts) == 2 else cnts[1]
         c = max(cnts, key=cv2.contourArea)
@@ -168,7 +153,7 @@ class Mapper2:
         cv2.circle(image, right, 8, (0, 255, 255), -1)
         cv2.circle(image, top, 8, (255, 50, 0), -1)
         cv2.circle(image, bottom, 8, (255, 255, 0), -1)
-        cv2.imshow("d", image )
+        cv2.imshow("d", image)
         cv2.waitKey(0)
         cor_y, cor_x = center_of_rotation
         left_x, left_y = left
@@ -182,8 +167,8 @@ class Mapper2:
         patch_bottom_y = max((cor_y, top_y, bottom_y))
         patch = img[patch_top_y:patch_bottom_y, patch_left_x:patch_right_x]
         patch_origin = patch_top_y, patch_left_x
-        on_patch_cor = np.array(center_of_rotation)- np.array(patch_origin)
-        assert np.all(on_patch_cor>=0)
+        on_patch_cor = np.array(center_of_rotation) - np.array(patch_origin)
+        assert np.all(on_patch_cor >= 0)
 
         return patch, on_patch_cor, patch_origin
 
@@ -197,9 +182,9 @@ class Mapper2:
         img = self.resize_img(frame)
         self.on_screen_position = self.coordinates_mapping.convert(position)
         self.on_screen_position_int = tuple(map(int, self.on_screen_position))
-        #@TODO fix this to be color
+        # @TODO fix this to be color
         if self.base is None:
-            self.base = np.zeros((800,800), np.uint8)
+            self.base = np.zeros((800, 800), np.uint8)
         base = self.get_base()
         dst, cor = self.rotate_image(img, angle)
         patch, on_patch_cor, patch_origin = self.position_after_rotation(dst, cor)
@@ -207,8 +192,8 @@ class Mapper2:
         on_screen_patch_pos = on_screen_position_arr - on_patch_cor
         final_img = self.blanc
         final_img[
-            on_screen_patch_pos[0]:on_screen_patch_pos[0]+patch.shape[0],
-            on_screen_patch_pos[1]:on_screen_patch_pos[1]+patch.shape[1]
+            on_screen_patch_pos[0] : on_screen_patch_pos[0] + patch.shape[0],
+            on_screen_patch_pos[1] : on_screen_patch_pos[1] + patch.shape[1],
         ] = patch
         self._last_dst = final_img
         self._map = Mapper2.merge_images(self._last_dst, base)
@@ -226,7 +211,9 @@ class Mapper2:
 
     @staticmethod
     def get_image_overlap_areas(img1, img2):
-        new_image_mask, common_mask, base_mask = Mapper2.get_image_overlap_masks(img1, img2)
+        new_image_mask, common_mask, base_mask = Mapper2.get_image_overlap_masks(
+            img1, img2
+        )
         img2_only = cv2.bitwise_or(img2, img2, mask=base_mask)
         img1_only = cv2.bitwise_or(img1, img1, mask=new_image_mask)
         common_2 = cv2.bitwise_or(img2, img2, mask=common_mask)
@@ -236,10 +223,15 @@ class Mapper2:
     @staticmethod
     def merge_images(new_img, base):
         base_orig = base.copy()
-        only_new_img, common_1, common_2, only_base_img = Mapper2.get_image_overlap_areas(new_img, base_orig)
-        common_img = cv2.addWeighted(common_2, 0.5, common_1, 0.5, 0.)
-        new_map = cv2.add(only_base_img, only_new_img)#paste whats dark in present, and white in past
+        (
+            only_new_img,
+            common_1,
+            common_2,
+            only_base_img,
+        ) = Mapper2.get_image_overlap_areas(new_img, base_orig)
+        common_img = cv2.addWeighted(common_2, 0.5, common_1, 0.5, 0.0)
+        new_map = cv2.add(
+            only_base_img, only_new_img
+        )  # paste whats dark in present, and white in past
         new_map = cv2.add(new_map, common_img)
         return new_map
-
-

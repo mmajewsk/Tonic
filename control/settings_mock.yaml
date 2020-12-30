@@ -1,0 +1,24 @@
+info:
+  settings: v2
+  car:
+    build: mark4
+    name: car1
+hardware:
+  camera:
+    calibration_file:
+      path: camera_calibration/calib.json
+      type: json
+    image:
+      shape: [320, 240, 3]
+server:
+  ip: '127.0.0.1'
+  #ip: '192.168.1.133'
+
+  video:
+    port: 2201
+  steering:
+    port: 2203
+  imu:
+    port: 2204
+  odo:
+    port: 2206

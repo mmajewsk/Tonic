@@ -56,9 +56,9 @@ All of that to be possible for as cheap as possible, with a raspberry PI and onl
 # How does it work
 
 As for now, this repository ([mmajewsk/Tonic]) contains guides and software for building, running and steering the car 🚘 for the _data taking_.
-The code is divided, into [Tonic/remote_control] and [Tonic/car]. 
+The code is divided, into [Tonic/control] and [Tonic/car]. 
 
-The [Tonic/remote_control] contains the code that is meant to be run on your laptop/pc/mac, that will control the raspberry pi [Tonic/car].
+The [Tonic/control] contains the code that is meant to be run on your laptop/pc/mac, that will control the raspberry pi [Tonic/car].
 
 The machine and control interface is communicating via WiFi network, using sockets. 
 
@@ -99,7 +99,7 @@ Also, you can join the 🗣️ [discord server][discord] if you are looking for 
 
 [discord]: https://discord.gg/55WuPN
 [mmajewsk/Tonic]: https://github.com/mmajewsk/Tonic
-[Tonic/remote_control]: https://github.com/mmajewsk/Tonic/remote_control
+[Tonic/control]: https://github.com/mmajewsk/Tonic/control
 [Tonic/car]: https://github.com/mmajewsk/Tonic/car
 [My fork of ORB_SLAM2]: https://github.com/mmajewsk/ORB_SLAM2
 [My fork of Osmap]: https://github.com/mmajewsk/osmap 
