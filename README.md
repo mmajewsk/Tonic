@@ -88,8 +88,8 @@ To make your machine drive autonomously, follow the soon upcoming guide in [Toni
 
 # Contribute
 
-🧑‍🔧 This project initially is meant to be open for everyone. The contributions are welcome.
-If you would like to help see what's new or listed in the issues [here](https://github.com/mmajewsk/Tonic/issues) .
+🧑‍🔧 This project is meant to be open for everyone. The contributions are welcome.
+If you would like to help see what's listed in the issues [here](https://github.com/mmajewsk/Tonic/issues), or add something yourself.
 
 Also, you can join the 🗣️ [discord server][discord] if you are looking for quick help, or just want to say hi ;) 
 
