@@ -41,7 +41,7 @@ This repository contains main software and documentation for the Tonic project. 
 The core idea of how this should work is as follows:
 
 1. After setting up the robot/car, drive it manually, and dump the video and steering feed (this part is called _data taking_).
-2. Create a 3D mapping of the environment with [TonicOrange].
+2. Create a 3D mapping of the environment with [Tonic/autonomous].
 3. Define checkpoints, through which the machine will drive.
 4. Program the car to drive on the defined paths.
 
