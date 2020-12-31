@@ -81,7 +81,7 @@ You don't need to turn all of the sensors to make this work.
 2. Then set up the [machine and interface software](doc/running_software.md).
 3. Do the data-taking run, running steering and video data, [as described here](doc/running_software.md##running-tonic).
 
-To make your machine drive autonomously, follow the soon upcoming guide in [Tonic/autonomous] repo.
+To make your machine drive autonomously, follow the guide in [Tonic/autonomous] repo.
   
 
 # Contribute
