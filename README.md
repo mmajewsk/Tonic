@@ -74,8 +74,6 @@ You don't need to turn all of the sensors to make this work.
 
 **The odometry and IMU are not necessary to make an environment mapping**
 
-The navigation and autonomous steering part are currently under making on under [TonicOrange] repository.
-
 # Ok so how do I start
 
 0. Take a look at previous versions and the current one in [video and screenshots][Screenshots].
@@ -83,7 +81,7 @@ The navigation and autonomous steering part are currently under making on under 
 2. Then set up the [machine and interface software](doc/running_software.md).
 3. Do the data-taking run, running steering and video data, [as described here](doc/running_software.md##running-tonic).
 
-To make your machine drive autonomously, follow the soon upcoming guide in [TonicOrange] repo.
+To make your machine drive autonomously, follow the soon upcoming guide in [Tonic/autonomous] repo.
   
 
 # Contribute
