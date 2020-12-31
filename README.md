@@ -104,12 +104,12 @@ Also, you can join the 🗣️ [discord server][discord] if you are looking for 
 
 [discord]: https://discord.gg/55WuPN
 [mmajewsk/Tonic]: https://github.com/mmajewsk/Tonic
-[Tonic/control]: Tonic/control
-[Tonic/car]: Tonic/car
+[Tonic/control]: control
+[Tonic/car]: car
 [My fork of ORB_SLAM2]: https://github.com/mmajewsk/ORB_SLAM2
 [My fork of Osmap]: https://github.com/mmajewsk/osmap 
 [My fork of PythonBindings]: https://github.com/mmajewsk/ORB_SLAM2-PythonBindings 
 [TonicSlamDunk]: https://github.com/mmajewsk/TonicSlamDunk 
 [TonicOrange]: https://github.com/mmajewsk/TonicOrange 
 [Screenshots]: doc/video_and_screenshots.md
-[Tonic/autonomous]: Tonic/autonomous
+[Tonic/autonomous]: autonomous
