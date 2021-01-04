@@ -28,10 +28,10 @@ Written in Python 🐍 (mostly).
 ### Contents:
 
 - [Introduction](#introduction)
-- [Features](#features.) 
+- [Features](#features) 
 - [How does it work](#how-does-it-work) 
-- [How to start](#ok-so-how-do-I-start?)
-- [Contribution](#contribution)
+- [How to start](#ok-so-how-do-i-start)
+- [Contribution](#contribute)
 - [Related repos](#related-repos)
 
 # Introduction
@@ -46,7 +46,7 @@ The core idea of how this should work is as follows:
 
 All of that to be possible for as cheap as possible, with a raspberry PI and only a single camera.
 
-# Features.
+# Features
 
   <img src="https://imgur.com/oA3ERWN.gif" width="45%" height="45%" align="right" />
 
