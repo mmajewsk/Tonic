@@ -13,9 +13,8 @@
 ![demo](https://imgur.com/HAA9xJo.gif)
 
 
-[![autonomic navigation](http://img.youtube.com/vi/4x-8iYDJs7I/0.jpg)](http://www.youtube.com/watch?v=4x-8iYDJs7I "video demo")
 
-**Demo of autonomous driving (click above to play)**
+A nice youtube video about this project: [here](https://www.youtube.com/watch?v=u7oDqWJhXR0)
 
 _a.k.a.: "Roomba, that does not suck"_
 
