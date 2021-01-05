@@ -20,7 +20,7 @@
 |IMU| Pololu MinIMU-9 v5 | It does not need to be a exact match, but you will have to modify the code to cover it - 20$
 |Odometry|[photo interrupter](https://www.amazon.com/Waveshare-Photo-Interrupter-Sensor-Measuring/dp/B01N0FQ21B/ref=sr_1_1?ie=UTF8&qid=1544653159&sr=8-1&keywords=waveshare+photo+interrupter)| 10$
 |Batterry monitor|[this cheap thing](https://www.amazon.com/PACK-Battery-Voltage-Checker-Alarm/dp/B00XQ91ECA/ref=sr_1_5?dchild=1&keywords=lipo+battery+monitor&qid=1596716284&sr=8-5)| $10
-|current stabiliser|[1500uf 15v capacitor](https://www.amazon.com/PACK-Battery-Voltage-Checker-Alarm/dp/B00XQ91ECA/ref=sr_1_5?dchild=1&keywords=lipo+battery+monitor&qid=1596716284&sr=8-5)| $5
+|current stabiliser|[1500uf 15v capacitor](https://www.amazon.com/pcs-Panasonic-FM-Capacitors-1500uf/dp/B073YQB53H/ref=sr_1_20?dchild=1&keywords=1500uf+15v+capacitor&qid=1609848430&sr=8-20)| $2
 
 ### Things that you may already have or buy once
 ||================Component==========|Price estimation|
