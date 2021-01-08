@@ -99,7 +99,7 @@ Also, you can join the 🗣️ [discord server][discord] if you are looking for 
 - ~~[TonicOrange] - **Exemplary use of orb slam, for pathfinding**~~ (moved to [Tonic/autonomous])
   
 
-[discord]: https://discord.gg/CBP7Tau
+[discord]: https://discord.gg/shmRajSkDz
 [mmajewsk/Tonic]: https://github.com/mmajewsk/Tonic
 [Tonic/control]: control
 [Tonic/car]: car
