@@ -14,7 +14,7 @@
 
 
 
-A **must-see youtube video about this project --> **: [here](https://www.youtube.com/watch?v=u7oDqWJhXR0)❗❗
+A **must-see youtube video about this project -->**: [here](https://www.youtube.com/watch?v=u7oDqWJhXR0)❗❗
 
 _a.k.a.: "Roomba, that does not suck"_
 
