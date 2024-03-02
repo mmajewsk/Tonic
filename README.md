@@ -11,9 +11,8 @@
 [![Discord Server](https://img.shields.io/discord/739733971944079401?color=blue&label=Discord%20Chat&logo=discord&logoColor=white&style=flat-square)][Discord]
 
 ![demo](https://imgur.com/HAA9xJo.gif)
-[![Tonic video](https://yt-embed.herokuapp.com/embed?v=u7oDqWJhXR0)](https://www.youtube.com/watch?v=u7oDqWJhXR0 "Everything Is AWESOME")
 
-A **must-see youtube video about this project -->**: [here](https://www.youtube.com/watch?v=u7oDqWJhXR0)❗❗
+⚠️ ➡️ [Video here](https://www.youtube.com/watch?v=u7oDqWJhXR0) ⬅️ ⚠️
 
 _a.k.a.: "Roomba, that does not suck"_
 
